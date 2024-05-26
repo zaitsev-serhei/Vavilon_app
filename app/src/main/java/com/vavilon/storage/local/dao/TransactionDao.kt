@@ -12,6 +12,6 @@ interface TransactionDao {
     fun insert(transaction: Transaction)
     @Update
     fun update(transaction: Transaction)
-    @Query("SELECT * FROM transactions WHERE source_id = :sourceId")
-    fun getTransactionsBySource(sourceId: Long): List<Transaction>?
+    @Query("SELECT * FROM transactions ORDER BY creation_date ASC")
+    fun getAllTransactions(): List<Transaction>?
 }

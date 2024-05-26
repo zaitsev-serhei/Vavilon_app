@@ -1,6 +1,6 @@
 package com.vavilon.model.repositories
 
-import com.vavilon.model.SourceCategory
+import com.vavilon.model.SourceCategories
 import com.vavilon.storage.local.dao.SourceDao
 import com.vavilon.storage.local.entities.Source
 import kotlinx.coroutines.flow.Flow
@@ -21,23 +21,23 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
         sourceDao.update(source)
     }
 
-    fun getSourceListAsc(category: SourceCategory): Flow<List<Source>> {
+    fun getSourceListAsc(category: SourceCategories): Flow<List<Source>> {
         return sourceDao.getSourceListSortedAsc(category.getSrcCategory())
     }
 
-    fun getSourceListDesc(category: SourceCategory): Flow<List<Source>> {
+    fun getSourceListDesc(category: SourceCategories): Flow<List<Source>> {
         return sourceDao.getSourceListSortedDesc(category.getSrcCategory())
     }
 
-    fun getSourceListSortedBalanceAsc(category: SourceCategory): Flow<List<Source>> {
+    fun getSourceListSortedBalanceAsc(category: SourceCategories): Flow<List<Source>> {
         return sourceDao.getSourceListSortedBalance(category.getSrcCategory())
     }
 
-    fun getSourceListCreationDate(category: SourceCategory): Flow<List<Source>> {
+    fun getSourceListCreationDate(category: SourceCategories): Flow<List<Source>> {
         return sourceDao.getSourceListSortedLastAdded(category.getSrcCategory())
     }
 
-    fun getSourceListSortedType(category: SourceCategory): Flow<List<Source>> {
+    fun getSourceListSortedType(category: SourceCategories): Flow<List<Source>> {
         return sourceDao.getSourceListSortedType(category.getSrcCategory())
     }
 

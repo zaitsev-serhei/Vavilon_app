@@ -7,6 +7,7 @@ import com.vavilon.storage.local.AppDataBase
 import com.vavilon.storage.local.dao.CurrencyDao
 import com.vavilon.storage.local.dao.SourceDao
 import com.vavilon.storage.local.dao.TotalDao
+import com.vavilon.storage.local.dao.TransactionCategoryDao
 import com.vavilon.storage.local.dao.TransactionDao
 import com.vavilon.storage.local.dao.UserDao
 import dagger.Module
@@ -39,6 +40,11 @@ class RoomModule {
     @Provides
     fun provideTransactionDao(dataBase: AppDataBase):TransactionDao {
         return dataBase.TransactionDao()
+    }
+    @Singleton
+    @Provides
+    fun provideTransactionCategoryDao(dataBase: AppDataBase):TransactionCategoryDao {
+        return dataBase.TransactionCategoryDao()
     }
     @Singleton
     @Provides

@@ -1,6 +1,6 @@
 package com.vavilon.model
 
-enum class SourceCategory(val sourceCategory: String) {
+enum class SourceCategories(val sourceCategory: String) {
     INCOME("Income"),
     EXPENSE("Expense"),
     SAVING("Saving");

@@ -6,6 +6,18 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "tr_categories")
 class TransactionCategory {
+    constructor()
+    constructor(transactionTitle: String, transactionType: String) {
+        this.title = transactionTitle
+        this.type = transactionType
+    }
+
+    constructor(transactionTitle: String, transactionDescription: String, transactionType: String) {
+        this.title = transactionTitle
+        this.description = transactionDescription
+        this.type = transactionType
+    }
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "category_id")
     var categoryId: Long = 0
@@ -16,4 +28,6 @@ class TransactionCategory {
     @ColumnInfo(name = "description")
     var description: String = ""
 
+    @ColumnInfo(name = "type")
+    var type: String = ""
 }
