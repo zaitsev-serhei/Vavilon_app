@@ -11,7 +11,11 @@
 </p>
 <br>
 
-**HOW TO USE:**
+## Application Simulation Online
+https://appetize.io/app/g3p47uz7nyf2uvoevwp5tpbmf4?device=pixel7&osVersion=13.0
+</br>
+</br>
+## **HOW TO USE:**
 Please download and install the latest stable version of the Android SDK. You can find Android Studio by following the link below:
 [Download Android Studio](https://developer.android.com/studio)
 
