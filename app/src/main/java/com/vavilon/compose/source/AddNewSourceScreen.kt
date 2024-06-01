@@ -1,6 +1,5 @@
 package com.vavilon.compose.source
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
@@ -24,7 +22,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vavilon.model.SourceCategory
+import com.vavilon.model.SourceCategories
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.ui.theme.Bronze
@@ -35,7 +33,7 @@ fun AddNewSourceScreen(
     state: SourceState,
     onEvent: (SourceEvent) -> Unit,
 ) {
-    var selectedCategory: SourceCategory = state.sourceCategory
+    var selectedCategory: SourceCategories = state.sourceCategory
     AlertDialog(
         modifier = Modifier,
         onDismissRequest = {
@@ -56,7 +54,7 @@ fun AddNewSourceScreen(
                         .wrapContentSize(),
                     horizontalArrangement = Arrangement.spacedBy(20.dp),
                     verticalAlignment = Alignment.CenterVertically){
-                    SourceCategory.entries.forEach { category ->
+                    SourceCategories.entries.forEach { category ->
                         Box(modifier = Modifier
                             .background(Bronze)
                             .height(30.dp)

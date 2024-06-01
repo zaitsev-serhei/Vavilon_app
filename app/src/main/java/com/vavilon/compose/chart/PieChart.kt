@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vavilon.model.SourceCategory
+import com.vavilon.model.SourceCategories
 import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
 import com.vavilon.ui.theme.BlueGreen
@@ -50,9 +50,9 @@ fun PieChart(state: SourceState, modifier: Modifier = Modifier) {
     val savingsColorList: List<Color> = listOf(RoyalBlue, DodgerBlue, MediumBlue, SteelBlue, SkyBlue)
 
     val colorList = when (state.sourceCategory) {
-        SourceCategory.INCOME -> incomeColorList
-        SourceCategory.EXPENSE -> expenseColorList
-        SourceCategory.SAVING -> savingsColorList
+        SourceCategories.INCOME -> incomeColorList
+        SourceCategories.EXPENSE -> expenseColorList
+        SourceCategories.SAVING -> savingsColorList
         else -> listOf(BlueGreen)
     }
     Row(

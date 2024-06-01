@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vavilon.model.SourceCategory
+import com.vavilon.model.SourceCategories
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.ui.theme.DeepWater
 import com.vavilon.ui.theme.Gold
@@ -25,7 +25,7 @@ fun SourceCategoryRowView(onEvent: (SourceEvent) -> Unit) {
             .fillMaxWidth()
             .padding(start = 10.dp, end = 15.dp),
         horizontalArrangement = Arrangement.SpaceEvenly,) {
-        SourceCategory.entries.forEach { category ->
+        SourceCategories.entries.forEach { category ->
             Row(modifier = Modifier
                 .background(DeepWater)
                 .padding(5.dp)

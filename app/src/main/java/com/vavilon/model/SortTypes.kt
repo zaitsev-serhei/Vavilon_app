@@ -1,6 +1,6 @@
 package com.vavilon.model
 
-enum class SortType {
+enum class SortTypes {
     ASC,
     DESC,
     BALANCE,

@@ -2,8 +2,8 @@ package com.vavilon.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vavilon.model.SortType
-import com.vavilon.model.SourceCategory
+import com.vavilon.model.SortTypes
+import com.vavilon.model.SourceCategories
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.repositories.SourceRepository
 import com.vavilon.model.states.SourceState
@@ -21,14 +21,14 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SourceViewModel @Inject constructor(private val sourceRepository: SourceRepository) : ViewModel() {
-    private val _sortType = MutableStateFlow(SortType.ASC)
-    private val _category = MutableStateFlow(SourceCategory.INCOME)
+    private val _sortTypes = MutableStateFlow(SortTypes.ASC)
+    private val _category = MutableStateFlow(SourceCategories.INCOME)
     private val _sourceListSorted = _category
         .flatMapLatest { category ->
             when(category) {
-                SourceCategory.INCOME -> sourceRepository.getSourceListAsc(category)
-                SourceCategory.EXPENSE -> sourceRepository.getSourceListAsc(category)
-                SourceCategory.SAVING -> sourceRepository.getSourceListAsc(category)
+                SourceCategories.INCOME -> sourceRepository.getSourceListAsc(category)
+                SourceCategories.EXPENSE -> sourceRepository.getSourceListAsc(category)
+                SourceCategories.SAVING -> sourceRepository.getSourceListAsc(category)
             }
 
         }
@@ -77,7 +77,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                 _state.update { it.copy(
                     isAddingNewSource = false,
                     name = "",
-                    sourceCategory = SourceCategory.INCOME,
+                    sourceCategory = SourceCategories.INCOME,
                     description = "",
                     balance = 0.0,
                 ) }
@@ -112,7 +112,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                 ) }
             }
             is SourceEvent.SortSource -> {
-                _sortType.value = event.sortType
+                _sortTypes.value = event.sortType
             }
             is SourceEvent.FilterSource -> {
                 _category.value = event.category
