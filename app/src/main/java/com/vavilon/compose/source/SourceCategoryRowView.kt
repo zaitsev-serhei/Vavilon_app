@@ -1,5 +1,6 @@
 package com.vavilon.compose.source
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -13,23 +14,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vavilon.model.SourceCategory
 import com.vavilon.model.events.SourceEvent
-import com.vavilon.model.states.SourceState
+import com.vavilon.ui.theme.DeepWater
 import com.vavilon.ui.theme.Gold
+import com.vavilon.ui.theme.Typography
 
 @Composable
 fun SourceCategoryRowView(onEvent: (SourceEvent) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,) {
+            .padding(start = 10.dp, end = 15.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,) {
         SourceCategory.entries.forEach { category ->
             Row(modifier = Modifier
+                .background(DeepWater)
+                .padding(5.dp)
                 .clickable {
                 onEvent(SourceEvent.FilterSource(category))
                 onEvent(SourceEvent.SetType(category))},
                 verticalAlignment = CenterVertically){
-                Text(text = category.getSrcCategory(), color = Gold)
+                Text(text = category.getSrcCategory(),
+                    style = Typography.body1.copy(color = Gold))
             }
         }
     }
