@@ -1,7 +1,3 @@
-Sure, here's the corrected version:
-
----
-
 **Welcome to Vavilon Application - a financial management tool that makes your life easier.**
 
 **HOW TO USE:**
