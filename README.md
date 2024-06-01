@@ -3,14 +3,16 @@
 
 ### Home Page
 
-![home_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/38535563-8754-4c72-9dc6-3006840e2f64)
+![home_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/c75705eb-06c2-4f37-b3b8-746dfa212c37)
+
 
 ### Sources Page (Income)
 
-![income_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/a6c34443-da56-4e41-979c-adbe1b0c8faa)
+![income_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/a8a28dd3-21ed-4b6e-855f-d58ae04ab4eb)
+
 
 ### Sources Page (Expense)
-![expense_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/75fbc769-9569-40e9-8330-77cf2cc83d10)]
+![expense_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/e0fcc47b-7778-4b35-aed3-9ab7cabbe7b9)
 
 
 **HOW TO USE:**
