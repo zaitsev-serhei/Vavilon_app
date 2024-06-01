@@ -22,7 +22,7 @@ import com.vavilon.ui.theme.RoyalBlue
 fun SourceListView(state: SourceState,
                    onEvent: (SourceEvent) -> Unit,
                    ) {
-    val backgroundColor: Color = when (state.sourceCategories) {
+    val backgroundColor: Color = when (state.sourceCategory) {
         SourceCategories.INCOME -> LightGreen
         SourceCategories.EXPENSE -> Crimson
         SourceCategories.SAVING -> RoyalBlue

@@ -7,7 +7,7 @@ import com.vavilon.storage.local.entities.Source
 data class SourceState(
     val sourceList: List<Source> = emptyList(),
     val name : String = "",
-    var sourceCategories: SourceCategories = SourceCategories.INCOME,
+    var sourceCategory: SourceCategories = SourceCategories.INCOME,
     val description:String = "",
     val balance: Double = 0.0,
     val isAddingNewSource: Boolean = false,

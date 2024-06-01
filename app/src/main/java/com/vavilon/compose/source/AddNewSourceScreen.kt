@@ -33,7 +33,7 @@ fun AddNewSourceScreen(
     state: SourceState,
     onEvent: (SourceEvent) -> Unit,
 ) {
-    var selectedCategory: SourceCategories = state.sourceCategories
+    var selectedCategory: SourceCategories = state.sourceCategory
     AlertDialog(
         modifier = Modifier,
         onDismissRequest = {

@@ -47,7 +47,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
     val state = combine(_state, _category, _sourceListSorted ) {
         state, category,sourceList ->
         state.copy(
-            sourceCategories = category,
+            sourceCategory = category,
             sourceList = sourceList,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SourceState())
@@ -65,7 +65,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
             SourceEvent.SaveSource -> {
                 val name = state.value.name
                 val description = state.value.description
-                val sourceType = state.value.sourceCategories
+                val sourceType = state.value.sourceCategory
                 val balance = state.value.balance
                 if(name.isBlank()||description.isBlank()){
                     return
@@ -77,7 +77,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                 _state.update { it.copy(
                     isAddingNewSource = false,
                     name = "",
-                    sourceCategories = SourceCategories.INCOME,
+                    sourceCategory = SourceCategories.INCOME,
                     description = "",
                     balance = 0.0,
                 ) }
@@ -102,7 +102,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
             is SourceEvent.SetType -> {
                 _state.update {
                     it.copy(
-                        sourceCategories = event.type
+                        sourceCategory = event.type
                     )
                 }
             }
