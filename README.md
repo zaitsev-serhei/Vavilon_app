@@ -1,4 +1,17 @@
 **Welcome to Vavilon Application - a financial management tool that makes your life easier.**
+## Application Screenshots
+
+### Home Page
+
+![home_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/38535563-8754-4c72-9dc6-3006840e2f64)
+
+### Sources Page (Income)
+
+![income_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/a6c34443-da56-4e41-979c-adbe1b0c8faa)
+
+### Sources Page (Expense)
+![expense_src](https://github.com/zaitsev-serhei/Vavilon_app/assets/32288362/75fbc769-9569-40e9-8330-77cf2cc83d10)]
+
 
 **HOW TO USE:**
 Please download and install the latest stable version of the Android SDK. You can find Android Studio by following the link below:
