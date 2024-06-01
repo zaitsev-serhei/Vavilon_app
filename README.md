@@ -42,7 +42,3 @@ There are two ways to run the app:
 **Using Your Own Device:**
 1. Connect a USB cable to your laptop and phone.
 2. Follow [this guide](https://www.samsung.com/uk/support/mobile-devices/how-do-i-turn-on-the-developer-options-menu-on-my-samsung-galaxy-device/) to enable Developer Options and USB Debugging on your device.
-
----
-
-This should provide clear and correct instructions for installing and running the Vavilon application.
