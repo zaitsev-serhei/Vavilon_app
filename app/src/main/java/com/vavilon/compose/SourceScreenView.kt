@@ -44,7 +44,7 @@ fun SourceScreenView(
                 .background(DarkBlue)
                 .padding(innerPadding)
         ) {
-            PieChart(values = state.sourceList)
+            PieChart(state = state)
             Spacer(modifier = Modifier.height(5.dp))
             SourceCategoryRowView(onEvent = onEvent)
             Spacer(modifier = Modifier.height(5.dp))
