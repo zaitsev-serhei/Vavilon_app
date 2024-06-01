@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.vavilon.model.SourceCategory
+import com.vavilon.model.SourceCategories
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
@@ -22,10 +22,10 @@ import com.vavilon.ui.theme.RoyalBlue
 fun SourceListView(state: SourceState,
                    onEvent: (SourceEvent) -> Unit,
                    ) {
-    val backgroundColor: Color = when (state.sourceCategory) {
-        SourceCategory.INCOME -> LightGreen
-        SourceCategory.EXPENSE -> Crimson
-        SourceCategory.SAVING -> RoyalBlue
+    val backgroundColor: Color = when (state.sourceCategories) {
+        SourceCategories.INCOME -> LightGreen
+        SourceCategories.EXPENSE -> Crimson
+        SourceCategories.SAVING -> RoyalBlue
         else -> BlueGreen
     }
     Column(modifier = Modifier
