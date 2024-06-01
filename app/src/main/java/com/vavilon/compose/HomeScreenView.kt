@@ -2,7 +2,6 @@ package com.vavilon.compose
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.vavilon.R
 import com.vavilon.compose.menu.BottomNavigation
 import com.vavilon.compose.source.AddNewSourceScreen
@@ -35,9 +36,11 @@ import com.vavilon.compose.source.SourceRowScreen
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
+import com.vavilon.ui.theme.Bronze
 import com.vavilon.ui.theme.DarkBlue
 import com.vavilon.ui.theme.Gold
 import com.vavilon.ui.theme.Midnight
+import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
@@ -105,23 +108,24 @@ fun TopBar(
                 Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
+                Icon(
                     painter = painterResource(userIcon),
                     contentDescription = null,
+                    tint = Bronze,
                     modifier = Modifier
                         .size(50.dp)
                         .clip(CircleShape)
                         .padding(start = 10.dp, top = 5.dp),
-
                     )
                 Text(
                     text = stringResource(id = welcomeText) + userName,
                     color = Gold
                 )
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_settings),
                     contentDescription = null,
-                    Modifier.padding(end = 15.dp, top = 5.dp)
+                    tint = Bronze,
+                    modifier = Modifier.padding(end = 15.dp, top = 5.dp)
                 )
             }
             CurrentBalanceView()
@@ -141,7 +145,8 @@ fun CurrentBalanceView() {
             Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(id = R.string.current_balance_us), color = Gold)
+            Text(text = stringResource(id = R.string.current_balance_us),
+                style = Typography.h1.copy(color = Gold))
             Text(text = "$ 10000", color = Gold)
         }
     }
@@ -186,7 +191,9 @@ fun HomeScreenPreview() {
         val liveDataList = MutableLiveData<List<Source>>()
         val state = SourceState(tempList)
         //liveDataList.value = tempList
-        // HomeScreenView(modifier = Modifier, state, onEvent = {})
+        val navController = rememberNavController()
+
+        HomeScreenView(modifier = Modifier, state, navController = navController, onEvent = {})
     }
 
 }

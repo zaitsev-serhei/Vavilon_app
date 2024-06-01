@@ -23,16 +23,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vavilon.model.SourceCategory
+import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
 import com.vavilon.ui.theme.BlueGreen
-import com.vavilon.ui.theme.DeepWater
-import com.vavilon.ui.theme.Forest
+import com.vavilon.ui.theme.Crimson
+import com.vavilon.ui.theme.DodgerBlue
+import com.vavilon.ui.theme.FireBrick
+import com.vavilon.ui.theme.ForestGreen
+import com.vavilon.ui.theme.IndianRed
 import com.vavilon.ui.theme.LightGreen
-import com.vavilon.ui.theme.Mist
+import com.vavilon.ui.theme.LimeGreen
+import com.vavilon.ui.theme.MediumBlue
+import com.vavilon.ui.theme.MediumSeaGreen
+import com.vavilon.ui.theme.OrangeRed
+import com.vavilon.ui.theme.RoyalBlue
+import com.vavilon.ui.theme.SkyBlue
+import com.vavilon.ui.theme.SpringGreen
+import com.vavilon.ui.theme.SteelBlue
+import com.vavilon.ui.theme.Tomato
 
 @Composable
-fun PieChart(values: List<Source>, modifier: Modifier = Modifier) {
-    val incomeColorList : List<Color> = listOf(DeepWater,Mist,Forest,LightGreen,BlueGreen)
+fun PieChart(state: SourceState, modifier: Modifier = Modifier) {
+    val incomeColorList: List<Color> = listOf(ForestGreen, MediumSeaGreen, SpringGreen, LimeGreen, LightGreen)
+    val expenseColorList: List<Color> = listOf(Crimson, FireBrick, IndianRed, OrangeRed, Tomato)
+    val savingsColorList: List<Color> = listOf(RoyalBlue, DodgerBlue, MediumBlue, SteelBlue, SkyBlue)
+
+    val colorList = when (state.sourceCategory) {
+        SourceCategory.INCOME -> incomeColorList
+        SourceCategory.EXPENSE -> expenseColorList
+        SourceCategory.SAVING -> savingsColorList
+        else -> listOf(BlueGreen)
+    }
     Row(
         modifier
             .fillMaxWidth()
@@ -50,10 +72,10 @@ fun PieChart(values: List<Source>, modifier: Modifier = Modifier) {
                     val center = Offset(canvasSize.width / 2, canvasSize.height / 2)
                     val radius = canvasSize.minDimension / 2
                     var startAngle = -90f
-                    for (i in values.indices) {
-                        val sweepAngle = 360 * (values[i].currentBalance / values.sumOf { it.currentBalance })
+                    for (i in state.sourceList.indices) {
+                        val sweepAngle = 360 * (state.sourceList[i].currentBalance / state.sourceList.sumOf { it.currentBalance })
                         drawArc(
-                            color = incomeColorList.getOrElse(i) { Color.Blue },
+                            color = colorList.getOrElse(i) { Color.Blue },
                             startAngle = startAngle,
                             sweepAngle = sweepAngle.toFloat(),
                             useCenter = true,
@@ -66,14 +88,14 @@ fun PieChart(values: List<Source>, modifier: Modifier = Modifier) {
             )
         }
         Column {
-            values.forEachIndexed { index, source ->
+            state.sourceList.forEachIndexed { index, source ->
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .defaultMinSize(minWidth = 80.dp, minHeight = 20.dp)
                         .padding(horizontal = 8.dp)
                         .clip(CircleShape)
-                        .background(incomeColorList.getOrElse(index) { Color.Blue }),
+                        .background(colorList.getOrElse(index) { Color.Blue }),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -85,7 +107,6 @@ fun PieChart(values: List<Source>, modifier: Modifier = Modifier) {
             }
         }
     }
-
 }
 
 @Preview(showBackground = true)
@@ -96,5 +117,5 @@ private fun PreviewChart() {
     val source3: Source = Source("extra", "work", "",800.0)
     val source4: Source = Source("part time", "work", "",1000.0)
     val tempList = listOf(source1,source2,source3,source4)
-    PieChart(values = tempList)
+    PieChart(state = SourceState())
 }
