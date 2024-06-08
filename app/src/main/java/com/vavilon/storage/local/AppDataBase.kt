@@ -1,6 +1,7 @@
 package com.vavilon.storage.local
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -29,8 +30,11 @@ import kotlinx.coroutines.launch
         Source::class, Currency::class,
         TotalBalance::class, Transaction::class,
         TransactionCategory::class, User::class],
-    exportSchema = false,
-    version = 1
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+                     ],
+    version = 2
 )
 @TypeConverters(value = [Converter::class])
 abstract class AppDataBase : RoomDatabase() {
@@ -44,27 +48,32 @@ abstract class AppDataBase : RoomDatabase() {
         }
 
         private fun buildDB(context: Context): AppDataBase {
-            return Room.databaseBuilder(context, AppDataBase::class.java, "vavilon_db")
-                .fallbackToDestructiveMigration().addCallback(AppDBCallBack()).build()
+            return Room.databaseBuilder(
+                context,
+                AppDataBase::class.java, "vavilon_db"
+            )
+                .fallbackToDestructiveMigration()
+                .addCallback(AppDBCallBack())
+                .build()
         }
 
         private class AppDBCallBack : RoomDatabase.Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                instance?.let { dataBase ->
-                    CoroutineScope(Dispatchers.IO).launch {
-                        setDefaultTransactionCategory(dataBase.TransactionCategoryDao())
-                    }
-                }
-            }
-        }
+             override fun onCreate(db: SupportSQLiteDatabase) {
+                 super.onCreate(db)
+                 instance?.let { dataBase ->
+                     CoroutineScope(Dispatchers.IO).launch {
+                         setDefaultTransactionCategory(dataBase.TransactionCategoryDao())
+                     }
+                 }
+             }
+         }
 
-        suspend fun setDefaultTransactionCategory(transactionCategoryDAO: TransactionCategoryDao) {
-            val defaultCategories = TransactionCategories.entries.map { category ->
-                TransactionCategory(category.getTransactionCategory(), CategoryTypes.DEFAULT.getCategoryType())
-            }
-            defaultCategories.forEach { transactionCategoryDAO.insert(it) }
-        }
+         suspend fun setDefaultTransactionCategory(transactionCategoryDAO: TransactionCategoryDao) {
+             val defaultCategories = TransactionCategories.entries.map { category ->
+                 TransactionCategory(category.getTransactionCategory(), CategoryTypes.DEFAULT.getCategoryType())
+             }
+             defaultCategories.forEach { transactionCategoryDAO.insert(it) }
+         }
     }
 
     abstract fun SourceDao(): SourceDao

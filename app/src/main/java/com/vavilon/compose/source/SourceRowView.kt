@@ -90,18 +90,3 @@ fun AddButton(onEvent: (SourceEvent) -> Unit) {
         )
     }
 }
-
-@Preview(showBackground = true, heightDp = 200)
-@Composable
-private fun SourceRowPreview() {
-    val source1: Source = Source("work", "work", "", 1000.0)
-    val source2: Source = Source("work", "work", "", 1000.0)
-    val source3: Source = Source("work", "work", "", 1000.0)
-    val source4: Source = Source("work", "work", "", 1000.0)
-    val source5: Source = Source("work", "work", "", 1000.0)
-    val tempList = listOf(source1, source2)
-    val liveDataList = MutableLiveData<List<Source>>()
-    // liveDataList.value = tempList
-    val state = SourceState(tempList)
-   // SourceRowScreen(state, navController = NavController(),{})
-}

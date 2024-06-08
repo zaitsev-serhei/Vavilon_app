@@ -51,8 +51,8 @@ fun AddNewSourceScreen(
                     Modifier
                         .fillMaxWidth()
                         .padding(start = 5.dp, end = 10.dp)
-                        .wrapContentSize(),
-                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                       ,
+                    horizontalArrangement= Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically){
                     SourceCategories.entries.forEach { category ->
                         Box(modifier = Modifier
