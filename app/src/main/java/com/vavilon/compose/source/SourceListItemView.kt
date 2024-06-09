@@ -1,6 +1,8 @@
 package com.vavilon.compose.source
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,39 +27,67 @@ import com.vavilon.storage.local.entities.Source
 import com.vavilon.ui.theme.DeepWater
 
 @Composable
-fun SourceListItemView(source: Source,
-                       modifier: Modifier,
-                       onEvent: (SourceEvent) -> Unit
-                       ) {
-    Row (modifier = modifier
-        .fillMaxWidth(),
+fun SourceListItemView(
+    source: Source,
+    modifier: Modifier,
+    onEvent: (SourceEvent) -> Unit
+) {
+    val context = LocalContext.current
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
-    ){
-        Icon(painter = painterResource(id = R.drawable.ic_user_default ),
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_user_default),
             contentDescription = null,
             tint = DeepWater,
             modifier = Modifier.size(50.dp)
         )
-        Column(modifier = Modifier
-            .padding(start = 10.dp)
-            .weight(1F)
+        Column(
+            modifier = Modifier
+                .padding(start = 10.dp)
+                .weight(1F)
         ) {
             Text(text = source.sourceTitle)
             Text(text = source.sourceDescription)
         }
-        Text(text = source.currentBalance.toString(),
-            Modifier.padding(start = 5.dp, end = 10.dp))
-        Row (Modifier
-            .padding( 10.dp),
+        Text(
+            text = source.currentBalance.toString(),
+            Modifier.padding(start = 5.dp, end = 10.dp)
+        )
+        Row(
+            Modifier
+                .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Image(painter = painterResource(id = R.drawable.ic_settings),
-                contentDescription = null)
+        ) {
+            Icon(painter = painterResource(id = R.drawable.ic_settings),
+                contentDescription = null,
+                modifier = Modifier
+                    .clickable {
+                        Toast
+                            .makeText(
+                                context,
+                                "Ooops, not ready yet",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
+                    })
             Spacer(modifier = Modifier.width(10.dp))
-            Image(painter = painterResource(id = R.drawable.ic_add_button),
-                contentDescription = null)
+            Icon(painter = painterResource(id = R.drawable.ic_add_button),
+                contentDescription = null,
+                modifier = Modifier
+                    .clickable {
+                        Toast
+                            .makeText(
+                                context,
+                                "Ooops, not ready yet",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
+                    })
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
@@ -65,13 +96,15 @@ fun SourceListItemView(source: Source,
 @Preview(showBackground = true)
 @Composable
 private fun PreviewListItem() {
-    SourceListItemView(source = Source("Income","Job", "Job I love very much", 1250.0),
-        onEvent = {}, modifier = Modifier )
+    SourceListItemView(source = Source("Income", "Job", "Job I love very much", 1250.0),
+        onEvent = {}, modifier = Modifier
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PreviewListItem1() {
-    SourceListItemView(source = Source("Income","Job", "test", 1250.0),
-        onEvent = {}, modifier = Modifier )
+    SourceListItemView(source = Source("Income", "Job", "test", 1250.0),
+        onEvent = {}, modifier = Modifier
+    )
 }

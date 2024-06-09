@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c2b539d15ff8af628d4584019bcd2784",
+    "identityHash": "4dd00c1d7afa16b4e8ff5e510ba0b0ea",
     "entities": [
       {
         "tableName": "sources",
@@ -168,7 +168,7 @@
       },
       {
         "tableName": "transactions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`transaction_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `amount` REAL NOT NULL, `description` TEXT NOT NULL, `creation_date` INTEGER, `isRepeatable` INTEGER NOT NULL, `currency_id` INTEGER NOT NULL, `source_id` INTEGER NOT NULL, `schedule_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`transaction_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `amount` REAL NOT NULL, `description` TEXT NOT NULL DEFAULT '', `creation_date` INTEGER, `isRepeatable` INTEGER NOT NULL, `currency_id` INTEGER NOT NULL, `source_id` INTEGER NOT NULL, `schedule_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "transactionId",
@@ -186,7 +186,8 @@
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "transactionDate",
@@ -236,7 +237,7 @@
       },
       {
         "tableName": "tr_categories",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `type` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL DEFAULT '', `type` TEXT NOT NULL DEFAULT '')",
         "fields": [
           {
             "fieldPath": "categoryId",
@@ -254,13 +255,15 @@
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "type",
             "columnName": "type",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           }
         ],
         "primaryKey": {
@@ -320,7 +323,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c2b539d15ff8af628d4584019bcd2784')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4dd00c1d7afa16b4e8ff5e510ba0b0ea')"
     ]
   }
 }

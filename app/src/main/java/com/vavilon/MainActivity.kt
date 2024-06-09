@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
     lateinit var transactionViewModel: TransactionViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as VavilonApplication).appComponent.injectMainActivity(this)
-       // enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             VavilonTheme {

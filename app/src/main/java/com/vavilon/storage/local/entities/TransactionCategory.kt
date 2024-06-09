@@ -25,9 +25,9 @@ class TransactionCategory {
     @ColumnInfo(name = "title")
     var title: String = ""
 
-    @ColumnInfo(name = "description")
+    @ColumnInfo(name = "description", defaultValue = "")
     var description: String = ""
 
-    @ColumnInfo(name = "type")
+    @ColumnInfo(name = "type", defaultValue = "")
     var type: String = ""
 }

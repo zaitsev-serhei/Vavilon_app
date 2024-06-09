@@ -3,7 +3,9 @@ package com.vavilon.model.repositories
 import com.vavilon.model.SourceCategories
 import com.vavilon.storage.local.dao.SourceDao
 import com.vavilon.storage.local.entities.Source
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,13 +14,17 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
     private val sourceList = sourceDao.getAllSources()
 
     fun getAllSourcesList() = sourceList
-    
+
     suspend fun createSource(source: Source) {
-        sourceDao.insert(source)
+        withContext(Dispatchers.IO) {
+            sourceDao.insert(source)
+        }
     }
 
     suspend fun updateSource(source: Source) {
-        sourceDao.update(source)
+        withContext(Dispatchers.IO) {
+            sourceDao.update(source)
+        }
     }
 
     fun getSourceListAsc(category: SourceCategories): Flow<List<Source>> {

@@ -5,13 +5,14 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.vavilon.storage.local.entities.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
     @Insert
-    fun insert(transaction: Transaction)
+    suspend fun insert(transaction: Transaction)
     @Update
-    fun update(transaction: Transaction)
+    suspend fun update(transaction: Transaction)
     @Query("SELECT * FROM transactions ORDER BY creation_date ASC")
-    fun getAllTransactions(): List<Transaction>?
+    fun getAllTransactions(): Flow<List<Transaction>>
 }

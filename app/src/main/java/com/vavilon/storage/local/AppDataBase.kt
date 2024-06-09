@@ -31,10 +31,7 @@ import kotlinx.coroutines.launch
         TotalBalance::class, Transaction::class,
         TransactionCategory::class, User::class],
     exportSchema = true,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2)
-                     ],
-    version = 2
+    version = 1
 )
 @TypeConverters(value = [Converter::class])
 abstract class AppDataBase : RoomDatabase() {
@@ -50,7 +47,7 @@ abstract class AppDataBase : RoomDatabase() {
         private fun buildDB(context: Context): AppDataBase {
             return Room.databaseBuilder(
                 context,
-                AppDataBase::class.java, "vavilon_db"
+                AppDataBase::class.java, "vavilon_app_db"
             )
                 .fallbackToDestructiveMigration()
                 .addCallback(AppDBCallBack())
@@ -63,17 +60,26 @@ abstract class AppDataBase : RoomDatabase() {
                  instance?.let { dataBase ->
                      CoroutineScope(Dispatchers.IO).launch {
                          setDefaultTransactionCategory(dataBase.TransactionCategoryDao())
+                         setDefaultSources(dataBase.SourceDao())
                      }
                  }
              }
          }
 
-         suspend fun setDefaultTransactionCategory(transactionCategoryDAO: TransactionCategoryDao) {
+        suspend fun setDefaultTransactionCategory(transactionCategoryDAO: TransactionCategoryDao) {
              val defaultCategories = TransactionCategories.entries.map { category ->
                  TransactionCategory(category.getTransactionCategory(), CategoryTypes.DEFAULT.getCategoryType())
              }
              defaultCategories.forEach { transactionCategoryDAO.insert(it) }
          }
+        suspend fun setDefaultSources(sourceDAO: SourceDao) {
+            val demoSources = listOf(
+                Source("Income", "Primary Account", "Main banking account", 1000.0),
+                Source("Expense", "Cash", "Cash in wallet", 100.0),
+                Source("Saving", "Stocks", "Stock market investments", 5000.0)
+            )
+            demoSources.forEach { sourceDAO.insert(it) }
+        }
     }
 
     abstract fun SourceDao(): SourceDao
