@@ -12,7 +12,7 @@
 <br>
 
 ## Application Simulation Online
-https://appetize.io/app/memmgo6g4kqwtx7rxekxj635lm?device=pixel7&osVersion=13.0
+https://appetize.io/app/uonqinw5zyvsikzlouwhevsyfi?device=pixel7&osVersion=13.0
 </br>
 </br>
 ## **HOW TO USE:**
