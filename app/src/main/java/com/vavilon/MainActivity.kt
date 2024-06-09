@@ -12,14 +12,16 @@ import androidx.navigation.compose.rememberNavController
 import com.vavilon.compose.HomeScreenView
 import com.vavilon.ui.theme.VavilonTheme
 import com.vavilon.viewModel.SourceViewModel
+import com.vavilon.viewModel.TransactionViewModel
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var sourceViewModel: SourceViewModel
+    @Inject
+    lateinit var transactionViewModel: TransactionViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as VavilonApplication).appComponent.injectMainActivity(this)
-       // enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             VavilonTheme {

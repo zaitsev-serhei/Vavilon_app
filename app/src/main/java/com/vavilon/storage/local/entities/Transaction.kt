@@ -7,19 +7,29 @@ import java.util.Date
 
 @Entity(tableName = "transactions")
 class Transaction {
+    constructor()
+
+    constructor(amount: Double, categoryId: Long, creationDate: Date) {
+        this.amount = amount
+        this.categoryId = categoryId
+        this.transactionDate = creationDate
+    }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "transaction_id")
     var transactionId: Long = 0
 
     @ColumnInfo(name = "amount")
-    var amount = 0.0
+    var amount: Double = 0.0
+
+    @ColumnInfo(name = "description", defaultValue = "")
+    var description: String = ""
 
     @ColumnInfo(name = "creation_date")
     var transactionDate: Date? = null
 
     @ColumnInfo(name = "isRepeatable")
-    var isRepeatable = false
+    var isRepeatable: Boolean = false
 
     @ColumnInfo(name = "currency_id")
     var currencyId: Long = 0

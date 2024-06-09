@@ -32,16 +32,6 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
             }
 
         }
-        /*.flatMapLatest { sortType ->
-            when(sortType) {
-                ///check if category needed here
-                SortType.ASC -> sourceRepository.getSourceListAsc(_category.value)
-                SortType.DESC -> sourceRepository.getSourceListDesc(_category.value)
-                SortType.BALANCE -> sourceRepository.getSourceListSortedBalanceAsc(_category.value)
-                SortType.LAST_ADDED -> sourceRepository.getSourceListCreationDate(_category.value)
-                SortType.CATEGORY_NAME -> sourceRepository.getSourceListSortedType(_category.value)
-            }
-        }*/
         .stateIn(viewModelScope,SharingStarted.WhileSubscribed(), emptyList())
     private val _state = MutableStateFlow(SourceState())
     val state = combine(_state, _category, _sourceListSorted ) {
@@ -112,7 +102,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                 ) }
             }
             is SourceEvent.SortSource -> {
-                _sortTypes.value = event.sortType
+                _sortTypes.value = event.sortTypes
             }
             is SourceEvent.FilterSource -> {
                 _category.value = event.category

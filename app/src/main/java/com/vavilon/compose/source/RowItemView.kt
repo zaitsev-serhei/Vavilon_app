@@ -41,7 +41,6 @@ fun SourceRowItemView(source:Source) {
                 style = Typography.h2,
                 modifier = Modifier.padding(bottom = 10.dp))
         }
-
     }
 }
 

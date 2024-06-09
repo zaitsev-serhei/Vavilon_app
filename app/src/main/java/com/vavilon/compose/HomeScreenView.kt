@@ -1,8 +1,10 @@
 package com.vavilon.compose
 
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,7 +62,6 @@ fun HomeScreenView(
             .background(DarkBlue),
         topBar = {
             TopBar(
-                userIcon = R.drawable.ic_user_default,
                 welcomeText = R.string.welcomeText_us,
                 modifier = Modifier,
                 userName = "Serhii"
@@ -92,11 +94,11 @@ fun HomeScreenView(
 
 @Composable
 fun TopBar(
-    @DrawableRes userIcon: Int,
     @StringRes welcomeText: Int,
     modifier: Modifier,
     userName: String
 ) {
+    val context = LocalContext.current
     Surface {
         Column(
             modifier = modifier.fillMaxWidth()
@@ -109,14 +111,23 @@ fun TopBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(userIcon),
+                    painter = painterResource(id = R.drawable.ic_user_default),
                     contentDescription = null,
                     tint = Bronze,
                     modifier = Modifier
                         .size(50.dp)
                         .clip(CircleShape)
-                        .padding(start = 10.dp, top = 5.dp),
-                    )
+                        .padding(start = 10.dp, top = 5.dp)
+                        .clickable {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "To be implemented",
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
+                        },
+                )
                 Text(
                     text = stringResource(id = welcomeText) + userName,
                     color = Gold
@@ -125,7 +136,17 @@ fun TopBar(
                     painter = painterResource(id = R.drawable.ic_settings),
                     contentDescription = null,
                     tint = Bronze,
-                    modifier = Modifier.padding(end = 15.dp, top = 5.dp)
+                    modifier = Modifier
+                        .padding(end = 15.dp, top = 5.dp)
+                        .clickable {
+                        Toast
+                            .makeText(
+                                context,
+                                "To be implemented",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    }
                 )
             }
             CurrentBalanceView()
@@ -145,8 +166,10 @@ fun CurrentBalanceView() {
             Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(id = R.string.current_balance_us),
-                style = Typography.h1.copy(color = Gold))
+            Text(
+                text = stringResource(id = R.string.current_balance_us),
+                style = Typography.h1.copy(color = Gold)
+            )
             Text(text = "$ 10000", color = Gold)
         }
     }
@@ -188,11 +211,8 @@ fun HomeScreenPreview() {
         val source4 = Source("work", "work", "", 1000.0)
         val source5 = Source("work", "work", "", 1000.0)
         val tempList = listOf(source1, source2, source3, source4, source5)
-        val liveDataList = MutableLiveData<List<Source>>()
         val state = SourceState(tempList)
-        //liveDataList.value = tempList
         val navController = rememberNavController()
-
         HomeScreenView(modifier = Modifier, state, navController = navController, onEvent = {})
     }
 
