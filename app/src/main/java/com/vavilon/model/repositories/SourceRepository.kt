@@ -49,6 +49,8 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
 
     suspend fun deleteSource(source: Source) {
         source.isDeleted = true
-        sourceDao.update(source)
+        withContext(Dispatchers.IO) {
+            sourceDao.update(source)
+        }
     }
 }

@@ -76,17 +76,11 @@ fun SourceListItemView(
                             .show()
                     })
             Spacer(modifier = Modifier.width(10.dp))
-            Icon(painter = painterResource(id = R.drawable.ic_add_button),
+            Icon(painter = painterResource(id = R.drawable.ic_trash_can),
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
-                        Toast
-                            .makeText(
-                                context,
-                                "Ooops, not ready yet",
-                                Toast.LENGTH_SHORT
-                            )
-                            .show()
+                        onEvent(SourceEvent.DeleteSource(source))
                     })
         }
     }

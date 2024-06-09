@@ -55,23 +55,27 @@ abstract class AppDataBase : RoomDatabase() {
         }
 
         private class AppDBCallBack : RoomDatabase.Callback() {
-             override fun onCreate(db: SupportSQLiteDatabase) {
-                 super.onCreate(db)
-                 instance?.let { dataBase ->
-                     CoroutineScope(Dispatchers.IO).launch {
-                         setDefaultTransactionCategory(dataBase.TransactionCategoryDao())
-                         setDefaultSources(dataBase.SourceDao())
-                     }
-                 }
-             }
-         }
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                instance?.let { dataBase ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        setDefaultTransactionCategory(dataBase.TransactionCategoryDao())
+                        setDefaultSources(dataBase.SourceDao())
+                    }
+                }
+            }
+        }
 
         suspend fun setDefaultTransactionCategory(transactionCategoryDAO: TransactionCategoryDao) {
-             val defaultCategories = TransactionCategories.entries.map { category ->
-                 TransactionCategory(category.getTransactionCategory(), CategoryTypes.DEFAULT.getCategoryType())
-             }
-             defaultCategories.forEach { transactionCategoryDAO.insert(it) }
-         }
+            val defaultCategories = TransactionCategories.entries.map { category ->
+                TransactionCategory(
+                    category.getTransactionCategory(),
+                    CategoryTypes.DEFAULT.getCategoryType()
+                )
+            }
+            defaultCategories.forEach { transactionCategoryDAO.insert(it) }
+        }
+
         suspend fun setDefaultSources(sourceDAO: SourceDao) {
             val demoSources = listOf(
                 Source("Income", "Primary Account", "Main banking account", 1000.0),

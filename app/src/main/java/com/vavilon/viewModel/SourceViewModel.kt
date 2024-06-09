@@ -20,68 +20,78 @@ import javax.inject.Inject
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SourceViewModel @Inject constructor(private val sourceRepository: SourceRepository) : ViewModel() {
+class SourceViewModel @Inject constructor(private val sourceRepository: SourceRepository) :
+    ViewModel() {
     private val _sortTypes = MutableStateFlow(SortTypes.ASC)
     private val _category = MutableStateFlow(SourceCategories.INCOME)
     private val _sourceListSorted = _category
         .flatMapLatest { category ->
-            when(category) {
+            when (category) {
                 SourceCategories.INCOME -> sourceRepository.getSourceListAsc(category)
                 SourceCategories.EXPENSE -> sourceRepository.getSourceListAsc(category)
                 SourceCategories.SAVING -> sourceRepository.getSourceListAsc(category)
             }
-
         }
-        .stateIn(viewModelScope,SharingStarted.WhileSubscribed(), emptyList())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _state = MutableStateFlow(SourceState())
-    val state = combine(_state, _category, _sourceListSorted ) {
-        state, category,sourceList ->
+    val state = combine(_state, _category, _sourceListSorted) { state, category, sourceList ->
         state.copy(
             sourceCategory = category,
             sourceList = sourceList,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SourceState())
 
-    fun onEvent(event:SourceEvent) {
-        when(event) {
+    fun onEvent(event: SourceEvent) {
+        when (event) {
             is SourceEvent.DeleteSource -> {
                 viewModelScope.launch {
                     sourceRepository.deleteSource(event.source)
                 }
             }
+
             SourceEvent.HideDialog -> {
-                _state.update { it.copy( isAddingNewSource = false) }
+                _state.update { it.copy(isAddingNewSource = false) }
             }
+
             SourceEvent.SaveSource -> {
                 val name = state.value.name
                 val description = state.value.description
                 val sourceType = state.value.sourceCategory
                 val balance = state.value.balance
-                if(name.isBlank()||description.isBlank()){
+                if (name.isBlank() || description.isBlank()) {
                     return
                 }
-                val source = Source(sourceType.getSrcCategory(),name,description,balance)
+                val source = Source(sourceType.getSrcCategory(), name, description, balance)
                 viewModelScope.launch {
                     sourceRepository.createSource(source)
                 }
-                _state.update { it.copy(
-                    isAddingNewSource = false,
-                    name = "",
-                    sourceCategory = SourceCategories.INCOME,
-                    description = "",
-                    balance = 0.0,
-                ) }
+                _state.update {
+                    it.copy(
+                        isAddingNewSource = false,
+                        name = "",
+                        sourceCategory = SourceCategories.INCOME,
+                        description = "",
+                        balance = 0.0,
+                    )
+                }
             }
+
             is SourceEvent.SetBalance -> {
-                _state.update { it.copy(
-                    balance = event.balance
-                ) }
+                _state.update {
+                    it.copy(
+                        balance = event.balance
+                    )
+                }
             }
+
             is SourceEvent.SetDescription -> {
-                _state.update { it.copy(
-                    description = event.description
-                ) }
+                _state.update {
+                    it.copy(
+                        description = event.description
+                    )
+                }
             }
+
             is SourceEvent.SetName -> {
                 _state.update {
                     it.copy(
@@ -89,6 +99,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                     )
                 }
             }
+
             is SourceEvent.SetType -> {
                 _state.update {
                     it.copy(
@@ -96,14 +107,19 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                     )
                 }
             }
+
             SourceEvent.ShowDialog -> {
-                _state.update { it.copy(
-                    isAddingNewSource = true
-                ) }
+                _state.update {
+                    it.copy(
+                        isAddingNewSource = true
+                    )
+                }
             }
+
             is SourceEvent.SortSource -> {
                 _sortTypes.value = event.sortTypes
             }
+
             is SourceEvent.FilterSource -> {
                 _category.value = event.category
             }
