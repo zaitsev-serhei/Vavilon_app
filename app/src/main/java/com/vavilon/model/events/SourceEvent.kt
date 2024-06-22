@@ -6,8 +6,9 @@ import com.vavilon.storage.local.entities.Source
 
 sealed interface SourceEvent {
     object SaveSource : SourceEvent
-    object ShowDialog : SourceEvent
+    object AddSource : SourceEvent
     object HideDialog : SourceEvent
+    data class EditSource(val source: Source) : SourceEvent
     data class SetName(val name: String) : SourceEvent
     data class SetType(val type: SourceCategories) : SourceEvent
     data class SetDescription(val description: String) : SourceEvent

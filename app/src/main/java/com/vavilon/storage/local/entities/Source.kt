@@ -2,6 +2,7 @@ package com.vavilon.storage.local.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import java.util.Date
@@ -57,4 +58,12 @@ class Source {
 
     @ColumnInfo(name = "isDeleted")
     var isDeleted = false
+
+    @Ignore
+    override fun toString(): String {
+        return "Source(sourceId=$sourceId, sourceType='$sourceType',\n" +
+                " sourceTitle='$sourceTitle', sourceDescription='$sourceDescription',\n" +
+                " currentBalance=$currentBalance)"
+    }
+
 }

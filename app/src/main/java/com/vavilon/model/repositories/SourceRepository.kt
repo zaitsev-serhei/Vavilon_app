@@ -21,6 +21,10 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
         }
     }
 
+    suspend fun getSource(id: Long): Flow<Source> {
+        return sourceDao.getSource(id)
+    }
+
     suspend fun updateSource(source: Source) {
         withContext(Dispatchers.IO) {
             sourceDao.update(source)

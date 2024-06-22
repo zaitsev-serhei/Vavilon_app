@@ -78,8 +78,10 @@ abstract class AppDataBase : RoomDatabase() {
 
         suspend fun setDefaultSources(sourceDAO: SourceDao) {
             val demoSources = listOf(
-                Source("Income", "Primary Account", "Main banking account", 1000.0),
+                Source("Income", "Primary Account", "Main banking account", 500.0),
+                Source("Income", "Salary", "Salary paid every month", 2000.0),
                 Source("Expense", "Cash", "Cash in wallet", 100.0),
+                Source("Expense", "Food", "Shopping", 400.0),
                 Source("Saving", "Stocks", "Stock market investments", 5000.0)
             )
             demoSources.forEach { sourceDAO.insert(it) }

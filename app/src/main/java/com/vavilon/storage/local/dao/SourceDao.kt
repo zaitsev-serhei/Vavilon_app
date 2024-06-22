@@ -14,6 +14,8 @@ interface SourceDao {
     suspend fun insert(source: Source)
     @Update
     suspend fun update(source: Source)
+    @Query("SELECT * FROM sources WHERE source_id= :sourceId")
+    fun getSource(sourceId: Long): Flow<Source>
     @Query("SELECT * FROM sources WHERE isDeleted = 0")
     fun getAllSources(): Flow<List<Source>>
     @Query("SELECT * FROM sources WHERE isDeleted = 0 AND type = :category ORDER BY title ASC")

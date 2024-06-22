@@ -1,5 +1,6 @@
 package com.vavilon.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vavilon.model.SortTypes
@@ -12,6 +13,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -49,11 +52,8 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                 }
             }
 
-            SourceEvent.HideDialog -> {
-                _state.update { it.copy(isAddingNewSource = false) }
-            }
-
             SourceEvent.SaveSource -> {
+                val id = state.value.sourceId
                 val name = state.value.name
                 val description = state.value.description
                 val sourceType = state.value.sourceCategory
@@ -61,13 +61,26 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                 if (name.isBlank() || description.isBlank()) {
                     return
                 }
-                val source = Source(sourceType.getSrcCategory(), name, description, balance)
                 viewModelScope.launch {
-                    sourceRepository.createSource(source)
+                    val source = sourceRepository.getSource(id).firstOrNull()
+                    Log.d("Source to save", "Before Edit Source: ${source.toString()}")
+                    if (source != null) {
+                        source.sourceTitle = name
+                        source.sourceDescription = description
+                        source.currentBalance = balance
+                        Log.d("Source to save", "After Edit Source: ${source.toString()}")
+                        sourceRepository.updateSource(source)
+                    } else {
+                        val source = Source(sourceType.getSrcCategory(), name, description, balance)
+                        Log.d("Source to save", "New Source: ${source.toString()}")
+                        sourceRepository.createSource(source)
+                    }
                 }
                 _state.update {
                     it.copy(
                         isAddingNewSource = false,
+                        isEditingSource = false,
+                        sourceId = 0,
                         name = "",
                         sourceCategory = SourceCategories.INCOME,
                         description = "",
@@ -108,10 +121,35 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                 }
             }
 
-            SourceEvent.ShowDialog -> {
+            SourceEvent.AddSource -> {
                 _state.update {
                     it.copy(
                         isAddingNewSource = true
+                    )
+                }
+            }
+
+            is SourceEvent.EditSource -> {
+                _state.update {
+                    it.copy(
+                        sourceId = event.source.sourceId,
+                        name = event.source.sourceTitle,
+                        sourceCategory = SourceCategories.entries.firstOrNull { category ->
+                            category.getSrcCategory() == event.source.sourceType
+                        } ?: SourceCategories.INCOME,
+                        description = event.source.sourceDescription,
+                        balance = event.source.currentBalance,
+                        isEditingSource = true
+                    )
+                }
+                Log.d("Edit source", "Current state: ${state.toString()}")
+            }
+
+            SourceEvent.HideDialog -> {
+                _state.update {
+                    it.copy(
+                        isAddingNewSource = false,
+                        isEditingSource = false
                     )
                 }
             }

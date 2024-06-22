@@ -1,5 +1,6 @@
 package com.vavilon.compose
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.vavilon.compose.chart.PieChart
 import com.vavilon.compose.menu.BottomNavigation
+import com.vavilon.compose.source.EditSourceScreen
 import com.vavilon.compose.source.SourceCategoryRowView
 import com.vavilon.compose.source.SourceListView
 import com.vavilon.model.events.SourceEvent
@@ -28,6 +30,10 @@ fun SourceScreenView(
     navController: NavController,
     onEvent: (SourceEvent) -> Unit
 ) {
+    if(state.isEditingSource) {
+        Log.d("Source to edit", "Current Source: ${state.sourceId}")
+        EditSourceScreen(state = state, onEvent = onEvent)
+    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
