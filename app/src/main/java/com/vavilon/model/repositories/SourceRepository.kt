@@ -51,6 +51,10 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
         return sourceDao.getSourceListSortedType(category.getSrcCategory())
     }
 
+    fun getTotals(): Flow<Map<String,Double>>{
+        return sourceDao.getTotals()
+
+    }
     suspend fun deleteSource(source: Source) {
         source.isDeleted = true
         withContext(Dispatchers.IO) {
