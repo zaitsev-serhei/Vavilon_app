@@ -2,6 +2,9 @@
     <string name="app_name">Vavilon</string>
     <string name="welcomeText_us">"Welcome back, "</string>
     <string name="current_balance_us">"Current Balance"</string>
+    <string name="income_balance_us">"Total Earned"</string>
+    <string name="expense_balance_us">"Total Spent"</string>
+    <string name="saving_balance_us">"Total Saved"</string>
     <string name="empty_source_list_us">"There is no Source to display. Add one !"</string>
     <string name="error_message_wrong_input">"There`s not supposed symbol in the line"</string>
 </resources>

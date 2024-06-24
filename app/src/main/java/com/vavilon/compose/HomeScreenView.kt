@@ -64,7 +64,8 @@ fun HomeScreenView(
             TopBar(
                 welcomeText = R.string.welcomeText_us,
                 modifier = Modifier,
-                userName = "Serhii"
+                userName = "Serhii",
+                state = state
             )
         },
         bottomBar = {
@@ -96,6 +97,7 @@ fun HomeScreenView(
 fun TopBar(
     @StringRes welcomeText: Int,
     modifier: Modifier,
+    state: SourceState,
     userName: String
 ) {
     val context = LocalContext.current
@@ -139,24 +141,24 @@ fun TopBar(
                     modifier = Modifier
                         .padding(end = 15.dp, top = 5.dp)
                         .clickable {
-                        Toast
-                            .makeText(
-                                context,
-                                "To be implemented",
-                                Toast.LENGTH_LONG
-                            )
-                            .show()
-                    }
+                            Toast
+                                .makeText(
+                                    context,
+                                    "To be implemented",
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
+                        }
                 )
             }
-            CurrentBalanceView()
-            CurrentStatisticView()
+            CurrentBalanceView(state = state)
+            CurrentStatisticView(state = state)
         }
     }
 }
 
 @Composable
-fun CurrentBalanceView() {
+fun CurrentBalanceView(state: SourceState) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -170,14 +172,14 @@ fun CurrentBalanceView() {
                 text = stringResource(id = R.string.current_balance_us),
                 style = Typography.h1.copy(color = Gold)
             )
-            Text(text = "$ 10000", color = Gold)
+            Text(text = "${state.currentBalance} + ${state.totalSavings}", color = Gold)
         }
     }
 
 }
 
 @Composable
-fun CurrentStatisticView() {
+fun CurrentStatisticView(state: SourceState) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -186,16 +188,28 @@ fun CurrentStatisticView() {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(start = 50.dp, end = 50.dp), Arrangement.SpaceBetween
+                .padding(start = 50.dp, end = 50.dp),
+            Arrangement.SpaceBetween
         ) {
-            Text(text = "test1", color = Gold)
-            Text(text = "test2", color = Gold)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = stringResource(id = R.string.income_balance_us), color = Gold)
+                Text(text = "${state.totalIncome}", color = Gold)
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = stringResource(id = R.string.expense_balance_us), color = Gold)
+                Text(text = "${state.totalExpense}", color = Gold)
+            }
         }
         Row(
-            Modifier.fillMaxWidth(),
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
             Arrangement.Center
         ) {
-            Text(text = "test3", color = Gold)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = stringResource(id = R.string.saving_balance_us), color = Gold)
+                Text(text = "${state.totalSavings}", color = Gold)
+            }
         }
 
     }
@@ -209,8 +223,7 @@ fun HomeScreenPreview() {
         val source2 = Source("work", "work", "", 1000.0)
         val source3 = Source("work", "work", "", 1000.0)
         val source4 = Source("work", "work", "", 1000.0)
-        val source5 = Source("work", "work", "", 1000.0)
-        val tempList = listOf(source1, source2, source3, source4, source5)
+        val tempList = listOf(source1, source2, source3, source4)
         val state = SourceState(tempList)
         val navController = rememberNavController()
         HomeScreenView(modifier = Modifier, state, navController = navController, onEvent = {})

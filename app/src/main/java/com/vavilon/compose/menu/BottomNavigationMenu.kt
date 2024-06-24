@@ -34,29 +34,36 @@ fun BottomNavigation(navController: NavController) {
             val isSelected = currentRoute == item.route
             val iconTint = if (isSelected) Gold else Gold.copy(0.4f)
             BottomNavigationItem(
-                icon = { Icon(painterResource(id = item.icon),
-                    contentDescription = item.label,
-                    tint = iconTint,
-                    modifier = Modifier.size(50.dp))
-                       },
+                icon = {
+                    Icon(
+                        painterResource(id = item.icon),
+                        contentDescription = item.label,
+                        tint = iconTint,
+                        modifier = Modifier.size(50.dp)
+                    )
+                },
                 selectedContentColor = Gold,
                 unselectedContentColor = Bronze.copy(0.4f),
-                selected = item.route == currentRoute  ,
+                selected = item.route == currentRoute,
                 onClick = {
-                    navController.navigate(item.route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                    if (currentRoute != item.route) {
+                        navController.navigate(item.route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    } else {
+                        navController.popBackStack(navController.graph.startDestinationId, false)
+                    }
+                    if (currentRoute == item.route) {
+                        Log.d("BottomNavigation", "Current Route: ${item.route}")
                     }
                 }
             )
-            if (currentRoute == item.route) {
-                Log.d("BottomNavigation", "Current Route: ${item.route}")
-            }
         }
     }
 }
