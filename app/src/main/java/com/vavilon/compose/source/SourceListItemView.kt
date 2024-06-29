@@ -1,7 +1,5 @@
 package com.vavilon.compose.source
 
-import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.vavilon.R
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.storage.local.entities.Source
-import com.vavilon.ui.theme.DeepWater
+import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun SourceListItemView(
@@ -32,7 +30,7 @@ fun SourceListItemView(
     modifier: Modifier,
     onEvent: (SourceEvent) -> Unit
 ) {
-    val context = LocalContext.current
+    //val context = LocalContext.current
     Row(
         modifier = modifier
             .fillMaxWidth(),
@@ -42,7 +40,7 @@ fun SourceListItemView(
         Icon(
             painter = painterResource(id = R.drawable.ic_user_default),
             contentDescription = null,
-            tint = DeepWater,
+            tint = VavilonTheme.colors.secondaryElement,
             modifier = Modifier.size(50.dp)
         )
         Column(
@@ -84,15 +82,21 @@ fun SourceListItemView(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewListItem() {
-    SourceListItemView(source = Source("Income", "Job", "Job I love very much", 1250.0),
-        onEvent = {}, modifier = Modifier
-    )
+    VavilonTheme {
+        SourceListItemView(
+            source = Source("Income", "Job", "Job I love very much", 1250.0),
+            onEvent = {}, modifier = Modifier
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PreviewListItem1() {
-    SourceListItemView(source = Source("Income", "Job", "test", 1250.0),
-        onEvent = {}, modifier = Modifier
-    )
+    VavilonTheme {
+        SourceListItemView(
+            source = Source("Income", "Job", "test", 1250.0),
+            onEvent = {}, modifier = Modifier
+        )
+    }
 }

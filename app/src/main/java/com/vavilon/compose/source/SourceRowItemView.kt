@@ -19,23 +19,17 @@ import androidx.compose.ui.unit.dp
 import com.vavilon.R
 import com.vavilon.model.SourceCategories
 import com.vavilon.storage.local.entities.Source
-import com.vavilon.ui.theme.BlueGreen
-import com.vavilon.ui.theme.Bronze
-import com.vavilon.ui.theme.DeepWater
-import com.vavilon.ui.theme.DodgerBlue
-import com.vavilon.ui.theme.ForestGreen
-import com.vavilon.ui.theme.OrangeRed
 import com.vavilon.ui.theme.Typography
+import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun SourceRowItemView(source: Source) {
     val itemBackGroundColor = when (SourceCategories.entries.firstOrNull { category ->
         category.getSrcCategory() == source.sourceType
     } ?: SourceCategories.INCOME) {
-        SourceCategories.INCOME -> ForestGreen
-        SourceCategories.EXPENSE -> OrangeRed
-        SourceCategories.SAVING -> DodgerBlue
-        else -> BlueGreen
+        SourceCategories.INCOME -> VavilonTheme.colors.income2
+        SourceCategories.EXPENSE -> VavilonTheme.colors.expense3
+        SourceCategories.SAVING -> VavilonTheme.colors.savings2
     }
     Card(
         Modifier
@@ -55,7 +49,7 @@ fun SourceRowItemView(source: Source) {
                 modifier = Modifier
                     .size(70.dp)
                     .padding(top = 5.dp),
-                tint = DeepWater
+                tint = VavilonTheme.colors.secondaryElement
             )
             Text(
                 text = source.sourceTitle,
@@ -69,10 +63,15 @@ fun SourceRowItemView(source: Source) {
 @Preview
 @Composable
 private fun CardItem() {
-    SourceRowItemView(source = Source("Income", "work", "", 1100.0))
+    VavilonTheme {
+        SourceRowItemView(source = Source("Income", "work", "", 1100.0))
+    }
 }
+
 @Preview
 @Composable
 private fun CardItem1() {
-    SourceRowItemView(source = Source("Expense", "work", "", 1100.0))
+    VavilonTheme {
+        SourceRowItemView(source = Source("Expense", "work", "", 1100.0))
+    }
 }

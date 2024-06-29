@@ -1,7 +1,7 @@
 package com.vavilon.compose
 
+import android.content.res.Configuration
 import android.widget.Toast
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -28,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.vavilon.R
@@ -39,10 +39,6 @@ import com.vavilon.compose.source.SourceRowScreen
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
-import com.vavilon.ui.theme.Bronze
-import com.vavilon.ui.theme.DarkBlue
-import com.vavilon.ui.theme.Gold
-import com.vavilon.ui.theme.Midnight
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
@@ -59,7 +55,7 @@ fun HomeScreenView(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBlue),
+            .background(VavilonTheme.colors.backgroundUI),
         topBar = {
             TopBar(
                 welcomeText = R.string.welcomeText_us,
@@ -78,7 +74,7 @@ fun HomeScreenView(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DarkBlue)
+                .background(VavilonTheme.colors.backgroundUI)
                 .padding(innerPadding),
             verticalArrangement = Arrangement.Top
         )
@@ -108,14 +104,14 @@ fun TopBar(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .background(Midnight),
+                    .background(VavilonTheme.colors.backgroundUI),
                 Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_user_default),
                     contentDescription = null,
-                    tint = Bronze,
+                    tint = VavilonTheme.colors.backgroundIcon,
                     modifier = Modifier
                         .size(50.dp)
                         .clip(CircleShape)
@@ -132,12 +128,12 @@ fun TopBar(
                 )
                 Text(
                     text = stringResource(id = welcomeText) + userName,
-                    color = Gold
+                    color = VavilonTheme.colors.primaryText
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_settings),
                     contentDescription = null,
-                    tint = Bronze,
+                    tint = VavilonTheme.colors.backgroundIcon,
                     modifier = Modifier
                         .padding(end = 15.dp, top = 5.dp)
                         .clickable {
@@ -162,17 +158,23 @@ fun CurrentBalanceView(state: SourceState) {
     Row(
         Modifier
             .fillMaxWidth()
-            .background(Midnight)
+            .background(VavilonTheme.colors.backgroundUI)
     ) {
         Column(
-            Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 15.dp, top = 5.dp, bottom = 5.dp),
+            horizontalAlignment = Alignment.Start
         ) {
             Text(
                 text = stringResource(id = R.string.current_balance_us),
-                style = Typography.h1.copy(color = Gold)
+                style = Typography.overline,
+                color = VavilonTheme.colors.primaryText.copy(alpha = 0.7F)
             )
-            Text(text = "${state.currentBalance} + ${state.totalSavings}", color = Gold)
+            Text(
+                text = "${state.currentBalance} + ${state.totalSavings}",
+                style = Typography.h1
+            )
         }
     }
 
@@ -180,35 +182,31 @@ fun CurrentBalanceView(state: SourceState) {
 
 @Composable
 fun CurrentStatisticView(state: SourceState) {
-    Column(
+    val labels = listOf(R.string.income_balance_us,
+        R.string.expense_balance_us,
+        R.string.saving_balance_us)
+    val balances = listOf(state.totalIncome,
+        state.totalExpense,
+        state.totalSavings)
+    val backgroundColors = listOf(VavilonTheme.colors.income2,
+        VavilonTheme.colors.expense2,
+        VavilonTheme.colors.savings2)
+    Row(
         Modifier
             .fillMaxWidth()
-            .background(Midnight)
+            .background(VavilonTheme.colors.backgroundUI),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(start = 50.dp, end = 50.dp),
-            Arrangement.SpaceBetween
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = stringResource(id = R.string.income_balance_us), color = Gold)
-                Text(text = "${state.totalIncome}", color = Gold)
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = stringResource(id = R.string.expense_balance_us), color = Gold)
-                Text(text = "${state.totalExpense}", color = Gold)
-            }
-        }
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp),
-            Arrangement.Center
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = stringResource(id = R.string.saving_balance_us), color = Gold)
-                Text(text = "${state.totalSavings}", color = Gold)
+        labels.forEach { item ->
+            Card(modifier = Modifier
+                .size(height = 40.dp, width = 100.dp)
+                .padding(start = 10.dp, top = 5.dp)
+                .background(backgroundColors[1])
+            ) {
+                Text(text = stringResource(id = item),
+                    style = Typography.caption)
+                Text(text = balances.get(1).toString() )
             }
         }
 
@@ -216,7 +214,10 @@ fun CurrentStatisticView(state: SourceState) {
 }
 
 @Composable
-@Preview(showBackground = true, heightDp = 550)
+@Preview(
+    showBackground = true, heightDp = 550, device = "id:Nexus S",
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
+)
 fun HomeScreenPreview() {
     VavilonTheme {
         val source1 = Source("work", "work", "", 1000.0)

@@ -25,8 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.vavilon.model.SourceCategories
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
-import com.vavilon.ui.theme.Bronze
-import com.vavilon.ui.theme.Gold
+import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun AddNewSourceScreen(
@@ -47,30 +46,34 @@ fun AddNewSourceScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Row (
+                Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(start = 5.dp, end = 10.dp),
-                    horizontalArrangement= Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically){
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     SourceCategories.entries.forEach { category ->
                         Box(modifier = Modifier
-                            .background(Bronze)
+                            .background(VavilonTheme.colors.backgroundIcon)
                             .height(30.dp)
                             .wrapContentSize()
                             .clickable {
                                 selectedCategory = category
                                 onEvent(SourceEvent.SetType(selectedCategory))
                                 onEvent(SourceEvent.FilterSource(selectedCategory))
-                            }){
-                            Text(text = category.getSrcCategory(),
-                                modifier = if(category != selectedCategory) {
-                                 Modifier.alpha(0.5f)} else {
-                                Modifier.background(Gold)
-                            })
-                        }
+                            }) {
+                            Text(
+                                text = category.getSrcCategory(),
+                                modifier = if (category != selectedCategory) {
+                                    Modifier.alpha(0.5f)
+                                } else {
+                                    Modifier.background(VavilonTheme.colors.primaryText)
+                                }
+                            )
                         }
                     }
+                }
                 TextField(
                     value = state.name,
                     onValueChange = {
@@ -93,7 +96,7 @@ fun AddNewSourceScreen(
                         keyboardType = KeyboardType.Number
                     ),
                     onValueChange = {
-                        if(it.toDoubleOrNull()!=null) {
+                        if (it.toDoubleOrNull() != null) {
                             onEvent(SourceEvent.SetBalance(it.toDouble()))
                         }
                     },

@@ -13,8 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vavilon.model.SourceCategories
 import com.vavilon.model.events.SourceEvent
-import com.vavilon.model.states.SourceState
-import com.vavilon.ui.theme.Gold
+import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun SourceCategoryRowView(onEvent: (SourceEvent) -> Unit) {
@@ -22,14 +21,21 @@ fun SourceCategoryRowView(onEvent: (SourceEvent) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,) {
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
         SourceCategories.entries.forEach { category ->
-            Row(modifier = Modifier
-                .clickable {
-                onEvent(SourceEvent.FilterSource(category))
-                onEvent(SourceEvent.SetType(category))},
-                verticalAlignment = CenterVertically){
-                Text(text = category.getSrcCategory(), color = Gold)
+            Row(
+                modifier = Modifier
+                    .clickable {
+                        onEvent(SourceEvent.FilterSource(category))
+                        onEvent(SourceEvent.SetType(category))
+                    },
+                verticalAlignment = CenterVertically
+            ) {
+                Text(
+                    text = category.getSrcCategory(),
+                    color = VavilonTheme.colors.primaryText
+                )
             }
         }
     }
@@ -38,5 +44,7 @@ fun SourceCategoryRowView(onEvent: (SourceEvent) -> Unit) {
 @Preview(showBackground = true, widthDp = 200, heightDp = 150)
 @Composable
 private fun PreviewRow() {
-    SourceCategoryRowView(onEvent = {} )
+    VavilonTheme {
+        SourceCategoryRowView(onEvent = {})
+    }
 }
