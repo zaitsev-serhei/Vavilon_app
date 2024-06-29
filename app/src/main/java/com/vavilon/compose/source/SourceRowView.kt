@@ -37,7 +37,7 @@ fun SourceRowScreen(
         EmptySourceListView(onEvent = onEvent)
     } else {
         LazyRow(
-            contentPadding = PaddingValues(10.dp),
+            contentPadding = PaddingValues(5.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier

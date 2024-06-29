@@ -1,6 +1,5 @@
 package com.vavilon.compose
 
-import android.content.res.Configuration
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -17,9 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,9 +78,9 @@ fun HomeScreenView(
             verticalArrangement = Arrangement.Top
         )
         {
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             SourceRowScreen(state, navController, onEvent)
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             SourceCategoryRowView(onEvent = onEvent)
             Spacer(modifier = Modifier.height(10.dp))
         }
@@ -158,11 +157,12 @@ fun CurrentBalanceView(state: SourceState) {
     Row(
         Modifier
             .fillMaxWidth()
-            .background(VavilonTheme.colors.backgroundUI)
+            .background(VavilonTheme.colors.backgroundUI),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
             Modifier
-                .fillMaxWidth()
                 .padding(start = 15.dp, top = 5.dp, bottom = 5.dp),
             horizontalAlignment = Alignment.Start
         ) {
@@ -176,47 +176,73 @@ fun CurrentBalanceView(state: SourceState) {
                 style = Typography.h1
             )
         }
+        Icon(
+            painter = painterResource(id = R.drawable.ic_arrow_right),
+            contentDescription = null,
+            modifier = Modifier
+                .padding(end = 10.dp)
+                .size(25.dp),
+            tint = VavilonTheme.colors.backgroundIcon
+        )
     }
-
 }
 
 @Composable
 fun CurrentStatisticView(state: SourceState) {
-    val labels = listOf(R.string.income_balance_us,
-        R.string.expense_balance_us,
-        R.string.saving_balance_us)
-    val balances = listOf(state.totalIncome,
+    val balances = listOf(
+        state.totalIncome,
         state.totalExpense,
-        state.totalSavings)
-    val backgroundColors = listOf(VavilonTheme.colors.income2,
+        state.totalSavings
+    )
+    val backgroundColors = listOf(
+        VavilonTheme.colors.income2,
         VavilonTheme.colors.expense2,
-        VavilonTheme.colors.savings2)
+        VavilonTheme.colors.savings2
+    )
+    val icons = listOf(
+        R.drawable.ic_arrow_down,
+        R.drawable.ic_arrow_top,
+        R.drawable.ic_bank_piggy
+    )
     Row(
         Modifier
             .fillMaxWidth()
             .background(VavilonTheme.colors.backgroundUI),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        labels.forEach { item ->
-            Card(modifier = Modifier
-                .size(height = 40.dp, width = 100.dp)
-                .padding(start = 10.dp, top = 5.dp)
-                .background(backgroundColors[1])
+        balances.forEachIndexed { index, item ->
+            Card(
+                modifier = Modifier
+                    .size(height = 40.dp, width = 100.dp)
+                    .padding(start = 5.dp, top = 5.dp, end = 10.dp)
             ) {
-                Text(text = stringResource(id = item),
-                    style = Typography.caption)
-                Text(text = balances.get(1).toString() )
+                Row(
+                    modifier = Modifier
+                        .background(backgroundColors[index])
+                        .padding(start = 5.dp, end = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = balances[index].toString(),
+                        style = Typography.body1,
+                        maxLines = 1
+                    )
+                    Icon(
+                        painter = painterResource(id = icons[index]),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
-
     }
 }
 
 @Composable
 @Preview(
     showBackground = true, heightDp = 550, device = "id:Nexus S",
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
 )
 fun HomeScreenPreview() {
     VavilonTheme {
