@@ -32,8 +32,8 @@ fun SourceCategoryRowView(onEvent: (SourceEvent) -> Unit) {
         SourceCategories.entries.forEach { category ->
 Card (modifier = Modifier
     .height(25.dp)
-    .width(80.dp)
-    .shadow(5.dp)
+    .width(70.dp)
+    .shadow(3.dp)
 ){
     Row(
         modifier = Modifier

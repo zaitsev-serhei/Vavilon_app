@@ -78,7 +78,7 @@ fun HomeScreenView(
             verticalArrangement = Arrangement.Top
         )
         {
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             SourceRowScreen(state, navController, onEvent)
             Spacer(modifier = Modifier.height(5.dp))
             SourceCategoryRowView(onEvent = onEvent)
@@ -154,9 +154,11 @@ fun TopBar(
 
 @Composable
 fun CurrentBalanceView(state: SourceState) {
+    val context = LocalContext.current
     Row(
         Modifier
             .fillMaxWidth()
+            .height(80.dp)
             .background(VavilonTheme.colors.backgroundUI),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -181,7 +183,16 @@ fun CurrentBalanceView(state: SourceState) {
             contentDescription = null,
             modifier = Modifier
                 .padding(end = 10.dp)
-                .size(25.dp),
+                .size(25.dp)
+                .clickable {
+                    Toast
+                        .makeText(
+                            context,
+                            "To be implemented",
+                            Toast.LENGTH_LONG
+                        )
+                        .show()
+                },
             tint = VavilonTheme.colors.backgroundIcon
         )
     }
@@ -209,18 +220,18 @@ fun CurrentStatisticView(state: SourceState) {
             .fillMaxWidth()
             .background(VavilonTheme.colors.backgroundUI),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         balances.forEachIndexed { index, item ->
             Card(
                 modifier = Modifier
                     .size(height = 40.dp, width = 100.dp)
-                    .padding(start = 5.dp, top = 5.dp, end = 10.dp)
+                    .padding(start = 10.dp, top = 5.dp, end = 15.dp)
             ) {
                 Row(
                     modifier = Modifier
                         .background(backgroundColors[index])
-                        .padding(start = 5.dp, end = 5.dp),
+                        .padding(start = 3.dp, end = 3.dp) ,
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
