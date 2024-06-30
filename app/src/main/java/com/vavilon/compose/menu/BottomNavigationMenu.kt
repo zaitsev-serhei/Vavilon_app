@@ -12,9 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.vavilon.ui.theme.Bronze
-import com.vavilon.ui.theme.DarkBlue
-import com.vavilon.ui.theme.Gold
+import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun BottomNavigation(navController: NavController) {
@@ -25,14 +23,15 @@ fun BottomNavigation(navController: NavController) {
         BottomNavMenuItem.Transaction,
     )
     BottomNavigation(
-        backgroundColor = DarkBlue,
-        contentColor = Bronze,
+        backgroundColor = VavilonTheme.colors.backgroundUI,
+        contentColor = VavilonTheme.colors.backgroundIcon,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             val isSelected = currentRoute == item.route
-            val iconTint = if (isSelected) Gold else Gold.copy(0.4f)
+            val iconTint = if (isSelected) VavilonTheme.colors.primaryText
+            else VavilonTheme.colors.primaryText.copy(0.4f)
             BottomNavigationItem(
                 icon = {
                     Icon(
@@ -42,8 +41,8 @@ fun BottomNavigation(navController: NavController) {
                         modifier = Modifier.size(50.dp)
                     )
                 },
-                selectedContentColor = Gold,
-                unselectedContentColor = Bronze.copy(0.4f),
+                selectedContentColor = VavilonTheme.colors.primaryText,
+                unselectedContentColor = VavilonTheme.colors.backgroundIcon.copy(0.4f),
                 selected = item.route == currentRoute,
                 onClick = {
                     if (currentRoute != item.route) {

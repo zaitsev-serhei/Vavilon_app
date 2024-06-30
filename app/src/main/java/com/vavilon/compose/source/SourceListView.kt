@@ -12,29 +12,30 @@ import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
 import androidx.compose.ui.graphics.Color
-import com.vavilon.ui.theme.BlueGreen
-import com.vavilon.ui.theme.Crimson
-import com.vavilon.ui.theme.DarkBlue
-import com.vavilon.ui.theme.LightGreen
-import com.vavilon.ui.theme.RoyalBlue
+import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
-fun SourceListView(state: SourceState,
-                   onEvent: (SourceEvent) -> Unit,
-                   ) {
+fun SourceListView(
+    state: SourceState,
+    onEvent: (SourceEvent) -> Unit,
+) {
     val backgroundColor: Color = when (state.sourceCategory) {
-        SourceCategories.INCOME -> LightGreen
-        SourceCategories.EXPENSE -> Crimson
-        SourceCategories.SAVING -> RoyalBlue
-        else -> BlueGreen
+        SourceCategories.INCOME -> VavilonTheme.colors.income2
+        SourceCategories.EXPENSE -> VavilonTheme.colors.expense2
+        SourceCategories.SAVING -> VavilonTheme.colors.savings2
     }
-    Column(modifier = Modifier
+    Column(
+        modifier = Modifier
             .fillMaxWidth()
-            .background(DarkBlue)
+            .background(VavilonTheme.colors.backgroundUI)
             .padding(top = 10.dp, start = 15.dp, end = 15.dp)
-        ) {
-        for(source:Source in state.sourceList) {
-            SourceListItemView(source = source, modifier = Modifier.background(backgroundColor), onEvent = onEvent)
+    ) {
+        for (source: Source in state.sourceList) {
+            SourceListItemView(
+                source = source,
+                modifier = Modifier.background(backgroundColor),
+                onEvent = onEvent
+            )
         }
     }
 }

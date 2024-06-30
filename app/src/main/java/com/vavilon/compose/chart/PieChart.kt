@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.vavilon.model.SourceCategories
 import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
-import com.vavilon.ui.theme.BlueGreen
 import com.vavilon.ui.theme.Crimson
 import com.vavilon.ui.theme.DodgerBlue
 import com.vavilon.ui.theme.FireBrick
@@ -42,6 +41,7 @@ import com.vavilon.ui.theme.SkyBlue
 import com.vavilon.ui.theme.SpringGreen
 import com.vavilon.ui.theme.SteelBlue
 import com.vavilon.ui.theme.Tomato
+import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun PieChart(state: SourceState, modifier: Modifier = Modifier) {
@@ -53,7 +53,6 @@ fun PieChart(state: SourceState, modifier: Modifier = Modifier) {
         SourceCategories.INCOME -> incomeColorList
         SourceCategories.EXPENSE -> expenseColorList
         SourceCategories.SAVING -> savingsColorList
-        else -> listOf(BlueGreen)
     }
     Row(
         modifier
@@ -95,7 +94,7 @@ fun PieChart(state: SourceState, modifier: Modifier = Modifier) {
                         .defaultMinSize(minWidth = 80.dp, minHeight = 20.dp)
                         .padding(horizontal = 8.dp)
                         .clip(CircleShape)
-                        .background(colorList.getOrElse(index) { Color.Blue }),
+                        .background(colorList.getOrElse(index) { VavilonTheme.colors.helpElement }),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -112,10 +111,10 @@ fun PieChart(state: SourceState, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun PreviewChart() {
-    val source1: Source = Source("work", "work", "",2000.0)
-    val source2: Source = Source("job", "work", "",3000.0)
-    val source3: Source = Source("extra", "work", "",800.0)
-    val source4: Source = Source("part time", "work", "",1000.0)
+    val source1  = Source("work", "work", "",2000.0)
+    val source2  = Source("job", "work", "",3000.0)
+    val source3  = Source("extra", "work", "",800.0)
+    val source4  = Source("part time", "work", "",1000.0)
     val tempList = listOf(source1,source2,source3,source4)
     PieChart(state = SourceState())
 }

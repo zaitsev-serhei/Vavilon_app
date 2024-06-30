@@ -1,6 +1,7 @@
 package com.vavilon.model
 
 enum class TransactionCategories (val category:String) {
+    ALL("All"),
     RENT("Rent"),
     FOOD("Food"),
     TRAVEL("Travel"),

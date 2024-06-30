@@ -23,9 +23,7 @@ import androidx.navigation.NavController
 import com.vavilon.R
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
-import com.vavilon.ui.theme.Bronze
-import com.vavilon.ui.theme.Gold
-import com.vavilon.ui.theme.Midnight
+import com.vavilon.ui.theme.VavilonTheme
 import com.vavilon.utils.Screen
 
 
@@ -39,12 +37,12 @@ fun SourceRowScreen(
         EmptySourceListView(onEvent = onEvent)
     } else {
         LazyRow(
-            contentPadding = PaddingValues(10.dp),
+            contentPadding = PaddingValues(5.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Midnight)
+                .background(VavilonTheme.colors.backgroundUI)
                 .clickable {
                     navController.navigate(Screen.SourceScreen.route) {
                         navController.graph.startDestinationRoute?.let { route ->
@@ -72,7 +70,7 @@ fun EmptySourceListView(onEvent: (SourceEvent) -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(Midnight)
+            .background(VavilonTheme.colors.backgroundUI)
             .padding(10.dp),
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -80,7 +78,7 @@ fun EmptySourceListView(onEvent: (SourceEvent) -> Unit) {
         Text(
             text = stringResource(id = R.string.empty_source_list_us),
             Modifier.padding(5.dp),
-            color = Gold
+            color = VavilonTheme.colors.primaryText
         )
         AddButton(onEvent)
     }
@@ -95,7 +93,7 @@ fun AddButton(onEvent: (SourceEvent) -> Unit) {
             painter = painterResource(id = R.drawable.ic_add_button),
             contentDescription = null,
             Modifier.size(80.dp),
-            tint = Bronze
+            tint = VavilonTheme.colors.backgroundIcon
         )
     }
 }

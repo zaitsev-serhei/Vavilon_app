@@ -11,14 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.vavilon.compose.menu.BottomNavigation
-import com.vavilon.ui.theme.DarkBlue
+import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
-fun StatisticScreenView(navController: NavController,modifier: Modifier) {
+fun StatisticScreenView(navController: NavController, modifier: Modifier) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBlue),
+            .background(VavilonTheme.colors.backgroundUI),
         bottomBar = {
             BottomNavigation(
                 navController = navController
