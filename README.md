@@ -15,7 +15,7 @@
 https://appetize.io/app/pterklh6irvkho5ack7q6mywxa?device=pixel7&osVersion=13.0
 </br>
 </br>
-## **HOW TO USE:**
+## **HOW TO INSTALL:**
 Please download and install the latest stable version of the Android SDK. You can find Android Studio by following the link below:
 [Download Android Studio](https://developer.android.com/studio)
 
