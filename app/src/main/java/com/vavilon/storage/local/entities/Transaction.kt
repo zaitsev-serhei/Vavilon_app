@@ -14,7 +14,12 @@ class Transaction {
         this.categoryId = categoryId
         this.transactionDate = creationDate
     }
-
+    constructor(amount: Double, categoryId: Long, description: String, date: Date) {
+        this.amount = amount
+        this.categoryId = categoryId
+        this.transactionDate = date
+        this.description = description
+    }
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "transaction_id")
     var transactionId: Long = 0

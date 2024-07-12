@@ -7,9 +7,10 @@ import com.vavilon.storage.local.entities.Transaction
 data class TransactionState(
     val transactionList: List<Transaction> = emptyList(),
     val amount: Double = 0.0,
+    val transactionId: Long = 0,
     val description: String = "",
     val type: CategoryTypes = CategoryTypes.DEFAULT,
-    val transactionCategory: TransactionCategories = TransactionCategories.INCOME,
+    val transactionCategory: TransactionCategories = TransactionCategories.ALL,
     val isAddingNewTransaction: Boolean = false,
     val isEditingTransaction: Boolean = false
 )

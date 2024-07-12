@@ -170,11 +170,11 @@ fun CurrentBalanceView(state: SourceState) {
         ) {
             Text(
                 text = stringResource(id = R.string.current_balance_us),
-                style = Typography.overline,
+                style = Typography.h1,
                 color = VavilonTheme.colors.primaryText.copy(alpha = 0.7F)
             )
             Text(
-                text = "${state.currentBalance} + ${state.totalSavings}",
+                text = "${state.currentBalance}",
                 style = Typography.h1
             )
         }
@@ -205,6 +205,11 @@ fun CurrentStatisticView(state: SourceState) {
         state.totalExpense,
         state.totalSavings
     )
+    val labels = listOf(
+        R.string.earn_month,
+        R.string.spent_month,
+        R.string.saved_month,
+    )
     val backgroundColors = listOf(
         VavilonTheme.colors.income2,
         VavilonTheme.colors.expense2,
@@ -223,28 +228,32 @@ fun CurrentStatisticView(state: SourceState) {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         balances.forEachIndexed { index, item ->
-            Card(
-                modifier = Modifier
-                    .size(height = 40.dp, width = 100.dp)
-                    .padding(start = 10.dp, top = 5.dp, end = 15.dp)
-            ) {
-                Row(
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = stringResource(id = labels[index]),
+                    style = Typography.body2)
+                Card(
                     modifier = Modifier
-                        .background(backgroundColors[index])
-                        .padding(start = 3.dp, end = 3.dp) ,
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .size(height = 40.dp, width = 100.dp)
+                        .padding(start = 10.dp, top = 5.dp, end = 15.dp)
                 ) {
-                    Text(
-                        text = balances[index].toString(),
-                        style = Typography.body1,
-                        maxLines = 1
-                    )
-                    Icon(
-                        painter = painterResource(id = icons[index]),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
+                    Row(
+                        modifier = Modifier
+                            .background(backgroundColors[index])
+                            .padding(start = 3.dp, end = 3.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = balances[index].toString(),
+                            style = Typography.body1,
+                            maxLines = 1
+                        )
+                        Icon(
+                            painter = painterResource(id = icons[index]),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
         }

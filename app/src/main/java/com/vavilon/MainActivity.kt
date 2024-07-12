@@ -3,13 +3,10 @@ package com.vavilon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
-import com.vavilon.compose.HomeScreenView
 import com.vavilon.ui.theme.VavilonTheme
 import com.vavilon.viewModel.SourceViewModel
 import com.vavilon.viewModel.TransactionViewModel
@@ -25,9 +22,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VavilonTheme {
-                val state by sourceViewModel.state.collectAsState()
+                val sourceState by sourceViewModel.state.collectAsState()
+                val transactionState by transactionViewModel.state.collectAsState()
                 Navigation(modifier = Modifier.fillMaxSize(),
-                    sourceState = state,
+                    sourceState = sourceState,
                     onEvent = sourceViewModel::onEvent)
             }
         }

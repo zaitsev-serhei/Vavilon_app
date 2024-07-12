@@ -15,4 +15,9 @@ interface TransactionDao {
     suspend fun update(transaction: Transaction)
     @Query("SELECT * FROM transactions ORDER BY creation_date ASC")
     fun getAllTransactions(): Flow<List<Transaction>>
+
+    @Query("SELECT * FROM transactions "
+            + "JOIN tr_categories ON transactions.category_id = tr_categories.category_id "
+            + "WHERE tr_categories.title = :category")
+    fun getTransactionsByCategory(category:String): Flow<List<Transaction>>
 }
