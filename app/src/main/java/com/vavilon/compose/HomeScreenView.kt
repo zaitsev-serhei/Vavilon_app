@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.vavilon.R
 import com.vavilon.compose.menu.BottomNavigation
+import com.vavilon.compose.menu.HomeStatisticMenu
 import com.vavilon.compose.source.AddNewSourceScreen
 import com.vavilon.compose.source.SourceCategoryRowView
 import com.vavilon.compose.source.SourceRowScreen
@@ -79,13 +80,13 @@ fun HomeScreenView(
         )
         {
             Spacer(modifier = Modifier.height(10.dp))
-            SourceRowScreen(state, navController, onEvent)
-            Spacer(modifier = Modifier.height(5.dp))
-            SourceCategoryRowView(onEvent = onEvent)
+            HomeStatisticMenu(sourceState = state)
+            //SourceRowScreen(state, navController, onEvent)
+            //Spacer(modifier = Modifier.height(5.dp))
+            //SourceCategoryRowView(onEvent = onEvent)
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
-
 }
 
 @Composable

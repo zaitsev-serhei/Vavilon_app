@@ -78,17 +78,14 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
     fun OnEvent(event: TransactionEvent) {
         when (event) {
             TransactionEvent.SaveTransaction -> {
-                val id = state.value.transactionId
                 val category = state.value.transactionCategory
                 val description = state.value.description
-                val transactionType = state.value.type
                 val amount = state.value.amount
                 if (amount <= 0) {
                     return
                 } else {
                     viewModelScope.launch {
-                        val categoryId = categoriesMap.value.getValue(category.toString())
-                        val transaction = Transaction(amount, categoryId, description, Date())
+                        val transaction = Transaction(amount, category.getTransactionCategory(), description, Date())
                         transactionRepository.createTransaction(transaction)
                     }
                     _state.update {

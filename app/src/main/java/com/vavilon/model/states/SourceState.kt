@@ -14,6 +14,7 @@ data class SourceState(
     val isAddingNewSource: Boolean = false,
     val isEditingSource: Boolean = false,
     val sortTypes: SortTypes = SortTypes.ASC,
+    val limitCount : Long = 5,
     val totalIncome: Double = 0.0,
     val totalExpense: Double = 0.0,
     val totalSavings: Double = 0.0,

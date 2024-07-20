@@ -9,14 +9,14 @@ import java.util.Date
 class Transaction {
     constructor()
 
-    constructor(amount: Double, categoryId: Long, creationDate: Date) {
+    constructor(amount: Double, category: String, creationDate: Date) {
         this.amount = amount
-        this.categoryId = categoryId
+        this.category = category
         this.transactionDate = creationDate
     }
-    constructor(amount: Double, categoryId: Long, description: String, date: Date) {
+    constructor(amount: Double, category: String, description: String, date: Date) {
         this.amount = amount
-        this.categoryId = categoryId
+        this.category = category
         this.transactionDate = date
         this.description = description
     }
@@ -45,6 +45,6 @@ class Transaction {
     @ColumnInfo(name = "schedule_id")
     var schedule_id: Long = 0
 
-    @ColumnInfo(name = "category_id")
-    var categoryId: Long = 0
+    @ColumnInfo(name = "category_name")
+    var category: String = ""
 }
