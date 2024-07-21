@@ -45,21 +45,33 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SourceState())
 
     private val _totals = MutableStateFlow<Map<String, Double>>(emptyMap())
+    private val _sourceCounter = MutableStateFlow<Map<String, Int>>(emptyMap())
 
     init {
         viewModelScope.launch {
-            sourceRepository.getTotals().collect { totalsMap ->
-                _totals.value = totalsMap
-                val totalIncome = totalsMap[SourceCategories.INCOME.getSrcCategory()] ?: 0.0
-                val totalExpense = totalsMap[SourceCategories.EXPENSE.getSrcCategory()] ?: 0.0
-                val totalSavings = totalsMap[SourceCategories.SAVING.getSrcCategory()] ?: 0.0
-                _state.update { currentState ->
-                    currentState.copy(
-                        totalIncome = totalIncome,
-                        totalExpense = totalExpense,
-                        totalSavings = totalSavings,
-                        currentBalance = totalIncome - (totalExpense + totalSavings)
-                    )
+            launch {
+                sourceRepository.getTotals().collect { totalsMap ->
+                    _totals.value = totalsMap
+                    val totalIncome = totalsMap[SourceCategories.INCOME.getSrcCategory()] ?: 0.0
+                    val totalExpense = totalsMap[SourceCategories.EXPENSE.getSrcCategory()] ?: 0.0
+                    val totalSavings = totalsMap[SourceCategories.SAVING.getSrcCategory()] ?: 0.0
+
+                    _state.update { currentState ->
+                        currentState.copy(
+                            totalIncome = totalIncome,
+                            totalExpense = totalExpense,
+                            totalSavings = totalSavings,
+                            currentBalance = totalIncome - (totalExpense + totalSavings)
+                        )
+                    }
+                }
+            }
+            launch {
+                sourceRepository.getSourceCounterMap().collect{ counter ->
+                    _sourceCounter.value = counter
+                    _state.update { state->
+                        state.copy(sourceCounterMap = counter)
+                    }
                 }
             }
         }

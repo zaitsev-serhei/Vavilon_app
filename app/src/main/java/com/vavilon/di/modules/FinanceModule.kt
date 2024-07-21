@@ -3,6 +3,7 @@ package com.vavilon.di.modules
 import com.vavilon.model.repositories.SourceRepository
 import com.vavilon.model.repositories.TransactionRepository
 import com.vavilon.storage.local.dao.SourceDao
+import com.vavilon.storage.local.dao.TransactionCategoryDao
 import com.vavilon.storage.local.dao.TransactionDao
 import com.vavilon.viewModel.SourceViewModel
 import com.vavilon.viewModel.TransactionViewModel
@@ -19,8 +20,8 @@ class FinanceModule {
     }
     @Singleton
     @Provides
-    fun provideTransactionRepository(transactionDao: TransactionDao) : TransactionRepository {
-        return TransactionRepository(transactionDao)
+    fun provideTransactionRepository(transactionDao: TransactionDao, transactionCategoryDao: TransactionCategoryDao) : TransactionRepository {
+        return TransactionRepository(transactionDao, transactionCategoryDao)
     }
     @Singleton
     @Provides

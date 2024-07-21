@@ -8,8 +8,7 @@ sealed interface TransactionEvent {
     object SaveTransaction : TransactionEvent
     object ShowDialog : TransactionEvent
     object HideDialog : TransactionEvent
-    data class SetDescription(val name: String) : TransactionEvent
+    data class SetDescription(val description: String) : TransactionEvent
     data class SetAmount(val amount: Double) : TransactionEvent
     data class SetCategory(val category: TransactionCategories) : TransactionEvent
-    data class FilterBySource(val source: Source) : TransactionEvent
 }

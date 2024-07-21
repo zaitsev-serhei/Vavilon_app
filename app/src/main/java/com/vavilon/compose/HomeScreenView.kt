@@ -32,24 +32,24 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.vavilon.R
 import com.vavilon.compose.menu.BottomNavigation
+import com.vavilon.compose.menu.HomeStatisticMenu
 import com.vavilon.compose.source.AddNewSourceScreen
-import com.vavilon.compose.source.SourceCategoryRowView
-import com.vavilon.compose.source.SourceRowScreen
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
+import com.vavilon.model.states.TransactionState
 import com.vavilon.storage.local.entities.Source
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun HomeScreenView(
-    modifier: Modifier,
-    state: SourceState,
+    sourceState: SourceState,
+    transactionState: TransactionState,
     navController: NavController,
     onEvent: (SourceEvent) -> Unit
 ) {
-    if (state.isAddingNewSource) {
-        AddNewSourceScreen(state = state, onEvent = onEvent)
+    if (sourceState.isAddingNewSource) {
+        AddNewSourceScreen(state = sourceState, onEvent = onEvent)
     }
     Scaffold(
         modifier = Modifier
@@ -60,7 +60,7 @@ fun HomeScreenView(
                 welcomeText = R.string.welcomeText_us,
                 modifier = Modifier,
                 userName = "Serhii",
-                state = state
+                state = sourceState
             )
         },
         bottomBar = {
@@ -79,13 +79,13 @@ fun HomeScreenView(
         )
         {
             Spacer(modifier = Modifier.height(10.dp))
-            SourceRowScreen(state, navController, onEvent)
-            Spacer(modifier = Modifier.height(5.dp))
-            SourceCategoryRowView(onEvent = onEvent)
+            HomeStatisticMenu(sourceState = sourceState, transactionState = transactionState)
+            //SourceRowScreen(state, navController, onEvent)
+            //Spacer(modifier = Modifier.height(5.dp))
+            //SourceCategoryRowView(onEvent = onEvent)
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
-
 }
 
 @Composable
@@ -170,11 +170,11 @@ fun CurrentBalanceView(state: SourceState) {
         ) {
             Text(
                 text = stringResource(id = R.string.current_balance_us),
-                style = Typography.overline,
+                style = Typography.h1,
                 color = VavilonTheme.colors.primaryText.copy(alpha = 0.7F)
             )
             Text(
-                text = "${state.currentBalance} + ${state.totalSavings}",
+                text = "${state.currentBalance}",
                 style = Typography.h1
             )
         }
@@ -205,6 +205,11 @@ fun CurrentStatisticView(state: SourceState) {
         state.totalExpense,
         state.totalSavings
     )
+    val labels = listOf(
+        R.string.earn_month,
+        R.string.spent_month,
+        R.string.saved_month,
+    )
     val backgroundColors = listOf(
         VavilonTheme.colors.income2,
         VavilonTheme.colors.expense2,
@@ -223,28 +228,32 @@ fun CurrentStatisticView(state: SourceState) {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         balances.forEachIndexed { index, item ->
-            Card(
-                modifier = Modifier
-                    .size(height = 40.dp, width = 100.dp)
-                    .padding(start = 10.dp, top = 5.dp, end = 15.dp)
-            ) {
-                Row(
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = stringResource(id = labels[index]),
+                    style = Typography.body2)
+                Card(
                     modifier = Modifier
-                        .background(backgroundColors[index])
-                        .padding(start = 3.dp, end = 3.dp) ,
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .size(height = 40.dp, width = 100.dp)
+                        .padding(start = 10.dp, top = 5.dp, end = 15.dp)
                 ) {
-                    Text(
-                        text = balances[index].toString(),
-                        style = Typography.body1,
-                        maxLines = 1
-                    )
-                    Icon(
-                        painter = painterResource(id = icons[index]),
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
+                    Row(
+                        modifier = Modifier
+                            .background(backgroundColors[index])
+                            .padding(start = 3.dp, end = 3.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = balances[index].toString(),
+                            style = Typography.body1,
+                            maxLines = 1
+                        )
+                        Icon(
+                            painter = painterResource(id = icons[index]),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
         }
@@ -264,7 +273,6 @@ fun HomeScreenPreview() {
         val tempList = listOf(source1, source2, source3, source4)
         val state = SourceState(tempList)
         val navController = rememberNavController()
-        HomeScreenView(modifier = Modifier, state, navController = navController, onEvent = {})
+        HomeScreenView(state, transactionState = TransactionState(), navController = navController, onEvent = {})
     }
-
 }

@@ -62,11 +62,14 @@ fun SourceScreenView(
 @Preview(showBackground = true, heightDp = 600, widthDp = 350)
 @Composable
 private fun SourceScreenPreview() {
-    val navController = rememberNavController()
-    SourceScreenView(
-        modifier = Modifier.fillMaxSize(),
-        state = SourceState(),
-        navController = navController
-    ) {
+    VavilonTheme {
+        val navController = rememberNavController()
+        SourceScreenView(
+            modifier = Modifier.fillMaxSize(),
+            state = SourceState(),
+            navController = navController
+        ) {
+        }
     }
+
 }
