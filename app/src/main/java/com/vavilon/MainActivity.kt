@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
                 val transactionState by transactionViewModel.state.collectAsState()
                 Navigation(modifier = Modifier.fillMaxSize(),
                     sourceState = sourceState,
+                    transactionState = transactionState,
                     onEvent = sourceViewModel::onEvent)
             }
         }

@@ -21,7 +21,7 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
         }
     }
 
-    suspend fun getSource(id: Long): Flow<Source> {
+    fun getSource(id: Long): Flow<Source> {
         return sourceDao.getSource(id)
     }
 
@@ -51,10 +51,15 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
         return sourceDao.getSourceListSortedType(category.getSrcCategory())
     }
 
-    fun getTotals(): Flow<Map<String,Double>>{
+    fun getTotals(): Flow<Map<String, Double>> {
         return sourceDao.getTotals()
 
     }
+
+    fun getSourceCounterMap(): Flow<Map<String, Int>> {
+        return sourceDao.getSourceCounter()
+    }
+
     suspend fun deleteSource(source: Source) {
         source.isDeleted = true
         withContext(Dispatchers.IO) {

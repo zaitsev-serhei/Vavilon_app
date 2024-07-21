@@ -3,7 +3,6 @@ package com.vavilon.storage.local.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.MapColumn
-import androidx.room.MapInfo
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
@@ -33,4 +32,6 @@ interface SourceDao {
 
     @Query("SELECT type, SUM(current_balance) AS total  FROM sources WHERE isDeleted = 0 GROUP BY type")
     fun getTotals():Flow<Map<@MapColumn(columnName = "type")String,@MapColumn(columnName = "total")Double>>
+    @Query("SELECT type, COUNT(*) AS count FROM sources WHERE isDeleted = 0 GROUP BY type")
+    fun getSourceCounter():Flow<Map<@MapColumn(columnName = "type")String,@MapColumn(columnName = "count")Int>>
 }

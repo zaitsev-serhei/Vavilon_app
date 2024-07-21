@@ -34,23 +34,22 @@ import com.vavilon.R
 import com.vavilon.compose.menu.BottomNavigation
 import com.vavilon.compose.menu.HomeStatisticMenu
 import com.vavilon.compose.source.AddNewSourceScreen
-import com.vavilon.compose.source.SourceCategoryRowView
-import com.vavilon.compose.source.SourceRowScreen
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
+import com.vavilon.model.states.TransactionState
 import com.vavilon.storage.local.entities.Source
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun HomeScreenView(
-    modifier: Modifier,
-    state: SourceState,
+    sourceState: SourceState,
+    transactionState: TransactionState,
     navController: NavController,
     onEvent: (SourceEvent) -> Unit
 ) {
-    if (state.isAddingNewSource) {
-        AddNewSourceScreen(state = state, onEvent = onEvent)
+    if (sourceState.isAddingNewSource) {
+        AddNewSourceScreen(state = sourceState, onEvent = onEvent)
     }
     Scaffold(
         modifier = Modifier
@@ -61,7 +60,7 @@ fun HomeScreenView(
                 welcomeText = R.string.welcomeText_us,
                 modifier = Modifier,
                 userName = "Serhii",
-                state = state
+                state = sourceState
             )
         },
         bottomBar = {
@@ -80,7 +79,7 @@ fun HomeScreenView(
         )
         {
             Spacer(modifier = Modifier.height(10.dp))
-            HomeStatisticMenu(sourceState = state)
+            HomeStatisticMenu(sourceState = sourceState, transactionState = transactionState)
             //SourceRowScreen(state, navController, onEvent)
             //Spacer(modifier = Modifier.height(5.dp))
             //SourceCategoryRowView(onEvent = onEvent)
@@ -274,7 +273,6 @@ fun HomeScreenPreview() {
         val tempList = listOf(source1, source2, source3, source4)
         val state = SourceState(tempList)
         val navController = rememberNavController()
-        HomeScreenView(modifier = Modifier, state, navController = navController, onEvent = {})
+        HomeScreenView(state, transactionState = TransactionState(), navController = navController, onEvent = {})
     }
-
 }
