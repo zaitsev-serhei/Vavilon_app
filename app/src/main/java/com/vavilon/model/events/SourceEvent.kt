@@ -4,7 +4,7 @@ import com.vavilon.model.SortTypes
 import com.vavilon.model.SourceCategories
 import com.vavilon.storage.local.entities.Source
 
-sealed interface SourceEvent {
+sealed interface SourceEvent  {
     object SaveSource : SourceEvent
     object AddSource : SourceEvent
     object HideDialog : SourceEvent

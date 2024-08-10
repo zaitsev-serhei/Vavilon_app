@@ -44,7 +44,7 @@ import com.vavilon.ui.theme.Tomato
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
-fun PieChart(state: SourceState, modifier: Modifier = Modifier) {
+fun PieChartSources(state: SourceState, modifier: Modifier = Modifier) {
     val incomeColorList: List<Color> = listOf(ForestGreen, MediumSeaGreen, SpringGreen, LimeGreen, LightGreen)
     val expenseColorList: List<Color> = listOf(Crimson, FireBrick, IndianRed, OrangeRed, Tomato)
     val savingsColorList: List<Color> = listOf(RoyalBlue, DodgerBlue, MediumBlue, SteelBlue, SkyBlue)
@@ -116,5 +116,5 @@ private fun PreviewChart() {
     val source3  = Source("extra", "work", "",800.0)
     val source4  = Source("part time", "work", "",1000.0)
     val tempList = listOf(source1,source2,source3,source4)
-    PieChart(state = SourceState())
+    PieChartSources(state = SourceState())
 }

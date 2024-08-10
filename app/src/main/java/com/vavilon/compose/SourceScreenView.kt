@@ -14,12 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.vavilon.compose.chart.PieChart
+import com.vavilon.compose.chart.PieChartSources
 import com.vavilon.compose.menu.BottomNavigation
 import com.vavilon.compose.source.EditSourceScreen
 import com.vavilon.compose.source.SourceCategoryRowView
 import com.vavilon.compose.source.SourceListView
 import com.vavilon.model.events.SourceEvent
+import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.ui.theme.VavilonTheme
 
@@ -28,11 +29,14 @@ fun SourceScreenView(
     modifier: Modifier,
     state: SourceState,
     navController: NavController,
-    onEvent: (SourceEvent) -> Unit
+    onEvent: (UserEvent) -> Unit
 ) {
+    val sourceEventHandler: (SourceEvent) -> Unit = { event ->
+        onEvent(UserEvent.SourceEventWrapper(event))
+    }
     if (state.isEditingSource) {
         Log.d("Source to edit", "Current Source: ${state.sourceId}")
-        EditSourceScreen(state = state, onEvent = onEvent)
+        EditSourceScreen(state = state, onEvent = sourceEventHandler)
     }
     Scaffold(
         modifier = Modifier
@@ -50,9 +54,9 @@ fun SourceScreenView(
                 .background(VavilonTheme.colors.backgroundUI)
                 .padding(innerPadding)
         ) {
-            PieChart(state = state)
+            PieChartSources(state = state)
             Spacer(modifier = Modifier.height(5.dp))
-            SourceCategoryRowView(onEvent = onEvent)
+            SourceCategoryRowView(onEvent = sourceEventHandler)
             Spacer(modifier = Modifier.height(5.dp))
             SourceListView(state = state, onEvent = onEvent)
         }

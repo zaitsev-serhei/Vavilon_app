@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.vavilon.model.events.UserEvent
 import com.vavilon.ui.theme.VavilonTheme
 import com.vavilon.viewModel.SourceViewModel
 import com.vavilon.viewModel.TransactionViewModel
@@ -24,10 +25,18 @@ class MainActivity : ComponentActivity() {
             VavilonTheme {
                 val sourceState by sourceViewModel.state.collectAsState()
                 val transactionState by transactionViewModel.state.collectAsState()
+
+                val onEvent: (UserEvent) -> Unit = { event ->
+                    when (event) {
+                        is UserEvent.SourceEventWrapper -> sourceViewModel.onEvent(event.event)
+                        is UserEvent.TransactionEventWrapper -> transactionViewModel.onEvent(event.event)
+                    }
+                }
                 Navigation(modifier = Modifier.fillMaxSize(),
                     sourceState = sourceState,
                     transactionState = transactionState,
-                    onEvent = sourceViewModel::onEvent)
+                    onEvent = onEvent,
+                    )
             }
         }
     }

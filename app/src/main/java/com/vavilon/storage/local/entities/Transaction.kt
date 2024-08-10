@@ -31,7 +31,7 @@ class Transaction {
     var description: String = ""
 
     @ColumnInfo(name = "creation_date")
-    var transactionDate: Date? = null
+    var transactionDate: Date = Date()
 
     @ColumnInfo(name = "isRepeatable")
     var isRepeatable: Boolean = false

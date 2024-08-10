@@ -11,6 +11,8 @@ import com.vavilon.compose.StatisticScreenView
 import com.vavilon.compose.TransactionScreenView
 import com.vavilon.compose.menu.BottomNavMenuItem
 import com.vavilon.model.events.SourceEvent
+import com.vavilon.model.events.TransactionEvent
+import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
 
@@ -19,8 +21,11 @@ fun Navigation(
     modifier: Modifier,
     sourceState: SourceState,
     transactionState: TransactionState,
-    onEvent: (SourceEvent) -> Unit
+    onEvent: (UserEvent)->Unit
 ) {
+    val transactionEventHandler: (TransactionEvent) -> Unit = { event ->
+        onEvent(UserEvent.TransactionEventWrapper(event))
+    }
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = BottomNavMenuItem.Home.route) {
         composable(route = BottomNavMenuItem.Home.route) {
@@ -43,7 +48,10 @@ fun Navigation(
             StatisticScreenView(navController = navController, modifier = modifier)
         }
         composable(route = BottomNavMenuItem.Transaction.route) {
-            TransactionScreenView(navController = navController, modifier = modifier)
+            TransactionScreenView(navController = navController,
+                transactionState = transactionState,
+                onEvent = transactionEventHandler,
+                modifier = modifier)
         }
     }
 }

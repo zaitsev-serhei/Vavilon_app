@@ -75,7 +75,7 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
     val categoriesMap =
         _categoryMap.value.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyMap())
 
-    fun OnEvent(event: TransactionEvent) {
+    fun onEvent(event: TransactionEvent) {
         when (event) {
             TransactionEvent.SaveTransaction -> {
                 val category = state.value.transactionCategory

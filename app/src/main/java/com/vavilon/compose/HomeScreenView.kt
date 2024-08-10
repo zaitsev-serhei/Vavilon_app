@@ -34,7 +34,9 @@ import com.vavilon.R
 import com.vavilon.compose.menu.BottomNavigation
 import com.vavilon.compose.menu.HomeStatisticMenu
 import com.vavilon.compose.source.AddNewSourceScreen
+import com.vavilon.compose.source.SourceRowScreen
 import com.vavilon.model.events.SourceEvent
+import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
 import com.vavilon.storage.local.entities.Source
@@ -46,10 +48,13 @@ fun HomeScreenView(
     sourceState: SourceState,
     transactionState: TransactionState,
     navController: NavController,
-    onEvent: (SourceEvent) -> Unit
+    onEvent: (UserEvent) -> Unit
 ) {
+    val sourceEventHandler: (SourceEvent) -> Unit = { event ->
+        onEvent(UserEvent.SourceEventWrapper(event))
+    }
     if (sourceState.isAddingNewSource) {
-        AddNewSourceScreen(state = sourceState, onEvent = onEvent)
+        AddNewSourceScreen(state = sourceState, onEvent = sourceEventHandler)
     }
     Scaffold(
         modifier = Modifier
@@ -80,10 +85,11 @@ fun HomeScreenView(
         {
             Spacer(modifier = Modifier.height(10.dp))
             HomeStatisticMenu(sourceState = sourceState, transactionState = transactionState)
-            //SourceRowScreen(state, navController, onEvent)
+            //
             //Spacer(modifier = Modifier.height(5.dp))
             //SourceCategoryRowView(onEvent = onEvent)
             Spacer(modifier = Modifier.height(10.dp))
+            SourceRowScreen(sourceState, navController, sourceEventHandler)
         }
     }
 }
@@ -262,7 +268,8 @@ fun CurrentStatisticView(state: SourceState) {
 
 @Composable
 @Preview(
-    showBackground = true, heightDp = 550, device = "id:Nexus S",
+    showBackground = true,
+    device = "id:Nexus S",
 )
 fun HomeScreenPreview() {
     VavilonTheme {
@@ -273,6 +280,6 @@ fun HomeScreenPreview() {
         val tempList = listOf(source1, source2, source3, source4)
         val state = SourceState(tempList)
         val navController = rememberNavController()
-        HomeScreenView(state, transactionState = TransactionState(), navController = navController, onEvent = {})
+        HomeScreenView(state, transactionState = TransactionState(), navController = navController) {}
     }
 }
