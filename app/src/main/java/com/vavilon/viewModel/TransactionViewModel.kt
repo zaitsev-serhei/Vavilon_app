@@ -1,5 +1,6 @@
 package com.vavilon.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vavilon.model.CategoryTypes
@@ -27,53 +28,33 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
     private val _transactionList = _category
         .flatMapLatest { category ->
             when (category) {
-                TransactionCategories.ALL -> transactionRepository.getAllTransactionList()
-                TransactionCategories.RENT -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
+                TransactionCategories.ALL -> transactionRepository
+                    .getAllTransactionList()
 
-                TransactionCategories.FOOD -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
-
-                TransactionCategories.TRAVEL -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
-
-                TransactionCategories.TAXES -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
-
-                TransactionCategories.HOBBY -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
-
-                TransactionCategories.RESTAURANTS -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
-
-                TransactionCategories.ONETIME -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
-
-                TransactionCategories.INCOME -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
-
-                TransactionCategories.CUSTOM -> transactionRepository.getCategorizedTransactionList(
-                    category
-                )
+                else -> transactionRepository
+                    .getCategorizedTransactionList(category)
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _state = MutableStateFlow(TransactionState())
-    val state = combine(_state, _category, _transactionList) { state, category, categorizedList ->
+    val state = combine(_state, _transactionList) { state,  categorizedList ->
+        Log.d("ViewModel", "Current state category: ${_state.value.transactionCategory}")
+        Log.d("ViewModel", "Current _category: ${_category.value}")
         state.copy(
-            transactionCategory = category,
             transactionList = categorizedList
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TransactionState())
     val categoriesMap =
         _categoryMap.value.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyMap())
+
+    init {
+        viewModelScope.launch {
+            transactionRepository.getCategoriesMap().collect { categoriesMap ->
+                _state.update { state ->
+                    state.copy(categoriesList = categoriesMap.keys.toList())
+                }
+            }
+        }
+    }
 
     fun onEvent(event: TransactionEvent) {
         when (event) {
@@ -83,28 +64,22 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                 val amount = state.value.amount
                 if (amount <= 0) {
                     return
-                } else {
-                    viewModelScope.launch {
-                        val transaction = Transaction(amount, category.getTransactionCategory(), description, Date())
-                        transactionRepository.createTransaction(transaction)
-                    }
-                    _state.update {
-                        it.copy(
-                            amount = 0.0,
-                            transactionId = 0,
-                            description = "",
-                            type = CategoryTypes.DEFAULT,
-                            transactionCategory = TransactionCategories.ALL,
-                            isAddingNewTransaction = false
-                        )
-                    }
+                }
+                viewModelScope.launch {
+                    val transaction =
+                        Transaction(amount, category.getTransactionCategory(), description, Date())
+                    Log.d("Add transaction", "Before save: ${category.getTransactionCategory()}")
+                    transactionRepository.createTransaction(transaction)
+                    Log.d("Add transaction", "After save: ${category.getTransactionCategory()}")
+                }
+                _state.update {
+                    TransactionState()
                 }
             }
 
+
             TransactionEvent.HideDialog -> _state.update {
-                it.copy(
-                    isAddingNewTransaction = false
-                )
+                TransactionState()
             }
 
             is TransactionEvent.SetAmount -> _state.update {
@@ -113,10 +88,12 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                 )
             }
 
-            is TransactionEvent.SetCategory -> _state.update {
-                it.copy(
-                    transactionCategory = event.category
-                )
+            is TransactionEvent.SetCategory -> {
+                Log.d("ViewModel", "Category before update: ${_state.value.transactionCategory}")
+                _state.update {
+                    it.copy(transactionCategory = event.category)
+                }
+                Log.d("ViewModel", "Category after update: ${_state.value.transactionCategory}")
             }
 
             is TransactionEvent.SetDescription -> _state.update {

@@ -10,4 +10,8 @@
     <string name="earn_month">Earned This Month</string>
     <string name="spent_month">Spent This Month</string>
     <string name="saved_month">Saved This Month</string>
+    <string name="new_source">New Source</string>
+    <string name="new_transaction">Transaction</string>
+    <string name="new_category">New Category</string>
+    <string name="crypto">Cryptoy</string>
 </resources>

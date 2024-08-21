@@ -6,6 +6,7 @@ import com.vavilon.storage.local.entities.Transaction
 
 data class TransactionState(
     val transactionList: List<Transaction> = emptyList(),
+    val categoriesList: List<String> = emptyList(),
     val amount: Double = 0.0,
     val transactionId: Long = 0,
     val description: String = "",

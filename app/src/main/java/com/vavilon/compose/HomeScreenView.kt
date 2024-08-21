@@ -31,11 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.vavilon.R
+import com.vavilon.compose.menu.ActionButtonsRow
 import com.vavilon.compose.menu.BottomNavigation
 import com.vavilon.compose.menu.HomeStatisticMenu
 import com.vavilon.compose.source.AddNewSourceScreen
-import com.vavilon.compose.source.SourceRowScreen
+import com.vavilon.compose.transaction.AddNewTransactionScreen
 import com.vavilon.model.events.SourceEvent
+import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
@@ -53,8 +55,16 @@ fun HomeScreenView(
     val sourceEventHandler: (SourceEvent) -> Unit = { event ->
         onEvent(UserEvent.SourceEventWrapper(event))
     }
+    val transactionEventHandler: (TransactionEvent) -> Unit = { event ->
+        onEvent(UserEvent.TransactionEventWrapper(event))
+    }
     if (sourceState.isAddingNewSource) {
-        AddNewSourceScreen(state = sourceState, onEvent = sourceEventHandler)
+        AddNewSourceScreen(state = sourceState,
+            onEvent = sourceEventHandler)
+    }
+    if (transactionState.isAddingNewTransaction) {
+        AddNewTransactionScreen(transactionState = transactionState,
+            onEvent = transactionEventHandler)
     }
     Scaffold(
         modifier = Modifier
@@ -85,11 +95,8 @@ fun HomeScreenView(
         {
             Spacer(modifier = Modifier.height(10.dp))
             HomeStatisticMenu(sourceState = sourceState, transactionState = transactionState)
-            //
-            //Spacer(modifier = Modifier.height(5.dp))
-            //SourceCategoryRowView(onEvent = onEvent)
             Spacer(modifier = Modifier.height(10.dp))
-            SourceRowScreen(sourceState, navController, sourceEventHandler)
+            ActionButtonsRow (userEvent = onEvent)
         }
     }
 }

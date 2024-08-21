@@ -23,9 +23,7 @@ fun Navigation(
     transactionState: TransactionState,
     onEvent: (UserEvent)->Unit
 ) {
-    val transactionEventHandler: (TransactionEvent) -> Unit = { event ->
-        onEvent(UserEvent.TransactionEventWrapper(event))
-    }
+
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = BottomNavMenuItem.Home.route) {
         composable(route = BottomNavMenuItem.Home.route) {
@@ -50,7 +48,7 @@ fun Navigation(
         composable(route = BottomNavMenuItem.Transaction.route) {
             TransactionScreenView(navController = navController,
                 transactionState = transactionState,
-                onEvent = transactionEventHandler,
+                onEvent = onEvent,
                 modifier = modifier)
         }
     }
