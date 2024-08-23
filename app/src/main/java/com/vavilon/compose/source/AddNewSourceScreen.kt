@@ -16,6 +16,10 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,6 +38,7 @@ fun AddNewSourceScreen(
     onEvent: (SourceEvent) -> Unit,
 ) {
     var selectedCategory: SourceCategories = state.sourceCategory
+    var balanceText by remember { mutableStateOf(state.balance.toString()) }
     AlertDialog(
         onDismissRequest = {
             onEvent(SourceEvent.HideDialog)
@@ -72,13 +77,14 @@ fun AddNewSourceScreen(
                         )
                     })
                 TextField(
-                    value = state.balance.toString(),
+                    value = balanceText,
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Number
                     ),
                     onValueChange = {
-                        if (it.toDoubleOrNull() != null) {
-                            onEvent(SourceEvent.SetBalance(it.toDouble()))
+                        balanceText = it
+                        it.toDoubleOrNull()?.let { newValue ->
+                            onEvent(SourceEvent.SetBalance(newValue))
                         }
                     }
                 )

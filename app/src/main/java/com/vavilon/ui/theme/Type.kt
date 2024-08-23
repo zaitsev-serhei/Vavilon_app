@@ -27,7 +27,6 @@ val Typography = Typography(
         fontSize = 18.sp,
         color = Color(0xFFEFB509)
     ),
-
     body1 = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -37,8 +36,8 @@ val Typography = Typography(
     body2 = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        color = Color(0xFF16253D)
+        fontSize = 10.sp,
+        color = Color(0xFFEFB509)
     ),
     button = TextStyle(
         fontFamily = FontFamily.Default,

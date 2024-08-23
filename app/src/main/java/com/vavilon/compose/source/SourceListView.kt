@@ -12,12 +12,14 @@ import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
 import androidx.compose.ui.graphics.Color
+import com.vavilon.model.dataHandlers.SourceItemWrapper
+import com.vavilon.model.events.UserEvent
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun SourceListView(
     state: SourceState,
-    onEvent: (SourceEvent) -> Unit,
+    onEvent: (UserEvent) -> Unit,
 ) {
     val backgroundColor: Color = when (state.sourceCategory) {
         SourceCategories.INCOME -> VavilonTheme.colors.income2
@@ -32,7 +34,7 @@ fun SourceListView(
     ) {
         for (source: Source in state.sourceList) {
             SourceListItemView(
-                source = source,
+                item = SourceItemWrapper(source),
                 modifier = Modifier.background(backgroundColor),
                 onEvent = onEvent
             )

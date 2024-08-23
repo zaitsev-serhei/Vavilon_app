@@ -9,12 +9,17 @@ import java.util.Date
 class Transaction {
     constructor()
 
-    constructor(amount: Double, categoryId: Long, creationDate: Date) {
+    constructor(amount: Double, category: String, creationDate: Date) {
         this.amount = amount
-        this.categoryId = categoryId
+        this.category = category
         this.transactionDate = creationDate
     }
-
+    constructor(amount: Double, category: String, description: String, date: Date) {
+        this.amount = amount
+        this.category = category
+        this.transactionDate = date
+        this.description = description
+    }
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "transaction_id")
     var transactionId: Long = 0
@@ -26,7 +31,7 @@ class Transaction {
     var description: String = ""
 
     @ColumnInfo(name = "creation_date")
-    var transactionDate: Date? = null
+    var transactionDate: Date = Date()
 
     @ColumnInfo(name = "isRepeatable")
     var isRepeatable: Boolean = false
@@ -40,6 +45,6 @@ class Transaction {
     @ColumnInfo(name = "schedule_id")
     var schedule_id: Long = 0
 
-    @ColumnInfo(name = "category_id")
-    var categoryId: Long = 0
+    @ColumnInfo(name = "category_name")
+    var category: String = ""
 }
