@@ -50,7 +50,10 @@ fun HomeScreenView(
     sourceState: SourceState,
     transactionState: TransactionState,
     navController: NavController,
-    onEvent: (UserEvent) -> Unit
+    onEvent: (UserEvent) -> Unit,
+    onAddSource: () -> Unit,
+    onAddTransaction: () -> Unit,
+    onSaved: () -> Unit
 ) {
     val sourceEventHandler: (SourceEvent) -> Unit = { event ->
         onEvent(UserEvent.SourceEventWrapper(event))
@@ -60,7 +63,8 @@ fun HomeScreenView(
     }
     if (sourceState.isAddingNewSource) {
         AddNewSourceScreen(state = sourceState,
-            onEvent = sourceEventHandler)
+            onEvent = onEvent,
+            onSaved = onSaved)
     }
     if (transactionState.isAddingNewTransaction) {
         AddNewTransactionScreen(transactionState = transactionState,
@@ -96,7 +100,8 @@ fun HomeScreenView(
             Spacer(modifier = Modifier.height(10.dp))
             HomeStatisticMenu(sourceState = sourceState, transactionState = transactionState)
             Spacer(modifier = Modifier.height(10.dp))
-            ActionButtonsRow (userEvent = onEvent)
+            ActionButtonsRow (onAddSource = onAddSource,
+                onAddTransaction = onAddTransaction)
         }
     }
 }
@@ -287,6 +292,14 @@ fun HomeScreenPreview() {
         val tempList = listOf(source1, source2, source3, source4)
         val state = SourceState(tempList)
         val navController = rememberNavController()
-        HomeScreenView(state, transactionState = TransactionState(), navController = navController) {}
+        HomeScreenView(
+            state,
+            transactionState = TransactionState(),
+            navController = navController,
+            onAddSource = {},
+            onAddTransaction = {},
+            onEvent = {},
+            onSaved = {}
+        )
     }
 }

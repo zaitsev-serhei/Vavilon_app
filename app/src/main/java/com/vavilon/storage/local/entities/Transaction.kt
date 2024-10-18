@@ -9,12 +9,12 @@ import java.util.Date
 class Transaction {
     constructor()
 
-    constructor(amount: Double, category: String, creationDate: Date) {
+    constructor(amount: Double, category: String, creationDate: String) {
         this.amount = amount
         this.category = category
         this.transactionDate = creationDate
     }
-    constructor(amount: Double, category: String, description: String, date: Date) {
+    constructor(amount: Double, category: String, description: String, date: String) {
         this.amount = amount
         this.category = category
         this.transactionDate = date
@@ -31,7 +31,7 @@ class Transaction {
     var description: String = ""
 
     @ColumnInfo(name = "creation_date")
-    var transactionDate: Date = Date()
+    var transactionDate: String = ""
 
     @ColumnInfo(name = "isRepeatable")
     var isRepeatable: Boolean = false

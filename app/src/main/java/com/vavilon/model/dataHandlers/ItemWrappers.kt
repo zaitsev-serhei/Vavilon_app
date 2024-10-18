@@ -13,7 +13,7 @@ data class SourceItemWrapper(val source: Source): EntityItem {
         get() = source.sourceType
     override val balance: Double
         get() = source.currentBalance
-    override val creationDate: Date
+    override val creationDate: String
         get() = source.creationDate
 }
 
@@ -26,6 +26,6 @@ data class TransactionItemWrapper(val transaction:Transaction): EntityItem {
         get() = transaction.category
     override val balance: Double
         get() = transaction.amount
-    override val creationDate: Date
+    override val creationDate: String
         get() = transaction.transactionDate
 }

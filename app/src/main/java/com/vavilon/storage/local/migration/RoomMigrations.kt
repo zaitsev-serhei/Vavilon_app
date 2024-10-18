@@ -3,6 +3,7 @@ package com.vavilon.storage.local.migration
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
+
 val MIGRATION_1_2 = object: Migration(1,2) {
     override fun migrate(db: SupportSQLiteDatabase) {
         db.execSQL("""
@@ -92,6 +93,57 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
         db.execSQL("DROP TABLE transactions")
 
         // Переименовываем новую таблицу 'transactions'
+        db.execSQL("ALTER TABLE transactions_new RENAME TO transactions")
+    }
+
+}
+val MIGRATION_3_4: Migration = object : Migration(3, 4) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // Изменяем тип данных в столбцах creation_date для таблиц sources и transactions
+
+        // 1. Таблица sources
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS sources_new (" +
+                    "source_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "type TEXT NOT NULL, " +
+                    "title TEXT NOT NULL, " +
+                    "icon_id INTEGER, " +
+                    "description TEXT NOT NULL, " +
+                    "current_balance REAL NOT NULL, " +
+                    "total_balance REAL NOT NULL, " +
+                    "currency_id INTEGER NOT NULL, " +
+                    "isRepeatable INTEGER NOT NULL, " +
+                    "creation_date TEXT NOT NULL, " +
+                    "schedule_id INTEGER NOT NULL, " +
+                    "isDeleted INTEGER NOT NULL)"
+        )
+        db.execSQL(
+            ("INSERT INTO sources_new (source_id, type, title, icon_id, description, current_balance, total_balance, currency_id, isRepeatable, creation_date, schedule_id, isDeleted) " +
+                    "SELECT source_id, type, title, icon_id, description, current_balance, total_balance, currency_id, isRepeatable, creation_date, schedule_id, isDeleted " +
+                    "FROM sources")
+        )
+        db.execSQL("DROP TABLE sources")
+        db.execSQL("ALTER TABLE sources_new RENAME TO sources")
+
+        // 2. Таблица transactions
+        db.execSQL(
+            ("CREATE TABLE IF NOT EXISTS transactions_new (" +
+                    "transaction_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "amount REAL NOT NULL, " +
+                    "description TEXT NOT NULL DEFAULT '', " +
+                    "creation_date TEXT NOT NULL, " +
+                    "isRepeatable INTEGER NOT NULL, " +
+                    "currency_id INTEGER NOT NULL, " +
+                    "source_id INTEGER NOT NULL, " +
+                    "schedule_id INTEGER NOT NULL, " +
+                    "category_name TEXT NOT NULL)")
+        )
+        db.execSQL(
+            ("INSERT INTO transactions_new (transaction_id, amount, description, creation_date, isRepeatable, currency_id, source_id, schedule_id, category_name) " +
+                    "SELECT transaction_id, amount, description, creation_date, isRepeatable, currency_id, source_id, schedule_id, category_name " +
+                    "FROM transactions")
+        )
+        db.execSQL("DROP TABLE transactions")
         db.execSQL("ALTER TABLE transactions_new RENAME TO transactions")
     }
 }

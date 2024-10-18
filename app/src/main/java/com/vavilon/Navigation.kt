@@ -1,5 +1,6 @@
 package com.vavilon
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -10,18 +11,20 @@ import com.vavilon.compose.SourceScreenView
 import com.vavilon.compose.StatisticScreenView
 import com.vavilon.compose.TransactionScreenView
 import com.vavilon.compose.menu.BottomNavMenuItem
+import com.vavilon.compose.source.AddNewSourceScreen
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
+import com.vavilon.utils.Screen
 
 @Composable
 fun Navigation(
     modifier: Modifier,
     sourceState: SourceState,
     transactionState: TransactionState,
-    onEvent: (UserEvent)->Unit
+    onEvent: (UserEvent) -> Unit
 ) {
 
     val navController = rememberNavController()
@@ -31,7 +34,10 @@ fun Navigation(
                 sourceState = sourceState,
                 transactionState = transactionState,
                 navController = navController,
-                onEvent = onEvent
+                onEvent = onEvent,
+                onAddSource = { navController.navigate(route = Screen.AddNewEntityScreen.route) },
+                onAddTransaction = { navController.navigate(route = Screen.AddNewEntityScreen.route) },
+                onSaved = {}
             )
         }
         composable(route = BottomNavMenuItem.Source.route) {
@@ -43,13 +49,25 @@ fun Navigation(
             )
         }
         composable(route = BottomNavMenuItem.Statistic.route) {
-            StatisticScreenView(navController = navController, modifier = modifier)
+            StatisticScreenView(
+                navController = navController,
+                modifier = modifier
+            )
         }
         composable(route = BottomNavMenuItem.Transaction.route) {
-            TransactionScreenView(navController = navController,
+            TransactionScreenView(
+                navController = navController,
                 transactionState = transactionState,
                 onEvent = onEvent,
-                modifier = modifier)
+                modifier = modifier
+            )
+        }
+        composable(route = Screen.AddNewEntityScreen.route) {
+            Log.d("Source to save", "New Source: ${sourceState.isAddingNewSource}")
+            AddNewSourceScreen(
+                state = sourceState.copy(isAddingNewSource = true),
+                onEvent = onEvent,
+                onSaved = { navController.navigate(route = Screen.HomeScreen.route) })
         }
     }
 }

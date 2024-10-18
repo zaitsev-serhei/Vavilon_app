@@ -118,10 +118,10 @@ private fun ChartPreview() {
         BarChartTransaction(
             transactionState = TransactionState(
                 listOf(
-                    Transaction(1005.0, "Income", Date()),
-                    Transaction(1805.0, "Food", Date()),
-                    Transaction(1005.0, "Rent", Date()),
-                    Transaction(1005.0, "Income", Date())
+                    Transaction(1005.0, "Income", Date().toString()),
+                    Transaction(1805.0, "Food", Date().toString()),
+                    Transaction(1005.0, "Rent", Date().toString()),
+                    Transaction(1005.0, "Income", Date().toString())
                 )
             )
         )

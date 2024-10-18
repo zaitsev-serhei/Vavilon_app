@@ -21,7 +21,6 @@ import androidx.navigation.compose.rememberNavController
 import com.vavilon.compose.chart.BarChartTransaction
 import com.vavilon.compose.menu.BottomNavigation
 import com.vavilon.compose.transaction.VerticalTransactionListView
-import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.TransactionState
 import com.vavilon.storage.local.entities.Transaction
@@ -80,10 +79,10 @@ private fun TransactionTransactionScreenPreview() {
         val navController = rememberNavController()
         TransactionScreenView(navController = navController, transactionState = TransactionState(
             listOf(
-                Transaction(1005.0, "Income", Date()),
-                Transaction(1805.0, "Food", Date()),
-                Transaction(1005.0, "Rent", Date()),
-                Transaction(1005.0, "Income", Date())
+                Transaction(1005.0, "Income", Date().toString()),
+                Transaction(1805.0, "Food", Date().toString()),
+                Transaction(1005.0, "Rent", Date().toString()),
+                Transaction(1005.0, "Income", Date().toString())
             )
         ), onEvent = {}, modifier = Modifier
         )

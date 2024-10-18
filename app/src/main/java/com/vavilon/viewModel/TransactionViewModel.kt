@@ -8,6 +8,7 @@ import com.vavilon.model.TransactionCategories
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.repositories.TransactionRepository
 import com.vavilon.model.states.TransactionState
+import com.vavilon.storage.local.Converter
 import com.vavilon.storage.local.entities.Transaction
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,8 +67,10 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                     return
                 }
                 viewModelScope.launch {
+                    val currentDate = Date()
+                    val formattedDate = Converter.dateToTimestamp(currentDate)
                     val transaction =
-                        Transaction(amount, category.getTransactionCategory(), description, Date())
+                        Transaction(amount, category.getTransactionCategory(), description, formattedDate?:"")
                     Log.d("Add transaction", "Before save: ${category.getTransactionCategory()}")
                     transactionRepository.createTransaction(transaction)
                     Log.d("Add transaction", "After save: ${category.getTransactionCategory()}")

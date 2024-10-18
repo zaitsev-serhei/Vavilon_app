@@ -107,9 +107,11 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                         val source = Source(sourceType.getSrcCategory(), name, description, balance)
                         Log.d("Source to save", "New Source: ${source.toString()}")
                         sourceRepository.createSource(source)
+                        _state.update { it.copy(isSourceAdded = true) }
                     }
                 }
                 _state.update {
+                    Log.d("Source to save", "New Source: ${it.isAddingNewSource}")
                     it.copy(
                         isAddingNewSource = false,
                         isEditingSource = false,
@@ -118,8 +120,10 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                         sourceCategory = SourceCategories.INCOME,
                         description = "",
                         balance = 0.0,
+                        isSourceAdded = false
                     )
                 }
+                Log.d("Source to save", "New Source: ${state.value.isAddingNewSource}")
             }
 
             is SourceEvent.SetBalance -> {
@@ -183,7 +187,12 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                 _state.update {
                     it.copy(
                         isAddingNewSource = false,
-                        isEditingSource = false
+                        isEditingSource = false,
+                        sourceId = 0,
+                        name = "",
+                        sourceCategory = SourceCategories.INCOME,
+                        description = "",
+                        balance = 0.0,
                     )
                 }
             }

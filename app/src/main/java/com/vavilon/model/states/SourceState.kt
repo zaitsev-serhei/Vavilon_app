@@ -19,7 +19,8 @@ data class SourceState(
     val totalIncome: Double = 0.0,
     val totalExpense: Double = 0.0,
     val totalSavings: Double = 0.0,
-    val currentBalance: Double = 0.0
+    val currentBalance: Double = 0.0,
+    val isSourceAdded: Boolean = false
 ) {
     override fun toString(): String {
         return "SourceState(sourceId=$sourceId, name='$name',\n" +
