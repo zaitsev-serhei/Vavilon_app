@@ -12,8 +12,7 @@ import com.vavilon.compose.StatisticScreenView
 import com.vavilon.compose.TransactionScreenView
 import com.vavilon.compose.menu.BottomNavMenuItem
 import com.vavilon.compose.source.AddNewSourceScreen
-import com.vavilon.model.events.SourceEvent
-import com.vavilon.model.events.TransactionEvent
+import com.vavilon.compose.transaction.AddNewTransactionScreen
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
@@ -35,8 +34,8 @@ fun Navigation(
                 transactionState = transactionState,
                 navController = navController,
                 onEvent = onEvent,
-                onAddSource = { navController.navigate(route = Screen.AddNewEntityScreen.route) },
-                onAddTransaction = { navController.navigate(route = Screen.AddNewEntityScreen.route) },
+                onAddSource = { navController.navigate(route = Screen.AddNewSourceScreen.route) },
+                onAddTransaction = { navController.navigate(route = Screen.AddNewTransactionScreen.route) },
                 onSaved = {}
             )
         }
@@ -62,10 +61,15 @@ fun Navigation(
                 modifier = modifier
             )
         }
-        composable(route = Screen.AddNewEntityScreen.route) {
-            Log.d("Source to save", "New Source: ${sourceState.isAddingNewSource}")
+        composable(route = Screen.AddNewSourceScreen.route) {
             AddNewSourceScreen(
                 state = sourceState.copy(isAddingNewSource = true),
+                onEvent = onEvent,
+                onSaved = { navController.navigate(route = Screen.HomeScreen.route) })
+        }
+        composable(route = Screen.AddNewTransactionScreen.route) {
+            AddNewTransactionScreen(
+                transactionState = transactionState,
                 onEvent = onEvent,
                 onSaved = { navController.navigate(route = Screen.HomeScreen.route) })
         }

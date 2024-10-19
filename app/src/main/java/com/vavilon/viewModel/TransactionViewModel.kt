@@ -37,7 +37,7 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _state = MutableStateFlow(TransactionState())
-    val state = combine(_state, _transactionList) { state,  categorizedList ->
+    val state = combine(_state, _transactionList) { state, categorizedList ->
         Log.d("ViewModel", "Current state category: ${_state.value.transactionCategory}")
         Log.d("ViewModel", "Current _category: ${_category.value}")
         state.copy(
@@ -70,13 +70,21 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                     val currentDate = Date()
                     val formattedDate = Converter.dateToTimestamp(currentDate)
                     val transaction =
-                        Transaction(amount, category.getTransactionCategory(), description, formattedDate?:"")
-                    Log.d("Add transaction", "Before save: ${category.getTransactionCategory()}")
+                        Transaction(
+                            amount,
+                            category.getTransactionCategory(),
+                            description,
+                            formattedDate ?: ""
+                        )
                     transactionRepository.createTransaction(transaction)
                     Log.d("Add transaction", "After save: ${category.getTransactionCategory()}")
                 }
                 _state.update {
-                    TransactionState()
+                    it.copy(
+                        amount = 0.0,
+                        description = "",
+                        transactionCategory = TransactionCategories.ALL
+                    )
                 }
             }
 

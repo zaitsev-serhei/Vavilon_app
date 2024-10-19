@@ -61,15 +61,6 @@ fun HomeScreenView(
     val transactionEventHandler: (TransactionEvent) -> Unit = { event ->
         onEvent(UserEvent.TransactionEventWrapper(event))
     }
-    if (sourceState.isAddingNewSource) {
-        AddNewSourceScreen(state = sourceState,
-            onEvent = onEvent,
-            onSaved = onSaved)
-    }
-    if (transactionState.isAddingNewTransaction) {
-        AddNewTransactionScreen(transactionState = transactionState,
-            onEvent = transactionEventHandler)
-    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
