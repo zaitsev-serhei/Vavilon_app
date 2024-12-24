@@ -147,3 +147,28 @@ val MIGRATION_3_4: Migration = object : Migration(3, 4) {
         db.execSQL("ALTER TABLE transactions_new RENAME TO transactions")
     }
 }
+val MIGRATION_4_5: Migration = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        //adding new column "STATUS" for the transaction entity
+        db.execSQL(
+            ("CREATE TABLE IF NOT EXISTS transactions_new (" +
+                    "transaction_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "amount REAL NOT NULL, " +
+                    "description TEXT NOT NULL DEFAULT '', " +
+                    "status TEXT NOT NULL DEFAULT '',"+
+                    "creation_date TEXT NOT NULL, " +
+                    "isRepeatable INTEGER NOT NULL, " +
+                    "currency_id INTEGER NOT NULL, " +
+                    "source_id INTEGER NOT NULL, " +
+                    "schedule_id INTEGER NOT NULL, " +
+                    "category_name TEXT NOT NULL)")
+        )
+        db.execSQL(
+            ("INSERT INTO transactions_new (transaction_id, amount, description, creation_date, isRepeatable, currency_id, source_id, schedule_id, category_name) " +
+                    "SELECT transaction_id, amount, description, creation_date, isRepeatable, currency_id, source_id, schedule_id, category_name " +
+                    "FROM transactions")
+        )
+        db.execSQL("DROP TABLE transactions")
+        db.execSQL("ALTER TABLE transactions_new RENAME TO transactions")
+    }
+}

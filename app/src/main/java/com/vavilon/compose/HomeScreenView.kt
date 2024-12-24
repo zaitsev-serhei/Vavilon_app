@@ -33,9 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.vavilon.R
 import com.vavilon.compose.menu.ActionButtonsRow
 import com.vavilon.compose.menu.BottomNavigation
-import com.vavilon.compose.menu.HomeStatisticMenu
-import com.vavilon.compose.source.AddNewSourceScreen
-import com.vavilon.compose.transaction.AddNewTransactionScreen
+import com.vavilon.compose.menu.HomeCurrencyRates
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
@@ -89,7 +87,7 @@ fun HomeScreenView(
         )
         {
             Spacer(modifier = Modifier.height(10.dp))
-            HomeStatisticMenu(sourceState = sourceState, transactionState = transactionState)
+            HomeCurrencyRates()
             Spacer(modifier = Modifier.height(10.dp))
             ActionButtonsRow (onAddSource = onAddSource,
                 onAddTransaction = onAddTransaction)

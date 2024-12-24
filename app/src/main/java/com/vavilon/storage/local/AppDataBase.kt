@@ -1,7 +1,6 @@
 package com.vavilon.storage.local
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -24,6 +23,7 @@ import com.vavilon.storage.local.entities.User
 import com.vavilon.storage.local.migration.MIGRATION_1_2
 import com.vavilon.storage.local.migration.MIGRATION_2_3
 import com.vavilon.storage.local.migration.MIGRATION_3_4
+import com.vavilon.storage.local.migration.MIGRATION_4_5
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
         TotalBalance::class, Transaction::class,
         TransactionCategory::class, User::class],
     exportSchema = true,
-    version = 4
+    version = 5
 )
 @TypeConverters(value = [Converter::class])
 abstract class AppDataBase : RoomDatabase() {
@@ -52,7 +52,7 @@ abstract class AppDataBase : RoomDatabase() {
                 context,
                 AppDataBase::class.java, "vavilon_app_db"
             )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .fallbackToDestructiveMigration()
                 .addCallback(AppDBCallBack())
                 .build()

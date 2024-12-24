@@ -3,7 +3,6 @@ package com.vavilon.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vavilon.model.CategoryTypes
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.repositories.TransactionRepository
@@ -63,6 +62,7 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                 val category = state.value.transactionCategory
                 val description = state.value.description
                 val amount = state.value.amount
+                val status = state.value.status
                 if (amount <= 0) {
                     return
                 }
@@ -73,6 +73,7 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                         Transaction(
                             amount,
                             category.getTransactionCategory(),
+                            status.getTransactionStatus(),
                             description,
                             formattedDate ?: ""
                         )
