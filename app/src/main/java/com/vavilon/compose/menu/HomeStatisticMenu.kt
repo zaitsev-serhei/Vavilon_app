@@ -31,45 +31,25 @@ import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
-fun HomeStatisticMenu(
-    sourceState: SourceState,
-    transactionState: TransactionState
+fun HomeCurrencyRates(
+
 ) {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(100.dp)
             .background(VavilonTheme.colors.backgroundUI)
     ) {
-        val cardWidth = maxWidth / 2
-        val cardHeight = maxHeight / 2
+        val cardWidth = maxWidth
+        val cardHeight = maxHeight
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                SourceAdaptiveCard(
-                    sourceState = sourceState,
-                    cardWidth = cardWidth,
-                    cardHeight = cardHeight,
-                    modifier = Modifier.weight(1f)
-                )
-                TransactionAdaptiveCard(
-                    transactionState = transactionState,
-                    cardWidth = cardWidth,
-                    cardHeight = cardHeight,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
             ) {
                 CurrencyExchangeAdaptiveCard(
                     cardWidth = cardWidth,
@@ -392,9 +372,7 @@ fun CryptoAdaptiveCard(
 @Composable
 private fun PreviewManu() {
     VavilonTheme {
-        HomeStatisticMenu(
-            sourceState = SourceState(),
-            transactionState = TransactionState()
+        HomeCurrencyRates(
         )//, transactionState = TransactionState() )
     }
 

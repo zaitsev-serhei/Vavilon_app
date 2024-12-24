@@ -35,7 +35,6 @@ fun SourceScreenView(
         onEvent(UserEvent.SourceEventWrapper(event))
     }
     if (state.isEditingSource) {
-        Log.d("Source to edit", "Current Source: ${state.sourceId}")
         EditSourceScreen(state = state, onEvent = sourceEventHandler)
     }
     Scaffold(

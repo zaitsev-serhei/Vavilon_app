@@ -29,7 +29,8 @@ import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun ActionButtonsRow(
-    userEvent: (UserEvent) -> Unit
+    onAddSource:() -> Unit,
+    onAddTransaction:() -> Unit
 ) {
     val context = LocalContext.current
     Row(modifier = Modifier
@@ -41,7 +42,7 @@ fun ActionButtonsRow(
             .size(90.dp)
             .padding(5.dp)
             .clickable {
-                userEvent(UserEvent.SourceEventWrapper(SourceEvent.AddSource))
+                onAddSource()
             }
             ) {
             Column(
@@ -63,7 +64,7 @@ fun ActionButtonsRow(
             .size(90.dp)
             .padding(5.dp)
             .clickable {
-                userEvent(UserEvent.TransactionEventWrapper(TransactionEvent.ShowDialog))
+                onAddTransaction()
             }
         ) {
             Column(
@@ -116,6 +117,6 @@ fun ActionButtonsRow(
 @Composable
 private fun PreviewActionRow() {
     VavilonTheme {
-        ActionButtonsRow(userEvent = {})
+        ActionButtonsRow(onAddTransaction = {}, onAddSource = {})
     }
 }

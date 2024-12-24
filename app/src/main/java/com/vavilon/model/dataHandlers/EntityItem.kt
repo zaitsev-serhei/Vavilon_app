@@ -7,5 +7,5 @@ interface EntityItem {
     val description: String
     val type: String
     val balance: Double
-    val creationDate: Date
+    val creationDate: String
 }

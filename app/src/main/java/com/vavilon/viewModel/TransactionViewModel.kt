@@ -3,11 +3,11 @@ package com.vavilon.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vavilon.model.CategoryTypes
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.repositories.TransactionRepository
 import com.vavilon.model.states.TransactionState
+import com.vavilon.storage.local.Converter
 import com.vavilon.storage.local.entities.Transaction
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +36,7 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _state = MutableStateFlow(TransactionState())
-    val state = combine(_state, _transactionList) { state,  categorizedList ->
+    val state = combine(_state, _transactionList) { state, categorizedList ->
         Log.d("ViewModel", "Current state category: ${_state.value.transactionCategory}")
         Log.d("ViewModel", "Current _category: ${_category.value}")
         state.copy(
@@ -62,18 +62,30 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                 val category = state.value.transactionCategory
                 val description = state.value.description
                 val amount = state.value.amount
+                val status = state.value.status
                 if (amount <= 0) {
                     return
                 }
                 viewModelScope.launch {
+                    val currentDate = Date()
+                    val formattedDate = Converter.dateToTimestamp(currentDate)
                     val transaction =
-                        Transaction(amount, category.getTransactionCategory(), description, Date())
-                    Log.d("Add transaction", "Before save: ${category.getTransactionCategory()}")
+                        Transaction(
+                            amount,
+                            category.getTransactionCategory(),
+                            status.getTransactionStatus(),
+                            description,
+                            formattedDate ?: ""
+                        )
                     transactionRepository.createTransaction(transaction)
                     Log.d("Add transaction", "After save: ${category.getTransactionCategory()}")
                 }
                 _state.update {
-                    TransactionState()
+                    it.copy(
+                        amount = 0.0,
+                        description = "",
+                        transactionCategory = TransactionCategories.ALL
+                    )
                 }
             }
 

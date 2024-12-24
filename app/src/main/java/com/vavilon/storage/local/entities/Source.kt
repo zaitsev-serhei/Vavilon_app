@@ -51,7 +51,7 @@ class Source {
     var isRepeatable = false
 
     @ColumnInfo(name = "creation_date")
-    var creationDate: Date = Date()
+    var creationDate: String = ""
 
     @ColumnInfo(name = "schedule_id")
     var scheduleId: Long = 0

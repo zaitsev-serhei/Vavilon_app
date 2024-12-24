@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.vavilon.compose.source.SourceListItemView
+import com.vavilon.compose.source.EntityItemRowView
 import com.vavilon.model.dataHandlers.TransactionItemWrapper
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.TransactionState
@@ -26,7 +26,7 @@ fun VerticalTransactionListView(
             .padding(top = 10.dp, start = 15.dp, end = 15.dp)
     ) {
         items(transactionState.transactionList) { transaction ->
-            SourceListItemView(
+            EntityItemRowView(
                 item = TransactionItemWrapper(transaction),
                 modifier = Modifier.background(VavilonTheme.colors.primaryElement),
                 onEvent = userEvent

@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.vavilon.model.SourceCategories
-import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.storage.local.entities.Source
 import androidx.compose.ui.graphics.Color
@@ -33,7 +32,7 @@ fun SourceListView(
             .padding(top = 10.dp, start = 15.dp, end = 15.dp)
     ) {
         for (source: Source in state.sourceList) {
-            SourceListItemView(
+            EntityItemRowView(
                 item = SourceItemWrapper(source),
                 modifier = Modifier.background(backgroundColor),
                 onEvent = onEvent

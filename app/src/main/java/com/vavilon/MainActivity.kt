@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity() {
                     when (event) {
                         is UserEvent.SourceEventWrapper -> sourceViewModel.onEvent(event.event)
                         is UserEvent.TransactionEventWrapper -> transactionViewModel.onEvent(event.event)
+                        else -> {}
                     }
                 }
                 Navigation(modifier = Modifier.fillMaxSize(),

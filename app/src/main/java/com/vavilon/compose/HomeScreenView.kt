@@ -33,9 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.vavilon.R
 import com.vavilon.compose.menu.ActionButtonsRow
 import com.vavilon.compose.menu.BottomNavigation
-import com.vavilon.compose.menu.HomeStatisticMenu
-import com.vavilon.compose.source.AddNewSourceScreen
-import com.vavilon.compose.transaction.AddNewTransactionScreen
+import com.vavilon.compose.menu.HomeCurrencyRates
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
@@ -50,21 +48,16 @@ fun HomeScreenView(
     sourceState: SourceState,
     transactionState: TransactionState,
     navController: NavController,
-    onEvent: (UserEvent) -> Unit
+    onEvent: (UserEvent) -> Unit,
+    onAddSource: () -> Unit,
+    onAddTransaction: () -> Unit,
+    onSaved: () -> Unit
 ) {
     val sourceEventHandler: (SourceEvent) -> Unit = { event ->
         onEvent(UserEvent.SourceEventWrapper(event))
     }
     val transactionEventHandler: (TransactionEvent) -> Unit = { event ->
         onEvent(UserEvent.TransactionEventWrapper(event))
-    }
-    if (sourceState.isAddingNewSource) {
-        AddNewSourceScreen(state = sourceState,
-            onEvent = sourceEventHandler)
-    }
-    if (transactionState.isAddingNewTransaction) {
-        AddNewTransactionScreen(transactionState = transactionState,
-            onEvent = transactionEventHandler)
     }
     Scaffold(
         modifier = Modifier
@@ -94,9 +87,10 @@ fun HomeScreenView(
         )
         {
             Spacer(modifier = Modifier.height(10.dp))
-            HomeStatisticMenu(sourceState = sourceState, transactionState = transactionState)
+            HomeCurrencyRates()
             Spacer(modifier = Modifier.height(10.dp))
-            ActionButtonsRow (userEvent = onEvent)
+            ActionButtonsRow (onAddSource = onAddSource,
+                onAddTransaction = onAddTransaction)
         }
     }
 }
@@ -287,6 +281,14 @@ fun HomeScreenPreview() {
         val tempList = listOf(source1, source2, source3, source4)
         val state = SourceState(tempList)
         val navController = rememberNavController()
-        HomeScreenView(state, transactionState = TransactionState(), navController = navController) {}
+        HomeScreenView(
+            state,
+            transactionState = TransactionState(),
+            navController = navController,
+            onAddSource = {},
+            onAddTransaction = {},
+            onEvent = {},
+            onSaved = {}
+        )
     }
 }
