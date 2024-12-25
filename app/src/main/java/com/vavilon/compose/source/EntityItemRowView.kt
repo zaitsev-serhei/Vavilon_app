@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vavilon.R
+import com.vavilon.model.ItemStatus
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.dataHandlers.EntityItem
 import com.vavilon.model.dataHandlers.SourceItemWrapper
@@ -172,6 +173,7 @@ private fun PreviewListItem2() {
                 Transaction(
                     amount = 1250.0,
                     category = "Income",
+                    status = ItemStatus.COMPLETE,
                     description = "Salary",
                     date = Date().toString(),
                 )

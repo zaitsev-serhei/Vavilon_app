@@ -1,6 +1,7 @@
 package com.vavilon.storage.local
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -33,8 +34,9 @@ import kotlinx.coroutines.launch
         Source::class, Currency::class,
         TotalBalance::class, Transaction::class,
         TransactionCategory::class, User::class],
+    autoMigrations = [AutoMigration(5,6)],
     exportSchema = true,
-    version = 5
+    version = 6
 )
 @TypeConverters(value = [Converter::class])
 abstract class AppDataBase : RoomDatabase() {
@@ -84,8 +86,6 @@ abstract class AppDataBase : RoomDatabase() {
             val demoSources = listOf(
                 Source("Income", "Primary Account", "Main banking account", 500.0),
                 Source("Income", "Salary", "Salary paid every month", 2000.0),
-                Source("Expense", "Cash", "Cash in wallet", 100.0),
-                Source("Expense", "Food", "Shopping", 400.0),
                 Source("Saving", "Stocks", "Stock market investments", 5000.0)
             )
             demoSources.forEach { sourceDAO.insert(it) }
