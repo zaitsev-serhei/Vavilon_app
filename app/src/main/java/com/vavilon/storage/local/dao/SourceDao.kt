@@ -29,7 +29,6 @@ interface SourceDao {
     fun getSourceListSortedLastAdded(category: String): Flow<List<Source>>
     @Query("SELECT * FROM sources WHERE isDeleted = 0 AND type = :category")
     fun getSourceListSortedType(category: String): Flow<List<Source>>
-
     @Query("SELECT type, SUM(current_balance) AS total  FROM sources WHERE isDeleted = 0 GROUP BY type")
     fun getTotals():Flow<Map<@MapColumn(columnName = "type")String,@MapColumn(columnName = "total")Double>>
     @Query("SELECT type, COUNT(*) AS count FROM sources WHERE isDeleted = 0 GROUP BY type")

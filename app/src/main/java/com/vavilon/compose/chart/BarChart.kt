@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
+import com.vavilon.model.ItemStatus
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.states.TransactionState
 import com.vavilon.storage.local.entities.Transaction
@@ -118,10 +119,10 @@ private fun ChartPreview() {
         BarChartTransaction(
             transactionState = TransactionState(
                 listOf(
-                    Transaction(1005.0, "Income", Date().toString()),
-                    Transaction(1805.0, "Food", Date().toString()),
-                    Transaction(1005.0, "Rent", Date().toString()),
-                    Transaction(1005.0, "Income", Date().toString())
+                    Transaction(1005.0, "Income", ItemStatus.COMPLETE,"", Date().toString()),
+                    Transaction(1805.0, "Food",ItemStatus.COMPLETE,"", Date().toString()),
+                    Transaction(1005.0, "Rent",ItemStatus.COMPLETE,"", Date().toString()),
+                    Transaction(1005.0, "Income",ItemStatus.COMPLETE,"", Date().toString())
                 )
             )
         )

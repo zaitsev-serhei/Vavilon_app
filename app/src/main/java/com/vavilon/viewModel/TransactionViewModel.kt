@@ -73,7 +73,7 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                         Transaction(
                             amount,
                             category.getTransactionCategory(),
-                            status.getTransactionStatus(),
+                            status,
                             description,
                             formattedDate ?: ""
                         )
@@ -101,11 +101,9 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
             }
 
             is TransactionEvent.SetCategory -> {
-                Log.d("ViewModel", "Category before update: ${_state.value.transactionCategory}")
                 _state.update {
                     it.copy(transactionCategory = event.category)
                 }
-                Log.d("ViewModel", "Category after update: ${_state.value.transactionCategory}")
             }
 
             is TransactionEvent.SetDescription -> _state.update {
