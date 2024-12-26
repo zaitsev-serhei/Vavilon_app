@@ -19,4 +19,8 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions "
             + "WHERE transactions.category_name = :category")
     fun getTransactionsByCategory(category:String): Flow<List<Transaction>>
+
+    @Query("SELECT * FROM transactions " +
+            "WHERE source_id = :sourceId")
+    fun getTransactionsForSource(sourceId:Long):Flow<List<Transaction>>
 }

@@ -14,8 +14,13 @@ interface PlanDao {
     @Update
     suspend fun update(plan:Plan)
 
-    @Query("SELECT * FROM plan WHERE id= :planId")
+    @Query("SELECT * FROM `plan` WHERE id= :planId")
     fun getPlan(planId:Long): Flow<Plan>
-    @Query("SELECT * FROM plan ")
+
+    @Query("SELECT * FROM `plan` WHERE status='INPROCESS'")
+    fun getCurrentPlan():Flow<Plan>
+
+    @Query("SELECT * FROM `plan` ")
     fun getAllPlans():Flow<List<Plan>>
+    // TODO: add the table to DB and create a migration for  new table. Start working on PlanViewModel
 }

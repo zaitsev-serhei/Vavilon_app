@@ -10,12 +10,14 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.vavilon.model.CategoryTypes
 import com.vavilon.model.TransactionCategories
 import com.vavilon.storage.local.dao.CurrencyDao
+import com.vavilon.storage.local.dao.PlanDao
 import com.vavilon.storage.local.dao.SourceDao
 import com.vavilon.storage.local.dao.TotalDao
 import com.vavilon.storage.local.dao.TransactionCategoryDao
 import com.vavilon.storage.local.dao.TransactionDao
 import com.vavilon.storage.local.dao.UserDao
 import com.vavilon.storage.local.entities.Currency
+import com.vavilon.storage.local.entities.Plan
 import com.vavilon.storage.local.entities.Source
 import com.vavilon.storage.local.entities.TotalBalance
 import com.vavilon.storage.local.entities.Transaction
@@ -33,10 +35,10 @@ import kotlinx.coroutines.launch
     entities = [
         Source::class, Currency::class,
         TotalBalance::class, Transaction::class,
-        TransactionCategory::class, User::class],
-    autoMigrations = [AutoMigration(5,6)],
+        TransactionCategory::class, User::class, Plan::class],
+    autoMigrations = [AutoMigration(5,6), AutoMigration(6,7)],
     exportSchema = true,
-    version = 6
+    version = 7
 )
 @TypeConverters(value = [Converter::class])
 abstract class AppDataBase : RoomDatabase() {
@@ -98,4 +100,5 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun UserDao(): UserDao
     abstract fun CurrencyDao(): CurrencyDao
     abstract fun TransactionCategoryDao(): TransactionCategoryDao
+    abstract fun PlanDao(): PlanDao
 }

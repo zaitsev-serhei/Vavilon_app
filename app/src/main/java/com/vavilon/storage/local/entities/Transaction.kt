@@ -9,7 +9,7 @@ import com.vavilon.model.ItemStatus
 class Transaction {
     constructor()
 
-    constructor(amount: Double, category: String, creationDate: String, status:ItemStatus) {
+    constructor(amount: Double, category: String, creationDate: String, status: ItemStatus) {
         this.amount = amount
         this.category = category
         this.transactionDate = creationDate
@@ -25,6 +25,22 @@ class Transaction {
     ) {
         this.amount = amount
         this.category = category
+        this.description = description
+        this.status = status
+        this.transactionDate = creationDate
+    }
+
+    constructor(
+        amount: Double,
+        category: String,
+        status: ItemStatus,
+        source: Long,
+        description: String,
+        creationDate: String,
+    ) {
+        this.amount = amount
+        this.category = category
+        this.sourceId = source
         this.description = description
         this.status = status
         this.transactionDate = creationDate
