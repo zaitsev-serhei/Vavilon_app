@@ -22,6 +22,8 @@ import com.vavilon.storage.local.entities.Source
 import com.vavilon.storage.local.entities.TotalBalance
 import com.vavilon.storage.local.entities.Transaction
 import com.vavilon.storage.local.entities.TransactionCategory
+import com.vavilon.storage.local.entities.TransactionForPlan
+import com.vavilon.storage.local.entities.TransactionForSource
 import com.vavilon.storage.local.entities.User
 import com.vavilon.storage.local.migration.MIGRATION_1_2
 import com.vavilon.storage.local.migration.MIGRATION_2_3
@@ -35,10 +37,11 @@ import kotlinx.coroutines.launch
     entities = [
         Source::class, Currency::class,
         TotalBalance::class, Transaction::class,
-        TransactionCategory::class, User::class, Plan::class],
-    autoMigrations = [AutoMigration(5,6), AutoMigration(6,7)],
+        TransactionCategory::class, User::class,
+        Plan::class, TransactionForPlan::class,
+               TransactionForSource::class],
     exportSchema = true,
-    version = 7
+    version = 1
 )
 @TypeConverters(value = [Converter::class])
 abstract class AppDataBase : RoomDatabase() {
@@ -56,7 +59,7 @@ abstract class AppDataBase : RoomDatabase() {
                 context,
                 AppDataBase::class.java, "vavilon_app_db"
             )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                //.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .fallbackToDestructiveMigration()
                 .addCallback(AppDBCallBack())
                 .build()

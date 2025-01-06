@@ -38,9 +38,6 @@ class Plan {
     @ColumnInfo(name = "source_id")
     var source_id: Long = 0
 
-    @ColumnInfo(name = "transaction_id")
-    var transactionId: Long = 0
-
     @ColumnInfo(name = "creation_date")
     var creationDate: String = ""
 

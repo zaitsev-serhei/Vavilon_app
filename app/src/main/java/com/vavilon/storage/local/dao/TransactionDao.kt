@@ -10,9 +10,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TransactionDao {
     @Insert
-    suspend fun insert(transaction: Transaction)
+    suspend fun insert(transaction: Transaction):Long
     @Update
     suspend fun update(transaction: Transaction)
+    @Query("INSERT INTO transaction_for_source (source_id,transaction_id) " +
+            "VALUES(:sourceId,:transactionId)")
+    suspend fun insertTransactionForSource(sourceId:Long,transactionId:Long)
+//    suspend fun updateTransactionForSource(sourceId:Long,transactionId:Long)
     @Query("SELECT * FROM transactions ORDER BY creation_date ASC")
     fun getAllTransactions(): Flow<List<Transaction>>
 
@@ -20,7 +24,7 @@ interface TransactionDao {
             + "WHERE transactions.category_name = :category")
     fun getTransactionsByCategory(category:String): Flow<List<Transaction>>
 
-    @Query("SELECT * FROM transactions " +
+    /*@Query("SELECT * FROM transactions " +
             "WHERE source_id = :sourceId")
-    fun getTransactionsForSource(sourceId:Long):Flow<List<Transaction>>
+    fun getTransactionsForSource(sourceId:Long):Flow<List<Transaction>>*/
 }

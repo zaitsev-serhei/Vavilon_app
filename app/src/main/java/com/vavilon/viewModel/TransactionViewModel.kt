@@ -63,6 +63,7 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                 val description = state.value.description
                 val amount = state.value.amount
                 val status = state.value.status
+                val sourceId = state.value.currentSourceId
                 if (amount <= 0) {
                     return
                 }
@@ -77,13 +78,14 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                             description,
                             formattedDate ?: ""
                         )
-                    transactionRepository.createTransaction(transaction)
+                    transactionRepository.createTransaction(transaction, sourceId)
                     Log.d("Add transaction", "After save: ${category.getTransactionCategory()}")
                 }
                 _state.update {
                     it.copy(
                         amount = 0.0,
                         description = "",
+                        currentSourceId = 0,
                         transactionCategory = TransactionCategories.ALL
                     )
                 }
@@ -115,6 +117,12 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
             TransactionEvent.ShowDialog -> _state.update {
                 it.copy(
                     isAddingNewTransaction = true
+                )
+            }
+            //to develop better solution for the transaction creation
+            is TransactionEvent.SetSourceId -> _state.update {
+                it.copy(
+                    currentSourceId = event.sourceId
                 )
             }
         }

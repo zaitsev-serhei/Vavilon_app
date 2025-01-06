@@ -70,6 +70,7 @@ fun Navigation(
         composable(route = Screen.AddNewTransactionScreen.route) {
             AddNewTransactionScreen(
                 transactionState = transactionState,
+                sourceState = sourceState,
                 onEvent = onEvent,
                 onSaved = { navController.navigate(route = Screen.HomeScreen.route) })
         }

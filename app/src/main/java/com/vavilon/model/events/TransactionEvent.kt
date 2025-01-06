@@ -11,4 +11,6 @@ sealed interface TransactionEvent {
     data class SetDescription(val description: String) : TransactionEvent
     data class SetAmount(val amount: Double) : TransactionEvent
     data class SetCategory(val category: TransactionCategories) : TransactionEvent
+
+    data class SetSourceId(val sourceId: Long) : TransactionEvent
 }

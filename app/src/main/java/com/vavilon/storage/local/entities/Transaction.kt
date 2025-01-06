@@ -33,22 +33,6 @@ class Transaction {
     constructor(
         amount: Double,
         category: String,
-        status: ItemStatus,
-        source: Long,
-        description: String,
-        creationDate: String,
-    ) {
-        this.amount = amount
-        this.category = category
-        this.sourceId = source
-        this.description = description
-        this.status = status
-        this.transactionDate = creationDate
-    }
-
-    constructor(
-        amount: Double,
-        category: String,
         description: String,
         status: ItemStatus,
         date: String,
@@ -81,9 +65,6 @@ class Transaction {
 
     @ColumnInfo(name = "currency_id")
     var currencyId: Long = 0
-
-    @ColumnInfo(name = "source_id")
-    var sourceId: Long = 0
 
     @ColumnInfo(name = "schedule_id")
     var schedule_id: Long = 0
