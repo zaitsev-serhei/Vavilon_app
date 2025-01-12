@@ -21,11 +21,13 @@ class Transaction {
         category: String,
         status: ItemStatus,
         description: String,
+        sourceId: Long,
         creationDate: String,
     ) {
         this.amount = amount
         this.category = category
         this.description = description
+        this.sourceId = sourceId
         this.status = status
         this.transactionDate = creationDate
     }
@@ -59,6 +61,9 @@ class Transaction {
 
     @ColumnInfo(name = "creation_date")
     var transactionDate: String = ""
+
+    @ColumnInfo(name = "source_id")
+    var sourceId: Long = 0
 
     @ColumnInfo(name = "isRepeatable")
     var isRepeatable: Boolean = false

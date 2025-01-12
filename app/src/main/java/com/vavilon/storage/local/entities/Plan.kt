@@ -2,7 +2,6 @@ package com.vavilon.storage.local.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.vavilon.model.ItemStatus
 
@@ -23,7 +22,7 @@ class Plan {
         this.status = status
         this.creationDate = creationDate
         this.startDate = startDate
-        this.endtDate = endDate
+        this.endDate = endDate
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -35,9 +34,6 @@ class Plan {
     @ColumnInfo(name = "status")
     var status: ItemStatus
 
-    @ColumnInfo(name = "source_id")
-    var source_id: Long = 0
-
     @ColumnInfo(name = "creation_date")
     var creationDate: String = ""
 
@@ -45,6 +41,6 @@ class Plan {
     var startDate: String = ""
 
     @ColumnInfo(name = "end")
-    var endtDate: String = ""
+    var endDate: String = ""
 
 }

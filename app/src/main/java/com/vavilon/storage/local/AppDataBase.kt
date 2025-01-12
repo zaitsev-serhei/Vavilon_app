@@ -19,6 +19,7 @@ import com.vavilon.storage.local.dao.UserDao
 import com.vavilon.storage.local.entities.Currency
 import com.vavilon.storage.local.entities.Plan
 import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.SourceForPlan
 import com.vavilon.storage.local.entities.TotalBalance
 import com.vavilon.storage.local.entities.Transaction
 import com.vavilon.storage.local.entities.TransactionCategory
@@ -39,7 +40,7 @@ import kotlinx.coroutines.launch
         TotalBalance::class, Transaction::class,
         TransactionCategory::class, User::class,
         Plan::class, TransactionForPlan::class,
-               TransactionForSource::class],
+        TransactionForSource::class, SourceForPlan::class],
     exportSchema = true,
     version = 1
 )

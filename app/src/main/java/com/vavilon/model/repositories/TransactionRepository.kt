@@ -19,10 +19,10 @@ class TransactionRepository @Inject constructor(private val transactionDao: Tran
     fun getAllTransactionList() = transactionList
 
     fun getCategoriesMap() = categoriesMap
-    suspend fun createTransaction(transaction: Transaction,sourceId:Long) {
+    suspend fun createTransaction(transaction: Transaction) {
         withContext(Dispatchers.IO) {
             val trId = transactionDao.insert(transaction)
-            transactionDao.insertTransactionForSource(sourceId,trId)
+            transactionDao.insertTransactionForSource(transaction.sourceId,trId)
         }
     }
 

@@ -7,9 +7,11 @@ import com.vavilon.storage.local.entities.Plan
 import com.vavilon.storage.local.entities.Source
 import com.vavilon.storage.local.entities.Transaction
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,24 +24,33 @@ class PlanRepository @Inject constructor(
 ) {
     private val planList = planDao.getAllPlans()
     private val currentPlan = planDao.getCurrentPlan()
-    private val planItems:Map<Source,List<Transaction>> = HashMap()
+    private val planItems: Map<Source, List<Transaction>> = HashMap()
     fun getPlan() = planItems
 
-    suspend fun initializePlanItems() {
-        if (currentPlan.firstOrNull()!=null){
-            var sourceList = currentPlan.first()
-        }
-
-    }
-    suspend fun createPlan(plan:Plan){
+    suspend fun createPlan(plan: Plan) {
         withContext(Dispatchers.IO) {
             planDao.insert(plan)
         }
     }
-    suspend fun updatePlan(plan:Plan){
+
+    suspend fun updatePlan(plan: Plan) {
         withContext(Dispatchers.IO) {
             planDao.update(plan)
         }
     }
 
+    fun getTransactionsForPlan(planId: Long): Flow<List<Transaction>> {
+        return planDao.getPlanTransactionList(planId)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun getPlannedSourceItems(planId: Long): Flow<Map<Source, List<Transaction>>> {
+        return planDao.getPlanSourceList(planId).flatMapLatest { sourceList ->
+            planDao.getPlanTransactionList(planId).map { transactionList ->
+                sourceList.associateWith { source ->
+                    transactionList.filter { transaction -> transaction.sourceId == source.sourceId }
+                }
+            }
+        }
+    }
 }

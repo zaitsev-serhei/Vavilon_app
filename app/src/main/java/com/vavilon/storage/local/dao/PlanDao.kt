@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.vavilon.storage.local.entities.Plan
+import com.vavilon.storage.local.entities.Source
 import com.vavilon.storage.local.entities.Transaction
 import kotlinx.coroutines.flow.Flow
 
@@ -24,10 +25,13 @@ interface PlanDao {
     @Query("SELECT * FROM `plan` ")
     fun getAllPlans():Flow<List<Plan>>
     // TODO: add the table to DB and create a migration for  new table. Start working on PlanViewModel
-    @Query("SELECT * FROM transactions")
-    fun getPlanItems():Flow<List<Transaction>>
-    // TODO: function to search items for current plan -- need to find the way to indicate items for current Plan
-    /* SELECT * FROM transactions as tr
-     left join transaction_for_plan as trInPlan on trInPlan.transaction_id = tr.transaction_id
- */
+    @Query("SELECT t.* FROM transactions as t " +
+            "INNER JOIN transaction_for_plan as tfp ON tfp.transaction_id = t.transaction_id " +
+            "WHERE tfp.plan_id =:planId")
+    fun getPlanTransactionList(planId: Long):Flow<List<Transaction>>
+
+    @Query("Select * FROM sources as s " +
+            "INNER JOIN source_for_plan as sfp ON sfp.source_id = s.source_id " +
+            "WHERE sfp.plan_id = :planId")
+    fun getPlanSourceList(planId: Long):Flow<List<Source>>
 }

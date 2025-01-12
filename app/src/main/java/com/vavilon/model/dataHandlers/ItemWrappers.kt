@@ -2,7 +2,6 @@ package com.vavilon.model.dataHandlers
 
 import com.vavilon.storage.local.entities.Source
 import com.vavilon.storage.local.entities.Transaction
-import java.util.Date
 
 data class SourceItemWrapper(val source: Source): EntityItem {
     override val title: String

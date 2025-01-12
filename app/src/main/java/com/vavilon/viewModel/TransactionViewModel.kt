@@ -76,9 +76,10 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                             category.getTransactionCategory(),
                             status,
                             description,
+                            sourceId,
                             formattedDate ?: ""
                         )
-                    transactionRepository.createTransaction(transaction, sourceId)
+                    transactionRepository.createTransaction(transaction)
                     Log.d("Add transaction", "After save: ${category.getTransactionCategory()}")
                 }
                 _state.update {
@@ -90,7 +91,6 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                     )
                 }
             }
-
 
             TransactionEvent.HideDialog -> _state.update {
                 TransactionState()
