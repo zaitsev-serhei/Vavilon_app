@@ -47,12 +47,13 @@ fun BarChartTransaction(transactionState: TransactionState) {
     val spacing = 10.dp
     val canvasHeight = 200.dp
     val canvasWidth = (transactionCounts.size * (barWidth + spacing))
-    Row (Modifier
-        .fillMaxWidth()
-        .padding(start = 5.dp, end = 10.dp, top = 5.dp),
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(start = 5.dp, end = 10.dp, top = 5.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween
-    ){
+    ) {
         Canvas(
             modifier = Modifier
                 .height(canvasHeight)
@@ -67,7 +68,10 @@ fun BarChartTransaction(transactionState: TransactionState) {
                 val color = transactionColors[category] ?: Color.LightGray
                 drawRect(
                     color = color,
-                    topLeft = androidx.compose.ui.geometry.Offset(currentX, size.height - barHeight),
+                    topLeft = androidx.compose.ui.geometry.Offset(
+                        currentX,
+                        size.height - barHeight
+                    ),
                     size = androidx.compose.ui.geometry.Size(barWidth.toPx(), barHeight)
                 )
                 currentX += barWidth.toPx() + spacing.toPx()
@@ -119,10 +123,10 @@ private fun ChartPreview() {
         BarChartTransaction(
             transactionState = TransactionState(
                 listOf(
-                    Transaction(1005.0, "Income", ItemStatus.COMPLETE,"", Date().toString()),
-                    Transaction(1805.0, "Food",ItemStatus.COMPLETE,"", Date().toString()),
-                    Transaction(1005.0, "Rent",ItemStatus.COMPLETE,"", Date().toString()),
-                    Transaction(1005.0, "Income",ItemStatus.COMPLETE,"", Date().toString())
+                    Transaction(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString()),
+                    Transaction(1805.0, "Food", "", ItemStatus.COMPLETE, Date().toString()),
+                    Transaction(1005.0, "Rent", "", ItemStatus.COMPLETE, Date().toString()),
+                    Transaction(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString())
                 )
             )
         )

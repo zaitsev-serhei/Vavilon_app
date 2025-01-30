@@ -78,14 +78,15 @@ fun TransactionScreenView(
 private fun TransactionTransactionScreenPreview() {
     VavilonTheme {
         val navController = rememberNavController()
-        TransactionScreenView(navController = navController, transactionState = TransactionState(
-            listOf(
-                Transaction(1005.0, "Income",ItemStatus.COMPLETE,"", Date().toString()),
-                Transaction(1805.0, "Food",ItemStatus.COMPLETE,"", Date().toString()),
-                Transaction(1005.0, "Rent",ItemStatus.COMPLETE,"", Date().toString()),
-                Transaction(1005.0, "Income",ItemStatus.COMPLETE,"", Date().toString())
-            )
-        ), onEvent = {}, modifier = Modifier
+        TransactionScreenView(
+            navController = navController, transactionState = TransactionState(
+                listOf(
+                    Transaction(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString()),
+                    Transaction(1805.0, "Food", "", ItemStatus.COMPLETE, Date().toString()),
+                    Transaction(1005.0, "Rent", "", ItemStatus.COMPLETE, Date().toString()),
+                    Transaction(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString())
+                )
+            ), onEvent = {}, modifier = Modifier
         )
     }
 

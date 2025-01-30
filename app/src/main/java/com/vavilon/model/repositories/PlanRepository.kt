@@ -23,9 +23,8 @@ class PlanRepository @Inject constructor(
     private val sourceDao: SourceDao
 ) {
     private val planList = planDao.getAllPlans()
-    private val currentPlan = planDao.getCurrentPlan()
-    private val planItems: Map<Source, List<Transaction>> = HashMap()
-    fun getPlan() = planItems
+
+    fun getPlanList() = planList
 
     suspend fun createPlan(plan: Plan) {
         withContext(Dispatchers.IO) {

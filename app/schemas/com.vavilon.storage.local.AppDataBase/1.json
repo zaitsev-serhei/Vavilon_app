@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4a1e2aeb9fd896108416b02d536ee060",
+    "identityHash": "eb7157faa5d988e31fe6a2486487879d",
     "entities": [
       {
         "tableName": "sources",
@@ -168,7 +168,7 @@
       },
       {
         "tableName": "transactions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`transaction_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `amount` REAL NOT NULL, `description` TEXT NOT NULL DEFAULT '', `status` TEXT NOT NULL, `creation_date` TEXT NOT NULL, `isRepeatable` INTEGER NOT NULL, `currency_id` INTEGER NOT NULL, `schedule_id` INTEGER NOT NULL, `category_name` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`transaction_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `amount` REAL NOT NULL, `description` TEXT NOT NULL DEFAULT '', `status` TEXT NOT NULL, `creation_date` TEXT NOT NULL, `source_id` INTEGER NOT NULL, `isRepeatable` INTEGER NOT NULL, `currency_id` INTEGER NOT NULL, `schedule_id` INTEGER NOT NULL, `category_name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "transactionId",
@@ -199,6 +199,12 @@
             "fieldPath": "transactionDate",
             "columnName": "creation_date",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceId",
+            "columnName": "source_id",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -321,7 +327,7 @@
       },
       {
         "tableName": "plan",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `description` TEXT NOT NULL, `status` TEXT NOT NULL, `source_id` INTEGER NOT NULL, `creation_date` TEXT NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `description` TEXT NOT NULL, `status` TEXT NOT NULL, `creation_date` TEXT NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `tr_count` INTEGER NOT NULL, `completed_tr_count` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -342,12 +348,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "source_id",
-            "columnName": "source_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "creationDate",
             "columnName": "creation_date",
             "affinity": "TEXT",
@@ -360,9 +360,21 @@
             "notNull": true
           },
           {
-            "fieldPath": "endtDate",
+            "fieldPath": "endDate",
             "columnName": "end",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "transactionCount",
+            "columnName": "tr_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completedTransactionCount",
+            "columnName": "completed_tr_count",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -438,12 +450,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "source_for_plan",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `plan_id` INTEGER NOT NULL, `source_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "planId",
+            "columnName": "plan_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceId",
+            "columnName": "source_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a1e2aeb9fd896108416b02d536ee060')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eb7157faa5d988e31fe6a2486487879d')"
     ]
   }
 }

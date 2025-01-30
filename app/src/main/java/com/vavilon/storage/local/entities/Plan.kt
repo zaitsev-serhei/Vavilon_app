@@ -7,9 +7,6 @@ import com.vavilon.model.ItemStatus
 
 @Entity(tableName = "plan")
 class Plan {
-    constructor(status: ItemStatus) {
-        this.status = status
-    }
 
     constructor(
         description: String,
@@ -42,5 +39,11 @@ class Plan {
 
     @ColumnInfo(name = "end")
     var endDate: String = ""
+
+    @ColumnInfo(name = "tr_count")
+    var transactionCount: Long = 0
+
+    @ColumnInfo(name = "completed_tr_count")
+    var completedTransactionCount: Long = 0
 
 }
