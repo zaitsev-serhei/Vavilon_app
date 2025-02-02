@@ -13,8 +13,8 @@ sealed class BottomNavMenuItem(var route: String, var icon: Int, var label: Stri
     object Statistic : BottomNavMenuItem(Screen.StatisticScreen.route,
             R.drawable.ic_statistics,
             "Statistic")
-
     object Transaction : BottomNavMenuItem(Screen.TransactionScreen.route,
         R.drawable.ic_transactions,
         "Transaction")
+    object Plan: BottomNavMenuItem(Screen.Plan.route, R.drawable.ic_calendar_schedule,"Plan")
 }

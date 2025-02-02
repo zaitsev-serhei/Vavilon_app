@@ -56,14 +56,23 @@ abstract class AppDataBase : RoomDatabase() {
         }
 
         private fun buildDB(context: Context): AppDataBase {
+            deleteDatabaseFile(context, "vavilon_app_db")
             return Room.databaseBuilder(
                 context,
                 AppDataBase::class.java, "vavilon_app_db"
             )
                 //.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+
                 .fallbackToDestructiveMigration()
                 .addCallback(AppDBCallBack())
                 .build()
+        }
+        private fun deleteDatabaseFile(context: Context, databaseName: String) {
+            context.getDatabasePath(databaseName)?.let { dbFile ->
+                if (dbFile.exists()) {
+                    dbFile.delete()
+                }
+            }
         }
 
         private class AppDBCallBack : RoomDatabase.Callback() {

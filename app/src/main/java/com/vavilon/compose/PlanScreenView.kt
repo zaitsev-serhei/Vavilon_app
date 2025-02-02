@@ -13,8 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.vavilon.compose.chart.PieChartSources
 import com.vavilon.compose.menu.BottomNavigation
+import com.vavilon.compose.plan.PlanHorizontalCardView
 import com.vavilon.compose.source.SourceCategoryRowView
 import com.vavilon.compose.source.SourceListView
+import com.vavilon.model.events.PlanEvent
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.PlanState
 import com.vavilon.ui.theme.VavilonTheme
@@ -23,9 +25,12 @@ import com.vavilon.ui.theme.VavilonTheme
 fun PlanScreeView(
     modifier: Modifier,
     planState: PlanState,
-    navController:NavController,
-    onEvent:(UserEvent) -> Unit
+    navController: NavController,
+    onEvent: (UserEvent) -> Unit
 ) {
+    val planEventHandler: (PlanEvent) -> Unit = { event ->
+        onEvent(UserEvent.PlanEventWrapper(event))
+    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -42,8 +47,11 @@ fun PlanScreeView(
                 .background(VavilonTheme.colors.backgroundUI)
                 .padding(innerPadding)
         ) {
-            //screen content
-
+            PlanHorizontalCardView(
+                modifier = modifier,
+                planList = planState.planList,
+                onEvent = planEventHandler
+            )
         }
     }
 }

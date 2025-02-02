@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vavilon.compose.HomeScreenView
+import com.vavilon.compose.PlanScreeView
 import com.vavilon.compose.SourceScreenView
 import com.vavilon.compose.StatisticScreenView
 import com.vavilon.compose.TransactionScreenView
@@ -14,6 +15,7 @@ import com.vavilon.compose.menu.BottomNavMenuItem
 import com.vavilon.compose.source.AddNewSourceScreen
 import com.vavilon.compose.transaction.AddNewTransactionScreen
 import com.vavilon.model.events.UserEvent
+import com.vavilon.model.states.PlanState
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
 import com.vavilon.utils.Screen
@@ -23,6 +25,7 @@ fun Navigation(
     modifier: Modifier,
     sourceState: SourceState,
     transactionState: TransactionState,
+    planState: PlanState,
     onEvent: (UserEvent) -> Unit
 ) {
 
@@ -59,6 +62,14 @@ fun Navigation(
                 transactionState = transactionState,
                 onEvent = onEvent,
                 modifier = modifier
+            )
+        }
+        composable(route = BottomNavMenuItem.Plan.route) {
+            PlanScreeView(
+                modifier = modifier,
+                planState = planState,
+                navController = navController,
+                onEvent = onEvent
             )
         }
         composable(route = Screen.AddNewSourceScreen.route) {

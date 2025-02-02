@@ -21,6 +21,7 @@ fun BottomNavigation(navController: NavController) {
         BottomNavMenuItem.Source,
         BottomNavMenuItem.Statistic,
         BottomNavMenuItem.Transaction,
+        BottomNavMenuItem.Plan
     )
     BottomNavigation(
         backgroundColor = VavilonTheme.colors.backgroundUI,

@@ -66,7 +66,7 @@ fun TransactionScreenView(
             }
             Spacer(modifier = Modifier.height(10.dp))
             VerticalTransactionListView(
-                transactionState = transactionState,
+                transactionList = transactionState.transactionList,
                 userEvent = onEvent
             )
         }
