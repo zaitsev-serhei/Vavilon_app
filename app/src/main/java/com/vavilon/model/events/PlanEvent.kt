@@ -6,6 +6,6 @@ sealed interface PlanEvent {
     object SavePlan : PlanEvent
     object AddPlan : PlanEvent
     data class UpdatePlan(val plan: Plan) : PlanEvent
-    data class SetSourceId(val sourceId: Long) : PlanEvent
+    data class AddSourceToPlan(val sourceId: Long) : PlanEvent
     data class SetTransactionId(val transactionId: Long) : PlanEvent
 }

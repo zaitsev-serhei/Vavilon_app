@@ -12,6 +12,7 @@ import com.vavilon.compose.SourceScreenView
 import com.vavilon.compose.StatisticScreenView
 import com.vavilon.compose.TransactionScreenView
 import com.vavilon.compose.menu.BottomNavMenuItem
+import com.vavilon.compose.plan.PlanDetailsEditScreen
 import com.vavilon.compose.source.AddNewSourceScreen
 import com.vavilon.compose.transaction.AddNewTransactionScreen
 import com.vavilon.model.events.UserEvent
@@ -69,7 +70,8 @@ fun Navigation(
                 modifier = modifier,
                 planState = planState,
                 navController = navController,
-                onEvent = onEvent
+                onEvent = onEvent,
+                onPlanItemClick = {navController.navigate(route = Screen.EditPlanScreen.route)}
             )
         }
         composable(route = Screen.AddNewSourceScreen.route) {
@@ -84,6 +86,9 @@ fun Navigation(
                 sourceState = sourceState,
                 onEvent = onEvent,
                 onSaved = { navController.navigate(route = Screen.HomeScreen.route) })
+        }
+        composable(route = Screen.EditPlanScreen.route) {
+            PlanDetailsEditScreen(planState = planState, sourceState= sourceState, onAddTransactionClick = {navController.navigate(route = Screen.AddNewTransactionScreen.route)}, onEvent = onEvent)
         }
     }
 }

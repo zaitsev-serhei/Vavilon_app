@@ -28,7 +28,8 @@ import com.vavilon.ui.theme.VavilonTheme
 fun PlanHorizontalCardView(
     modifier: Modifier,
     planList: List<Plan>,
-    onEvent: (PlanEvent) -> Unit
+    onEvent: (PlanEvent) -> Unit,
+    onPlanItemClick: () -> Unit
 ) {
     if (planList.isEmpty()) {
         EmptyPlanListView(onEvent)
@@ -41,8 +42,8 @@ fun PlanHorizontalCardView(
                 .fillMaxWidth()
                 .background(VavilonTheme.colors.backgroundUI)
         ) {
-            items(planList) {plan ->
-                PlanCardItemView(plan = plan)
+            items(planList) { plan ->
+                PlanCardItemView(plan = plan, onPlanItemClick = onPlanItemClick)
             }
         }
     }
@@ -69,6 +70,5 @@ fun EmptyPlanListView(onEvent: (PlanEvent) -> Unit) {
                 tint = VavilonTheme.colors.backgroundIcon
             )
         }
-
     }
 }

@@ -56,7 +56,7 @@ abstract class AppDataBase : RoomDatabase() {
         }
 
         private fun buildDB(context: Context): AppDataBase {
-            deleteDatabaseFile(context, "vavilon_app_db")
+            //deleteDatabaseFile(context, "vavilon_app_db")
             return Room.databaseBuilder(
                 context,
                 AppDataBase::class.java, "vavilon_app_db"

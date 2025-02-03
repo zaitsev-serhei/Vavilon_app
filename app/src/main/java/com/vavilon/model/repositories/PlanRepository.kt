@@ -42,6 +42,12 @@ class PlanRepository @Inject constructor(
         return planDao.getPlanTransactionList(planId)
     }
 
+    suspend fun addSourceToPlan(planId: Long, sourceId: Long) {
+        withContext(Dispatchers.IO){
+            planDao.addSourceToPlan(planId,sourceId)
+        }
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPlannedSourceItems(planId: Long): Flow<Map<Source, List<Transaction>>> {
         return planDao.getPlanSourceList(planId).flatMapLatest { sourceList ->

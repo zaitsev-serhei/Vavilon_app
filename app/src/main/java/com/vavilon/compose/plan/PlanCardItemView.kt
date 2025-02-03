@@ -1,6 +1,7 @@
 package com.vavilon.compose.plan
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +27,10 @@ import java.util.Calendar
 import java.util.Locale
 
 @Composable
-fun PlanCardItemView(plan: Plan) {
+fun PlanCardItemView(
+    plan: Plan,
+    onPlanItemClick: () -> Unit
+) {
     val itemBackGroundColor = when (ItemStatus.entries.firstOrNull { status ->
         status == plan.status
     } ?: ItemStatus.PLANNED) {
@@ -54,7 +58,8 @@ fun PlanCardItemView(plan: Plan) {
             .shadow(
                 4.dp,
                 shape = RoundedCornerShape(20.dp)
-            ),
+            )
+            .clickable { onPlanItemClick() },
         shape = RoundedCornerShape(8.dp),
         backgroundColor = itemBackGroundColor
     ) {
@@ -95,20 +100,18 @@ fun PlanCardItemView(plan: Plan) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = plan.startDate ,
+                    text = plan.startDate,
                     style = Typography.body2,
                     color = textColor,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
-                    text = plan.endDate ,//source.sourceTitle
+                    text = plan.endDate,//source.sourceTitle
                     style = Typography.body2,
                     color = textColor,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
             }
-
-
         }
     }
 }
@@ -130,6 +133,6 @@ private fun PlanCardPreview() {
             )
         plan.transactionCount = 15
         plan.completedTransactionCount = 8
-        PlanCardItemView(plan = plan)
+        PlanCardItemView(plan = plan, {})
     }
 }

@@ -1,21 +1,16 @@
 package com.vavilon.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vavilon.model.ItemStatus
 import com.vavilon.model.events.PlanEvent
 import com.vavilon.model.repositories.PlanRepository
 import com.vavilon.model.states.PlanState
-import com.vavilon.storage.local.Converter
 import com.vavilon.storage.local.entities.Plan
-import com.vavilon.storage.local.entities.Source
-import com.vavilon.storage.local.entities.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -33,6 +28,7 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
             planRepository.getPlanList().collect { planList ->
                 val currentPlan =
                     planList.find { plan: Plan -> plan.status == ItemStatus.INPROCESS }
+                Log.d("PlanViewModel", "Current Plan [$currentPlan]")
                 if (currentPlan != null) {
                     fetchPlannedItems(currentPlan.id)
                 }
@@ -52,7 +48,6 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
         }
     }
 
-
     fun OnEvent(event: PlanEvent) {
         when (event) {
             PlanEvent.SavePlan -> {
@@ -64,9 +59,16 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
                 }
             }
 
-            is PlanEvent.SetSourceId -> {
-                _state.update {
-                    it.copy(sourceId = event.sourceId)
+            is PlanEvent.AddSourceToPlan -> {
+                val currentPlan = _state.value.currentPlan
+                Log.d("PlanViewModel", "Current Plan [$currentPlan]")
+                if (currentPlan != null) {
+                    viewModelScope.launch {
+                        planRepository.addSourceToPlan(currentPlan.id, event.sourceId)
+                        _state.update { it.copy(sourceId = event.sourceId) }
+                    }
+                } else {
+                    Log.d("PlanViewModel", "No active plan found!")
                 }
             }
 
@@ -109,6 +111,8 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
                 endDate = endDate
             )
             planRepository.createPlan(newPlan)
+            _state.update { it.copy(currentPlan = newPlan) }
+            Log.d("PlanViewModel", "Current Plan [$newPlan]")
         } else if (activePlans.size == 1) {
             calendar.add(Calendar.MONTH, 1)
             val nextMonth =
@@ -132,6 +136,8 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
                     endDate = endDate
                 )
                 planRepository.createPlan(newPlan)
+                _state.update { it.copy(currentPlan = newPlan) }
+                Log.d("PlanViewModel", "Current Plan [$newPlan]")
             } else {
                 _state.update {
                     it.copy(

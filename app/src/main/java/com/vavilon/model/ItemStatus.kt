@@ -2,7 +2,7 @@ package com.vavilon.model
 
 enum class ItemStatus( val status:String) {
     PLANNED("PLANNED"),
-    INPROCESS("IN PROCESS"),
+    INPROCESS("INPROCESS"),
     OVERDUE("OVERDUE"),
     COMPLETE("COMPLETE");
 
