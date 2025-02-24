@@ -1,7 +1,6 @@
 package com.vavilon.storage.local
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -16,30 +15,26 @@ import com.vavilon.storage.local.dao.TotalDao
 import com.vavilon.storage.local.dao.TransactionCategoryDao
 import com.vavilon.storage.local.dao.TransactionDao
 import com.vavilon.storage.local.dao.UserDao
-import com.vavilon.storage.local.entities.Currency
-import com.vavilon.storage.local.entities.Plan
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.CurrencyEntity
+import com.vavilon.storage.local.entities.PlanEntity
+import com.vavilon.storage.local.entities.SourceEntity
 import com.vavilon.storage.local.entities.SourceForPlan
 import com.vavilon.storage.local.entities.TotalBalance
-import com.vavilon.storage.local.entities.Transaction
-import com.vavilon.storage.local.entities.TransactionCategory
+import com.vavilon.storage.local.entities.TransactionEntity
+import com.vavilon.storage.local.entities.TransactionCategoryEntity
 import com.vavilon.storage.local.entities.TransactionForPlan
 import com.vavilon.storage.local.entities.TransactionForSource
-import com.vavilon.storage.local.entities.User
-import com.vavilon.storage.local.migration.MIGRATION_1_2
-import com.vavilon.storage.local.migration.MIGRATION_2_3
-import com.vavilon.storage.local.migration.MIGRATION_3_4
-import com.vavilon.storage.local.migration.MIGRATION_4_5
+import com.vavilon.storage.local.entities.UserEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(
     entities = [
-        Source::class, Currency::class,
-        TotalBalance::class, Transaction::class,
-        TransactionCategory::class, User::class,
-        Plan::class, TransactionForPlan::class,
+        SourceEntity::class, CurrencyEntity::class,
+        TotalBalance::class, TransactionEntity::class,
+        TransactionCategoryEntity::class, UserEntity::class,
+        PlanEntity::class, TransactionForPlan::class,
         TransactionForSource::class, SourceForPlan::class],
     exportSchema = true,
     version = 1
@@ -56,7 +51,7 @@ abstract class AppDataBase : RoomDatabase() {
         }
 
         private fun buildDB(context: Context): AppDataBase {
-            //deleteDatabaseFile(context, "vavilon_app_db")
+            deleteDatabaseFile(context, "vavilon_app_db")
             return Room.databaseBuilder(
                 context,
                 AppDataBase::class.java, "vavilon_app_db"
@@ -89,7 +84,7 @@ abstract class AppDataBase : RoomDatabase() {
 
         suspend fun setDefaultTransactionCategory(transactionCategoryDAO: TransactionCategoryDao) {
             val defaultCategories = TransactionCategories.entries.map { category ->
-                TransactionCategory(
+                TransactionCategoryEntity(
                     category.getTransactionCategory(),
                     CategoryTypes.DEFAULT.getCategoryType()
                 )
@@ -99,9 +94,9 @@ abstract class AppDataBase : RoomDatabase() {
 
         suspend fun setDefaultSources(sourceDAO: SourceDao) {
             val demoSources = listOf(
-                Source("Income", "Primary Account", "Main banking account", 500.0),
-                Source("Income", "Salary", "Salary paid every month", 2000.0),
-                Source("Saving", "Stocks", "Stock market investments", 5000.0)
+                SourceEntity("Income", "Primary Account", "Main banking account", 500.0),
+                SourceEntity("Income", "Salary", "Salary paid every month", 2000.0),
+                SourceEntity("Saving", "Stocks", "Stock market investments", 5000.0)
             )
             demoSources.forEach { sourceDAO.insert(it) }
         }

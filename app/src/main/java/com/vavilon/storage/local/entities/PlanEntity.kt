@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 import com.vavilon.model.ItemStatus
 
 @Entity(tableName = "plan")
-class Plan {
-
+class PlanEntity {
+    constructor()
     constructor(
         description: String,
         status: ItemStatus,
@@ -29,7 +29,7 @@ class Plan {
     var description: String = ""
 
     @ColumnInfo(name = "status")
-    var status: ItemStatus
+    var status: ItemStatus = ItemStatus.PLANNED
 
     @ColumnInfo(name = "creation_date")
     var creationDate: String = ""

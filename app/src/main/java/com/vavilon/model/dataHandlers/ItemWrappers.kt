@@ -1,9 +1,9 @@
 package com.vavilon.model.dataHandlers
 
-import com.vavilon.storage.local.entities.Source
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.SourceEntity
+import com.vavilon.storage.local.entities.TransactionEntity
 
-data class SourceItemWrapper(val source: Source): EntityItem {
+data class SourceItemWrapper(val source: SourceEntity): EntityItem {
     override val title: String
         get() = source.sourceTitle
     override val description: String
@@ -16,7 +16,7 @@ data class SourceItemWrapper(val source: Source): EntityItem {
         get() = source.creationDate
 }
 
-data class TransactionItemWrapper(val transaction:Transaction): EntityItem {
+data class TransactionItemWrapper(val transaction:TransactionEntity): EntityItem {
     override val title: String
         get() = transaction.category
     override val description: String

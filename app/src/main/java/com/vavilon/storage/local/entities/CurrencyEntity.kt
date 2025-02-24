@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "currencies")
-class Currency {
+class CurrencyEntity {
     @ColumnInfo(name = "currency_id")
     @PrimaryKey(autoGenerate = true)
     var currencyId: Long = 0

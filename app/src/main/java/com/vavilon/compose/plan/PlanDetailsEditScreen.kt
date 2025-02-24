@@ -1,19 +1,18 @@
 package com.vavilon.compose.plan
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -34,11 +33,12 @@ import com.vavilon.R
 import com.vavilon.compose.transaction.VerticalTransactionListView
 import com.vavilon.model.SourceCategories
 import com.vavilon.model.events.PlanEvent
+import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.PlanState
 import com.vavilon.model.states.SourceState
-import com.vavilon.storage.local.entities.Source
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.SourceEntity
+import com.vavilon.storage.local.entities.TransactionEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 import kotlinx.coroutines.launch
@@ -47,7 +47,8 @@ import kotlinx.coroutines.launch
 fun PlanDetailsEditScreen(
     planState: PlanState,
     sourceState: SourceState,
-    onAddTransactionClick:()->Unit,
+    onAddTransactionClick: () -> Unit,
+    onAddSourceButtonClick: () -> Unit,
     onEvent: (UserEvent) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -55,20 +56,29 @@ fun PlanDetailsEditScreen(
     val context = LocalContext.current
     var selectedCategory by remember { mutableStateOf<SourceCategories?>(null) }
 
-    var currentPlan = planState.currentPlan
-    var planItems = planState.planedItemsMap
+    val planItems = planState.planedItemsMap
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
             SourceSelectionSheet(
                 category = selectedCategory,
+                selectedSourcesSet = planItems.keys,
                 sourceState = sourceState,
                 onSourceSelected = { source ->
                     onEvent(UserEvent.PlanEventWrapper(PlanEvent.AddSourceToPlan(source.sourceId)))
+                    onEvent(
+                        UserEvent.TransactionEventWrapper(
+                            TransactionEvent.AddTransactionToPlan(
+                                source,
+                                planState.currentPlan.id
+                            )
+                        )
+                    )
                     Log.d("PlanDetails", "Source selected {$source}")
                     coroutineScope.launch { sheetState.hide() }
-                }
+                },
+                onAddSourceButtonClick = onAddSourceButtonClick
             )
         }
     ) {
@@ -80,12 +90,12 @@ fun PlanDetailsEditScreen(
             horizontalAlignment = Alignment.Start
         ) {
             val currentPlan = planState.currentPlan
-            if (currentPlan != null) {
-                Text(text = currentPlan.description)
-            } else {
+            if (currentPlan.description.isBlank()) {
                 Text(text = "Something went wrong!!!")
+            } else {
+                Text(text = currentPlan.description)
             }
-            PlanSourceCategoryRowView(
+            PlanItemsRowByCategoryView(
                 planedItemsMap = planState.planedItemsMap,
                 onAddSourceClick = { category: SourceCategories ->
                     selectedCategory = category
@@ -99,8 +109,8 @@ fun PlanDetailsEditScreen(
 
 
 @Composable
-fun PlanSourceCategoryRowView(
-    planedItemsMap: Map<Source, List<Transaction>>,
+fun PlanItemsRowByCategoryView(
+    planedItemsMap: Map<SourceEntity, List<TransactionEntity>>,
     onAddSourceClick: (SourceCategories) -> Unit,
     onAddTransactionClick: () -> Unit
 ) {
@@ -114,8 +124,9 @@ fun PlanSourceCategoryRowView(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-                .background(backgroundColor), verticalAlignment = Alignment.CenterVertically
+                .height(40.dp)
+                .background(backgroundColor),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
                 modifier = Modifier
@@ -126,7 +137,7 @@ fun PlanSourceCategoryRowView(
                 Text(
                     text = " ${
                         planedItemsMap.keys.count { source ->
-                            source.sourceType.equals(category.getSrcCategory())
+                            source.sourceType == category.getSrcCategory()
                         }
                     }"
                 )
@@ -139,7 +150,10 @@ fun PlanSourceCategoryRowView(
                     .padding(end = 5.dp)
                     .clickable {
                         when (category) {
-                            SourceCategories.INCOME, SourceCategories.SAVING -> onAddSourceClick(category)
+                            SourceCategories.INCOME, SourceCategories.SAVING -> onAddSourceClick(
+                                category
+                            )
+
                             SourceCategories.EXPENSE -> onAddTransactionClick()
                         }
                     },
@@ -147,10 +161,13 @@ fun PlanSourceCategoryRowView(
             )
         }
         val currentSource =
-            planedItemsMap.keys.find { source -> source.sourceType.equals(category.getSrcCategory()) }
+            planedItemsMap.keys.filter { source -> source.sourceType == category.getSrcCategory() }
         if (currentSource != null) {
-            VerticalTransactionListView(transactionList = planedItemsMap[currentSource]) {
+            currentSource.forEach { source ->
+                VerticalTransactionListView(transactionList = planedItemsMap[source]) {
+                }
             }
+
         } else {
             Text(text = "No Transaction for the Source!")
         }
@@ -160,24 +177,29 @@ fun PlanSourceCategoryRowView(
 @Composable
 fun SourceSelectionSheet(
     category: SourceCategories?,
+    selectedSourcesSet: Set<SourceEntity>,
     sourceState: SourceState,
-    onSourceSelected: (Source) -> Unit
+    onSourceSelected: (SourceEntity) -> Unit,
+    onAddSourceButtonClick: () -> Unit
 ) {
+    Log.d("PlanDetails", "Selected Source selected {$selectedSourcesSet}")
     val availableSources = sourceState.sourceList.filter { source ->
-        source.sourceType == category?.getSrcCategory()
+        source.sourceType == category?.getSrcCategory() && !selectedSourcesSet.contains(source)
     }
+    Log.d("PlanDetails", "Available Source selected {$availableSources}")
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(VavilonTheme.colors.helpElement)
-            .padding(16.dp)
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Select the Source", style = Typography.body1)
 
         if (availableSources.isEmpty()) {
             Button(
-                onClick = { /* Тут можно добавить логику для создания нового источника */ },
+                onClick = { onAddSourceButtonClick() },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Add new Source")
@@ -187,12 +209,14 @@ fun SourceSelectionSheet(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(50.dp)
                         .clickable { onSourceSelected(source) }
                         .padding(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = source.sourceDescription, style = Typography.body1)
                 }
+                Spacer(modifier = Modifier.height(2.dp))
             }
         }
     }

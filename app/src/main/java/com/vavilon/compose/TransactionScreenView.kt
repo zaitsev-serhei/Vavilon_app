@@ -24,7 +24,7 @@ import com.vavilon.compose.transaction.VerticalTransactionListView
 import com.vavilon.model.ItemStatus
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.TransactionState
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.TransactionEntity
 import com.vavilon.ui.theme.DarkBlue
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
@@ -81,10 +81,10 @@ private fun TransactionTransactionScreenPreview() {
         TransactionScreenView(
             navController = navController, transactionState = TransactionState(
                 listOf(
-                    Transaction(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString()),
-                    Transaction(1805.0, "Food", "", ItemStatus.COMPLETE, Date().toString()),
-                    Transaction(1005.0, "Rent", "", ItemStatus.COMPLETE, Date().toString()),
-                    Transaction(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString())
+                    TransactionEntity(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1805.0, "Food", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1005.0, "Rent", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString())
                 )
             ), onEvent = {}, modifier = Modifier
         )

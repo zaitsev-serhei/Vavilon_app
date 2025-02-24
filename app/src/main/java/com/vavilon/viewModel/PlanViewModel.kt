@@ -7,7 +7,7 @@ import com.vavilon.model.ItemStatus
 import com.vavilon.model.events.PlanEvent
 import com.vavilon.model.repositories.PlanRepository
 import com.vavilon.model.states.PlanState
-import com.vavilon.storage.local.entities.Plan
+import com.vavilon.storage.local.entities.PlanEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,13 +27,13 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
         viewModelScope.launch {
             planRepository.getPlanList().collect { planList ->
                 val currentPlan =
-                    planList.find { plan: Plan -> plan.status == ItemStatus.INPROCESS }
+                    planList.find { plan: PlanEntity -> plan.status == ItemStatus.INPROCESS }
                 Log.d("PlanViewModel", "Current Plan [$currentPlan]")
                 if (currentPlan != null) {
                     fetchPlannedItems(currentPlan.id)
-                }
-                _state.update { state ->
-                    state.copy(currentPlan = currentPlan, planList = planList)
+                    _state.update { state ->
+                        state.copy(currentPlan = currentPlan, planList = planList)
+                    }
                 }
                 currentPlan?.let { fetchPlannedItems(it.id) }
             }
@@ -42,7 +42,7 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
 
     private fun fetchPlannedItems(planId: Long) {
         viewModelScope.launch {
-            planRepository.getPlannedSourceItems(planId).collect { map ->
+            planRepository.getPlannedItems(planId).collect { map ->
                 _state.update { it.copy(planedItemsMap = map) }
             }
         }
@@ -100,7 +100,7 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
         if (currentPlans.isEmpty()) {
             val (startDate, endDate) = getMonthRange(calendar)
 
-            val newPlan = Plan(
+            val newPlan = PlanEntity(
                 description = "Plan for $currentMonth $currentYear",
                 status = ItemStatus.INPROCESS,
                 creationDate = SimpleDateFormat(
@@ -125,7 +125,7 @@ class PlanViewModel @Inject constructor(private val planRepository: PlanReposito
             }
             if (!existingNextMonthPlan) {
                 val (startDate, endDate) = getMonthRange(calendar)
-                val newPlan = Plan(
+                val newPlan = PlanEntity(
                     description = "Plan for $nextMonth $nextYear",
                     status = ItemStatus.PLANNED,
                     creationDate = SimpleDateFormat(

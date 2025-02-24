@@ -71,7 +71,7 @@ fun Navigation(
                 planState = planState,
                 navController = navController,
                 onEvent = onEvent,
-                onPlanItemClick = {navController.navigate(route = Screen.EditPlanScreen.route)}
+                onPlanItemClick = { navController.navigate(route = Screen.EditPlanScreen.route) }
             )
         }
         composable(route = Screen.AddNewSourceScreen.route) {
@@ -88,7 +88,13 @@ fun Navigation(
                 onSaved = { navController.navigate(route = Screen.HomeScreen.route) })
         }
         composable(route = Screen.EditPlanScreen.route) {
-            PlanDetailsEditScreen(planState = planState, sourceState= sourceState, onAddTransactionClick = {navController.navigate(route = Screen.AddNewTransactionScreen.route)}, onEvent = onEvent)
+            PlanDetailsEditScreen(
+                planState = planState,
+                sourceState = sourceState,
+                onAddTransactionClick = { navController.navigate(route = Screen.AddNewTransactionScreen.route) },
+                onAddSourceButtonClick = { navController.navigate(route = Screen.AddNewSourceScreen.route) },
+                onEvent = onEvent
+            )
         }
     }
 }

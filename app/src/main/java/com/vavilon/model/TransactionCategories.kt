@@ -10,7 +10,8 @@ enum class TransactionCategories(val category: String) {
     RESTAURANTS("Restaurants"),
     ONETIME("One-time"),
     INCOME("Income"),
-    CUSTOM("Custom");
+    CUSTOM("Custom"),
+    SAVING("Saving");
 
     fun getTransactionCategory(): String {
         return category

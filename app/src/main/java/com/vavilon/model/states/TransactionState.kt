@@ -3,15 +3,16 @@ package com.vavilon.model.states
 import com.vavilon.model.CategoryTypes
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.ItemStatus
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.TransactionEntity
 
 data class TransactionState(
-    val transactionList: List<Transaction> = emptyList(),
+    val transactionList: List<TransactionEntity> = emptyList(),
     val categoriesList: List<String> = emptyList(),
     val amount: Double = 0.0,
     val transactionId: Long = 0,
     val description: String = "",
     val currentSourceId: Long = 0,
+    val currentPlanId : Long = 0,
     val status: ItemStatus = ItemStatus.COMPLETE,
     val type: CategoryTypes = CategoryTypes.DEFAULT,
     val transactionCategory: TransactionCategories = TransactionCategories.ALL,

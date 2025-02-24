@@ -1,8 +1,7 @@
 package com.vavilon.model.events
 
 import com.vavilon.model.TransactionCategories
-import com.vavilon.storage.local.entities.Source
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.SourceEntity
 
 sealed interface TransactionEvent {
     object SaveTransaction : TransactionEvent
@@ -11,6 +10,7 @@ sealed interface TransactionEvent {
     data class SetDescription(val description: String) : TransactionEvent
     data class SetAmount(val amount: Double) : TransactionEvent
     data class SetCategory(val category: TransactionCategories) : TransactionEvent
-
     data class SetSourceId(val sourceId: Long) : TransactionEvent
+    data class SetPlanId(val planId: Long) : TransactionEvent
+    data class AddTransactionToPlan(val source: SourceEntity, val planId: Long) : TransactionEvent
 }

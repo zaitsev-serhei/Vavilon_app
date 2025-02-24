@@ -2,7 +2,7 @@ package com.vavilon.model.repositories
 
 import com.vavilon.model.SourceCategories
 import com.vavilon.storage.local.dao.SourceDao
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.SourceEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -15,39 +15,39 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
 
     fun getAllSourcesList() = sourceList
 
-    suspend fun createSource(source: Source) {
+    suspend fun createSource(source: SourceEntity) {
         withContext(Dispatchers.IO) {
             sourceDao.insert(source)
         }
     }
 
-    fun getSource(id: Long): Flow<Source> {
+    fun getSource(id: Long): Flow<SourceEntity> {
         return sourceDao.getSource(id)
     }
 
-    suspend fun updateSource(source: Source) {
+    suspend fun updateSource(source: SourceEntity) {
         withContext(Dispatchers.IO) {
             sourceDao.update(source)
         }
     }
 
-    fun getSourceListAsc(category: SourceCategories): Flow<List<Source>> {
+    fun getSourceListAsc(category: SourceCategories): Flow<List<SourceEntity>> {
         return sourceDao.getSourceListSortedAsc(category.getSrcCategory())
     }
 
-    fun getSourceListDesc(category: SourceCategories): Flow<List<Source>> {
+    fun getSourceListDesc(category: SourceCategories): Flow<List<SourceEntity>> {
         return sourceDao.getSourceListSortedDesc(category.getSrcCategory())
     }
 
-    fun getSourceListSortedBalanceAsc(category: SourceCategories): Flow<List<Source>> {
+    fun getSourceListSortedBalanceAsc(category: SourceCategories): Flow<List<SourceEntity>> {
         return sourceDao.getSourceListSortedBalance(category.getSrcCategory())
     }
 
-    fun getSourceListCreationDate(category: SourceCategories): Flow<List<Source>> {
+    fun getSourceListCreationDate(category: SourceCategories): Flow<List<SourceEntity>> {
         return sourceDao.getSourceListSortedLastAdded(category.getSrcCategory())
     }
 
-    fun getSourceListSortedType(category: SourceCategories): Flow<List<Source>> {
+    fun getSourceListSortedType(category: SourceCategories): Flow<List<SourceEntity>> {
         return sourceDao.getSourceListSortedType(category.getSrcCategory())
     }
 
@@ -60,7 +60,7 @@ class SourceRepository @Inject constructor(private val sourceDao: SourceDao) {
         return sourceDao.getSourceCounter()
     }
 
-    suspend fun deleteSource(source: Source) {
+    suspend fun deleteSource(source: SourceEntity) {
         source.isDeleted = true
         withContext(Dispatchers.IO) {
             sourceDao.update(source)

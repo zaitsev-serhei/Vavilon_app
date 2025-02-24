@@ -19,7 +19,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vavilon.model.ItemStatus
-import com.vavilon.storage.local.entities.Plan
+import com.vavilon.storage.local.entities.PlanEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 import java.text.SimpleDateFormat
@@ -28,7 +28,7 @@ import java.util.Locale
 
 @Composable
 fun PlanCardItemView(
-    plan: Plan,
+    plan: PlanEntity,
     onPlanItemClick: () -> Unit
 ) {
     val itemBackGroundColor = when (ItemStatus.entries.firstOrNull { status ->
@@ -124,7 +124,7 @@ private fun PlanCardPreview() {
         val startDate =
             SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
         val plan =
-            Plan(
+            PlanEntity(
                 "Plan January 2024",
                 ItemStatus.INPROCESS,
                 startDate,

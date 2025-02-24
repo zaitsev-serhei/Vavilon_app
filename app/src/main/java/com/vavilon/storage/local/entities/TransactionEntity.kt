@@ -2,14 +2,20 @@ package com.vavilon.storage.local.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.vavilon.model.ItemStatus
 
 @Entity(tableName = "transactions")
-class Transaction {
+class TransactionEntity {
     constructor()
 
-    constructor(amount: Double, category: String, creationDate: String, status: ItemStatus) {
+    constructor(
+        amount: Double,
+        category: String,
+        creationDate: String,
+        status: ItemStatus
+    ) {
         this.amount = amount
         this.category = category
         this.transactionDate = creationDate
@@ -76,4 +82,5 @@ class Transaction {
 
     @ColumnInfo(name = "category_name")
     var category: String = ""
+
 }

@@ -20,14 +20,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.vavilon.R
 import com.vavilon.model.events.PlanEvent
-import com.vavilon.storage.local.entities.Plan
+import com.vavilon.storage.local.entities.PlanEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun PlanHorizontalCardView(
     modifier: Modifier,
-    planList: List<Plan>,
+    planList: List<PlanEntity>,
     onEvent: (PlanEvent) -> Unit,
     onPlanItemClick: () -> Unit
 ) {

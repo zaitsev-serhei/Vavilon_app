@@ -2,10 +2,10 @@ package com.vavilon.model.states
 
 import com.vavilon.model.SortTypes
 import com.vavilon.model.SourceCategories
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.SourceEntity
 
 data class SourceState(
-    val sourceList: List<Source> = emptyList(),
+    val sourceList: List<SourceEntity> = emptyList(),
     val sourceId: Long = 0,
     val name: String = "",
     val sourceCategory: SourceCategories = SourceCategories.INCOME,

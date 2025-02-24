@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.times
 import com.vavilon.model.ItemStatus
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.states.TransactionState
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.TransactionEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 import java.util.Date
@@ -123,10 +123,10 @@ private fun ChartPreview() {
         BarChartTransaction(
             transactionState = TransactionState(
                 listOf(
-                    Transaction(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString()),
-                    Transaction(1805.0, "Food", "", ItemStatus.COMPLETE, Date().toString()),
-                    Transaction(1005.0, "Rent", "", ItemStatus.COMPLETE, Date().toString()),
-                    Transaction(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString())
+                    TransactionEntity(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1805.0, "Food", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1005.0, "Rent", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString())
                 )
             )
         )

@@ -4,11 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import java.util.Date
 
 @Entity(tableName = "sources")
-class Source {
+class SourceEntity {
     constructor()
     constructor(
         sourceType: String,
@@ -36,7 +34,7 @@ class Source {
     var iconId: Int? = null
 
     @ColumnInfo(name = "description")
-    var sourceDescription: String =""
+    var sourceDescription: String = ""
 
     @ColumnInfo(name = "current_balance")
     var currentBalance: Double = 0.0
@@ -61,9 +59,8 @@ class Source {
 
     @Ignore
     override fun toString(): String {
-        return "Source(sourceId=$sourceId, sourceType='$sourceType',\n" +
+        return "SourceEntity(sourceId=$sourceId, sourceType='$sourceType',\n" +
                 " sourceTitle='$sourceTitle', sourceDescription='$sourceDescription',\n" +
                 " currentBalance=$currentBalance)"
     }
-
 }

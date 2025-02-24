@@ -39,7 +39,7 @@ import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.SourceEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
@@ -274,10 +274,10 @@ fun CurrentStatisticView(state: SourceState) {
 )
 fun HomeScreenPreview() {
     VavilonTheme {
-        val source1 = Source("work", "work", "", 1000.0)
-        val source2 = Source("work", "work", "", 1000.0)
-        val source3 = Source("work", "work", "", 1000.0)
-        val source4 = Source("work", "work", "", 1000.0)
+        val source1 = SourceEntity("work", "work", "", 1000.0)
+        val source2 = SourceEntity("work", "work", "", 1000.0)
+        val source3 = SourceEntity("work", "work", "", 1000.0)
+        val source4 = SourceEntity("work", "work", "", 1000.0)
         val tempList = listOf(source1, source2, source3, source4)
         val state = SourceState(tempList)
         val navController = rememberNavController()

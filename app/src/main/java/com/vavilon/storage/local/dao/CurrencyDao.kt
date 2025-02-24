@@ -4,15 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.vavilon.storage.local.entities.Currency
-import java.util.Locale
+import com.vavilon.storage.local.entities.CurrencyEntity
 
 @Dao
 interface CurrencyDao {
     @Insert
-    fun insert(currency: Currency)
+    fun insert(currencyEntity: CurrencyEntity)
     @Update
-    fun update(currency: Currency)
+    fun update(currencyEntity: CurrencyEntity)
     @Query("SELECT * FROM currencies")
-    fun getAll(): List<Currency>
+    fun getAll(): List<CurrencyEntity>
 }
