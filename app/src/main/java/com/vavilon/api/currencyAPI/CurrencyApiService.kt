@@ -9,7 +9,8 @@ interface CurrencyApiService {
     @GET("/latest.json")
     suspend fun getExchangeRatesForBase(
         @Query("app_id") appId: String = APP_ID,
-        @Query("base") baseCurrency: String ="UAH",
-        @Query("symbols") symbols:String = "USD,EUR,GBP"
+        //current API_ID supports base = USD only cause it`s free
+        @Query("base") baseCurrency: String ="USD",
+        @Query("symbols") symbols:String = "UAH,EUR,GBP"
     ):CurrencyResponse
 }

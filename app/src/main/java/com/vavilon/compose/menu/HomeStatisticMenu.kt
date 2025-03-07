@@ -232,7 +232,7 @@ fun CurrencyExchangeAdaptiveCard(
     modifier: Modifier = Modifier
 ) {
     val icons =
-        intArrayOf(R.drawable.ic_dollar_sign, R.drawable.ic_euro_sign, R.drawable.ic_pound_sign)
+        intArrayOf( R.drawable.ic_euro_sign, R.drawable.ic_pound_sign, R.drawable.ic_hryvnia_sign)
     Card(
         modifier = modifier
             .padding(5.dp)
@@ -261,7 +261,7 @@ fun CurrencyExchangeAdaptiveCard(
                     Icon(
                         painter = painterResource(id = icons[index]),
                         contentDescription = null,
-                        modifier = Modifier.size(cardHeight * 0.25f)
+                        modifier = Modifier.size(cardHeight * 0.15f)
                     )
                     Text(
                         text = exchangeRate.rate.toString(),
