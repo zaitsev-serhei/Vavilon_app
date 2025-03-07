@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "eb7157faa5d988e31fe6a2486487879d",
+    "identityHash": "34a1828d37d540309fac8db2c34547f9",
     "entities": [
       {
         "tableName": "sources",
@@ -91,24 +91,36 @@
         "foreignKeys": []
       },
       {
-        "tableName": "currencies",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`currency_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `code` TEXT NOT NULL, `label` TEXT NOT NULL, `rate` REAL NOT NULL, `isDefault` INTEGER NOT NULL)",
+        "tableName": "exchange_rates",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `base_currency` TEXT NOT NULL, `base_label` TEXT NOT NULL, `to_currency` TEXT NOT NULL, `to_label` TEXT NOT NULL, `rate` REAL NOT NULL, `last_update` TEXT NOT NULL, `isDefault` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "currencyId",
-            "columnName": "currency_id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "code",
-            "columnName": "code",
+            "columnName": "base_currency",
             "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "label",
-            "columnName": "label",
+            "columnName": "base_label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "toCurrencyCode",
+            "columnName": "to_currency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "toCurrencyLabel",
+            "columnName": "to_label",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -116,6 +128,12 @@
             "fieldPath": "exchangeRate",
             "columnName": "rate",
             "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdateDate",
+            "columnName": "last_update",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -128,7 +146,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "currency_id"
+            "id"
           ]
         },
         "indices": [],
@@ -487,7 +505,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eb7157faa5d988e31fe6a2486487879d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '34a1828d37d540309fac8db2c34547f9')"
     ]
   }
 }

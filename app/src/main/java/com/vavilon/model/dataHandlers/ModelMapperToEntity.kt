@@ -2,6 +2,7 @@ package com.vavilon.model.dataHandlers
 
 import com.vavilon.model.SourceCategories
 import com.vavilon.model.TransactionCategories
+import com.vavilon.storage.local.entities.ExchangeRatesEntity
 import com.vavilon.storage.local.entities.PlanEntity
 import com.vavilon.storage.local.entities.SourceEntity
 import com.vavilon.storage.local.entities.TransactionEntity
@@ -74,7 +75,8 @@ fun Transaction.toEntity(): TransactionEntity {
 }
 
 fun TransactionEntity.toModel(): Transaction {
-    return Transaction(id =this.transactionId ,
+    return Transaction(
+        id = this.transactionId,
         sourceId = this.sourceId,
         amount = this.amount,
         description = this.description,
@@ -94,5 +96,28 @@ fun TransactionEntity.toModel(): Transaction {
         category = TransactionCategories.entries.firstOrNull { category ->
             category.getTransactionCategory() == this.category
         } ?: TransactionCategories.CUSTOM,
-        )
+    )
+}
+
+fun ExchangeRatesEntity.toModel(): ExchangeRate {
+    return ExchangeRate(
+        baseCurrencyCode = this.code,
+        baseCurrencyLabel = this.label,
+        relatedCurrencyCode = this.toCurrencyCode,
+        relatedCurrencyLabel = this.toCurrencyLabel,
+        rate = this.exchangeRate,
+        updateDate = this.lastUpdateDate,
+        isUpdated = this.isDefault
+    )
+}
+
+fun ExchangeRate.toEntity(): ExchangeRatesEntity {
+    return ExchangeRatesEntity(
+        baseCode = this.baseCurrencyCode,
+        baseLabel = this.baseCurrencyLabel.orEmpty(),
+        relatedCode = this.relatedCurrencyCode,
+        relatedLabel = this.relatedCurrencyLabel.orEmpty(),
+        rate = this.rate,
+        updateDate = this.updateDate
+    )
 }

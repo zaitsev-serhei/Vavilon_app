@@ -1,17 +1,28 @@
 package com.vavilon.storage.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.vavilon.storage.local.entities.CurrencyEntity
+import com.vavilon.storage.local.entities.ExchangeRatesEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CurrencyDao {
     @Insert
-    fun insert(currencyEntity: CurrencyEntity)
+    suspend fun insert(exchangeRatesEntity: ExchangeRatesEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRates(rates: List<ExchangeRatesEntity>)
+
     @Update
-    fun update(currencyEntity: CurrencyEntity)
-    @Query("SELECT * FROM currencies")
-    fun getAll(): List<CurrencyEntity>
+    fun update(exchangeRatesEntity: ExchangeRatesEntity)
+
+    @Query("SELECT * FROM exchange_rates")
+    fun getAll(): Flow<List<ExchangeRatesEntity>>
+
+    @Query("DELETE FROM exchange_rates")
+    suspend fun clearRates()
 }

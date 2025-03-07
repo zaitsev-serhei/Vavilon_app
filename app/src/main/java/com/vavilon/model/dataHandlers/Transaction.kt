@@ -2,7 +2,6 @@ package com.vavilon.model.dataHandlers
 
 import com.vavilon.model.ItemStatus
 import com.vavilon.model.TransactionCategories
-import java.text.SimpleDateFormat
 import java.util.Date
 
 data class Transaction(
@@ -10,7 +9,7 @@ data class Transaction(
     private var sourceId: Long,
     private var amount: Double,
     private var description: String,
-    private var status: ItemStatus = ItemStatus.COMPLETE,
+    private var status: ItemStatus = ItemStatus.PLANNED,
     private var creationDate: Date,
     private var transactionDate: Date,
     private var plannedOccurrenceDate: Date,

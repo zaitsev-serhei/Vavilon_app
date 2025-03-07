@@ -16,6 +16,7 @@ import com.vavilon.compose.plan.PlanDetailsEditScreen
 import com.vavilon.compose.source.AddNewSourceScreen
 import com.vavilon.compose.transaction.AddNewTransactionScreen
 import com.vavilon.model.events.UserEvent
+import com.vavilon.model.states.ExchangeRatesState
 import com.vavilon.model.states.PlanState
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
@@ -27,6 +28,7 @@ fun Navigation(
     sourceState: SourceState,
     transactionState: TransactionState,
     planState: PlanState,
+    ratesState: ExchangeRatesState,
     onEvent: (UserEvent) -> Unit
 ) {
 
@@ -36,6 +38,7 @@ fun Navigation(
             HomeScreenView(
                 sourceState = sourceState,
                 transactionState = transactionState,
+                ratesState = ratesState,
                 navController = navController,
                 onEvent = onEvent,
                 onAddSource = { navController.navigate(route = Screen.AddNewSourceScreen.route) },
@@ -53,8 +56,10 @@ fun Navigation(
         }
         composable(route = BottomNavMenuItem.Statistic.route) {
             StatisticScreenView(
+                ratesState = ratesState,
                 navController = navController,
-                modifier = modifier
+                modifier = modifier,
+                onEvent = onEvent
             )
         }
         composable(route = BottomNavMenuItem.Transaction.route) {

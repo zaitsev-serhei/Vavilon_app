@@ -1,29 +1,26 @@
 package com.vavilon.model.dataHandlers
 
 import com.vavilon.model.ItemStatus
-import com.vavilon.storage.local.entities.SourceEntity
-import com.vavilon.storage.local.entities.TransactionEntity
 
 class PlanItemWrapper(
-    private var source: SourceEntity,
-    private var transaction: TransactionEntity,
+    private var source: Source,
+    private var transaction: Transaction,
     private var planId: Long
 ) {
     fun getPlanId(): Long {
         return this.planId
     }
 
-    fun getTransaction(): TransactionEntity {
+    fun getTransaction(): Transaction {
         return this.transaction
     }
 
-    fun getSource(): SourceEntity {
+    fun getSource(): Source {
         return this.source
     }
 
     fun updateItemStatus(status: ItemStatus) {
-        this.transaction.status = status
+        this.transaction.setStatus(status)
     }
-
 
 }

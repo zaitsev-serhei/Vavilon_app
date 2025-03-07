@@ -1,7 +1,6 @@
 package com.vavilon.model.dataHandlers
 
 import com.vavilon.model.ItemStatus
-import java.text.SimpleDateFormat
 import java.util.Date
 
 data class Plan(

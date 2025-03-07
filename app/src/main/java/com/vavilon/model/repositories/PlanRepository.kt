@@ -60,17 +60,4 @@ class PlanRepository @Inject constructor(
         }
     }
 
-    private fun toItemWrapper(
-        source: SourceEntity,
-        transaction: TransactionEntity,
-        planId: Long
-    ): PlanItemWrapper {
-        return PlanItemWrapper(source, transaction, planId)
-    }
-
-    private fun fromItemWrapper(item: PlanItemWrapper): Map<SourceEntity, TransactionEntity> {
-        val mappedItem = HashMap<SourceEntity, TransactionEntity>()
-        mappedItem.put(item.getSource(), item.getTransaction())
-        return mappedItem
-    }
 }

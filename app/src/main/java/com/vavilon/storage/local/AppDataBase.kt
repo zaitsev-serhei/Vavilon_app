@@ -15,7 +15,7 @@ import com.vavilon.storage.local.dao.TotalDao
 import com.vavilon.storage.local.dao.TransactionCategoryDao
 import com.vavilon.storage.local.dao.TransactionDao
 import com.vavilon.storage.local.dao.UserDao
-import com.vavilon.storage.local.entities.CurrencyEntity
+import com.vavilon.storage.local.entities.ExchangeRatesEntity
 import com.vavilon.storage.local.entities.PlanEntity
 import com.vavilon.storage.local.entities.SourceEntity
 import com.vavilon.storage.local.entities.SourceForPlan
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [
-        SourceEntity::class, CurrencyEntity::class,
+        SourceEntity::class, ExchangeRatesEntity::class,
         TotalBalance::class, TransactionEntity::class,
         TransactionCategoryEntity::class, UserEntity::class,
         PlanEntity::class, TransactionForPlan::class,
@@ -51,7 +51,7 @@ abstract class AppDataBase : RoomDatabase() {
         }
 
         private fun buildDB(context: Context): AppDataBase {
-            deleteDatabaseFile(context, "vavilon_app_db")
+            //deleteDatabaseFile(context, "vavilon_app_db")
             return Room.databaseBuilder(
                 context,
                 AppDataBase::class.java, "vavilon_app_db"

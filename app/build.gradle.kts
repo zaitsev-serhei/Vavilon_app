@@ -65,6 +65,8 @@ android {
         implementation(libs.androidx.navigation.compose)
         implementation(libs.androidx.material)
         implementation(libs.androidx.navigation.testing)
+        implementation(libs.retrofit)
+        implementation(libs.converter.gson)
         ksp(libs.dagger.compiler)
         ksp(libs.room)
         ksp(libs.androidx.room.compiler)

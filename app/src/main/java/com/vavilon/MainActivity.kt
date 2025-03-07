@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.vavilon.model.events.UserEvent
 import com.vavilon.ui.theme.VavilonTheme
+import com.vavilon.viewModel.ExchangeRatesViewModel
 import com.vavilon.viewModel.PlanViewModel
 import com.vavilon.viewModel.SourceViewModel
 import com.vavilon.viewModel.TransactionViewModel
@@ -21,6 +22,8 @@ class MainActivity : ComponentActivity() {
     lateinit var transactionViewModel: TransactionViewModel
     @Inject
     lateinit var planViewModel: PlanViewModel
+    @Inject
+    lateinit var exchangeRatesViewModel: ExchangeRatesViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as VavilonApplication).appComponent.injectMainActivity(this)
         super.onCreate(savedInstanceState)
@@ -29,18 +32,21 @@ class MainActivity : ComponentActivity() {
                 val sourceState by sourceViewModel.state.collectAsState()
                 val transactionState by transactionViewModel.state.collectAsState()
                 val planState by planViewModel.state.collectAsState()
+                val ratesState by exchangeRatesViewModel.state.collectAsState()
 
                 val onEvent: (UserEvent) -> Unit = { event ->
                     when (event) {
                         is UserEvent.SourceEventWrapper -> sourceViewModel.onEvent(event.event)
                         is UserEvent.TransactionEventWrapper -> transactionViewModel.onEvent(event.event)
                         is UserEvent.PlanEventWrapper -> planViewModel.OnEvent(event.event)
+                        is UserEvent.ExchangeRatesEventWrapper -> exchangeRatesViewModel.OnEvent(event.event)
                     }
                 }
                 Navigation(modifier = Modifier.fillMaxSize(),
                     sourceState = sourceState,
                     transactionState = transactionState,
                     planState = planState,
+                    ratesState = ratesState,
                     onEvent = onEvent,
                     )
             }
