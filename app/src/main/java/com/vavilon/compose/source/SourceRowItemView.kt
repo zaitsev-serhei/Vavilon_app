@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,12 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vavilon.R
 import com.vavilon.model.SourceCategories
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.SourceEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
-fun SourceRowItemView(source: Source) {
+fun SourceRowItemView(source: SourceEntity) {
     val itemBackGroundColor = when (SourceCategories.entries.firstOrNull { category ->
         category.getSrcCategory() == source.sourceType
     } ?: SourceCategories.INCOME) {
@@ -96,7 +95,7 @@ fun SourceRowItemView(source: Source) {
 @Composable
 private fun CardItem() {
     VavilonTheme {
-        SourceRowItemView(source = Source("Income", "work", "", 1100.0))
+        SourceRowItemView(source = SourceEntity("Income", "work", "", 1100.0))
     }
 }
 
@@ -104,13 +103,13 @@ private fun CardItem() {
 @Composable
 private fun CardItem1() {
     VavilonTheme {
-        SourceRowItemView(source = Source("Expense", "work", "", 1100.0))
+        SourceRowItemView(source = SourceEntity("Expense", "work", "", 1100.0))
     }
 }
 @Preview
 @Composable
 private fun CardItem2() {
     VavilonTheme {
-        SourceRowItemView(source = Source("Saving", "work", "", 1100.0))
+        SourceRowItemView(source = SourceEntity("Saving", "work", "", 1100.0))
     }
 }

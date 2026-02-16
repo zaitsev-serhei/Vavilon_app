@@ -3,12 +3,13 @@ package com.vavilon.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vavilon.model.ItemStatus
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.repositories.TransactionRepository
 import com.vavilon.model.states.TransactionState
 import com.vavilon.storage.local.Converter
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.TransactionEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -62,7 +63,8 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                 val category = state.value.transactionCategory
                 val description = state.value.description
                 val amount = state.value.amount
-                val status = state.value.status
+                val status = ItemStatus.COMPLETE
+                val sourceId = state.value.currentSourceId
                 if (amount <= 0) {
                     return
                 }
@@ -70,11 +72,12 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                     val currentDate = Date()
                     val formattedDate = Converter.dateToTimestamp(currentDate)
                     val transaction =
-                        Transaction(
+                        TransactionEntity(
                             amount,
                             category.getTransactionCategory(),
-                            status.getTransactionStatus(),
+                            status,
                             description,
+                            sourceId,
                             formattedDate ?: ""
                         )
                     transactionRepository.createTransaction(transaction)
@@ -84,11 +87,37 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
                     it.copy(
                         amount = 0.0,
                         description = "",
+                        currentSourceId = 0,
                         transactionCategory = TransactionCategories.ALL
                     )
                 }
             }
 
+            is TransactionEvent.AddTransactionToPlan -> {
+                viewModelScope.launch {
+                    val currentDate = Date()
+                    val formattedDate = Converter.dateToTimestamp(currentDate)
+                    val transaction = TransactionEntity(
+                        amount = event.source.currentBalance,
+                        category = event.source.sourceType,
+                        status = ItemStatus.PLANNED,
+                        description = event.source.sourceTitle,
+                        sourceId = event.source.sourceId,
+                        creationDate = formattedDate ?: ""
+                    )
+                    transactionRepository.addTransactionToPlan(transaction,event.planId)
+                    Log.d("TransactionToSource", "Transaction Added to Source {${event.source.sourceId}} : {$transaction}")
+                }
+                _state.update {
+                    it.copy(
+                        amount = 0.0,
+                        description = "",
+                        currentSourceId = 0,
+                        transactionCategory = TransactionCategories.ALL
+                    )
+                }
+
+            }
 
             TransactionEvent.HideDialog -> _state.update {
                 TransactionState()
@@ -101,11 +130,9 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
             }
 
             is TransactionEvent.SetCategory -> {
-                Log.d("ViewModel", "Category before update: ${_state.value.transactionCategory}")
                 _state.update {
                     it.copy(transactionCategory = event.category)
                 }
-                Log.d("ViewModel", "Category after update: ${_state.value.transactionCategory}")
             }
 
             is TransactionEvent.SetDescription -> _state.update {
@@ -117,6 +144,18 @@ class TransactionViewModel @Inject constructor(private val transactionRepository
             TransactionEvent.ShowDialog -> _state.update {
                 it.copy(
                     isAddingNewTransaction = true
+                )
+            }
+            //to develop better solution for the transaction creation
+            is TransactionEvent.SetSourceId -> _state.update {
+                it.copy(
+                    currentSourceId = event.sourceId
+                )
+            }
+
+            is TransactionEvent.SetPlanId -> _state.update {
+                it.copy(
+                    currentPlanId = event.planId
                 )
             }
         }

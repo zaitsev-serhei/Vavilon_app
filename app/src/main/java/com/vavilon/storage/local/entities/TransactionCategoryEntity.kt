@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "tr_categories")
-class TransactionCategory {
+class TransactionCategoryEntity {
     constructor()
     constructor(transactionTitle: String, transactionType: String) {
         this.title = transactionTitle

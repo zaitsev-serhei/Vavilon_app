@@ -7,13 +7,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vavilon.compose.HomeScreenView
+import com.vavilon.compose.PlanScreeView
 import com.vavilon.compose.SourceScreenView
 import com.vavilon.compose.StatisticScreenView
 import com.vavilon.compose.TransactionScreenView
 import com.vavilon.compose.menu.BottomNavMenuItem
+import com.vavilon.compose.plan.PlanDetailsEditScreen
 import com.vavilon.compose.source.AddNewSourceScreen
 import com.vavilon.compose.transaction.AddNewTransactionScreen
 import com.vavilon.model.events.UserEvent
+import com.vavilon.model.states.ExchangeRatesState
+import com.vavilon.model.states.PlanState
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
 import com.vavilon.utils.Screen
@@ -23,6 +27,8 @@ fun Navigation(
     modifier: Modifier,
     sourceState: SourceState,
     transactionState: TransactionState,
+    planState: PlanState,
+    ratesState: ExchangeRatesState,
     onEvent: (UserEvent) -> Unit
 ) {
 
@@ -32,6 +38,7 @@ fun Navigation(
             HomeScreenView(
                 sourceState = sourceState,
                 transactionState = transactionState,
+                ratesState = ratesState,
                 navController = navController,
                 onEvent = onEvent,
                 onAddSource = { navController.navigate(route = Screen.AddNewSourceScreen.route) },
@@ -49,8 +56,10 @@ fun Navigation(
         }
         composable(route = BottomNavMenuItem.Statistic.route) {
             StatisticScreenView(
+                ratesState = ratesState,
                 navController = navController,
-                modifier = modifier
+                modifier = modifier,
+                onEvent = onEvent
             )
         }
         composable(route = BottomNavMenuItem.Transaction.route) {
@@ -59,6 +68,15 @@ fun Navigation(
                 transactionState = transactionState,
                 onEvent = onEvent,
                 modifier = modifier
+            )
+        }
+        composable(route = BottomNavMenuItem.Plan.route) {
+            PlanScreeView(
+                modifier = modifier,
+                planState = planState,
+                navController = navController,
+                onEvent = onEvent,
+                onPlanItemClick = { navController.navigate(route = Screen.EditPlanScreen.route) }
             )
         }
         composable(route = Screen.AddNewSourceScreen.route) {
@@ -70,8 +88,18 @@ fun Navigation(
         composable(route = Screen.AddNewTransactionScreen.route) {
             AddNewTransactionScreen(
                 transactionState = transactionState,
+                sourceState = sourceState,
                 onEvent = onEvent,
                 onSaved = { navController.navigate(route = Screen.HomeScreen.route) })
+        }
+        composable(route = Screen.EditPlanScreen.route) {
+            PlanDetailsEditScreen(
+                planState = planState,
+                sourceState = sourceState,
+                onAddTransactionClick = { navController.navigate(route = Screen.AddNewTransactionScreen.route) },
+                onAddSourceButtonClick = { navController.navigate(route = Screen.AddNewSourceScreen.route) },
+                onEvent = onEvent
+            )
         }
     }
 }

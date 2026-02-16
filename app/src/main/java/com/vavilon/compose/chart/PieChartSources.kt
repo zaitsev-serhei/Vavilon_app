@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vavilon.model.SourceCategories
 import com.vavilon.model.states.SourceState
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.SourceEntity
 import com.vavilon.ui.theme.Crimson
 import com.vavilon.ui.theme.DodgerBlue
 import com.vavilon.ui.theme.FireBrick
@@ -111,10 +111,10 @@ fun PieChartSources(state: SourceState, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun PreviewChart() {
-    val source1  = Source("work", "work", "",2000.0)
-    val source2  = Source("job", "work", "",3000.0)
-    val source3  = Source("extra", "work", "",800.0)
-    val source4  = Source("part time", "work", "",1000.0)
+    val source1  = SourceEntity("work", "work", "",2000.0)
+    val source2  = SourceEntity("job", "work", "",3000.0)
+    val source3  = SourceEntity("extra", "work", "",800.0)
+    val source4  = SourceEntity("part time", "work", "",1000.0)
     val tempList = listOf(source1,source2,source3,source4)
     PieChartSources(state = SourceState())
 }

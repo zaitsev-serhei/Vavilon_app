@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.ExperimentalMaterialApi
@@ -31,16 +30,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.vavilon.model.SourceCategories
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
+import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
@@ -49,14 +49,19 @@ import com.vavilon.ui.theme.VavilonTheme
 @Composable
 fun AddNewTransactionScreen(
     transactionState: TransactionState,
+    sourceState: SourceState,
     onEvent: (UserEvent) -> Unit,
     onSaved: () -> Unit
 ) {
     var balanceText by remember { mutableStateOf(transactionState.amount.toString()) }
-    var expanded by remember { mutableStateOf(false) }
+    var categoryExpanded by remember { mutableStateOf(false) }
+    var sourceExpanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
     var currentCategory by remember { mutableStateOf(transactionState.transactionCategory) }
-    val icon = if (expanded) {
+    var sourceId by remember {
+        mutableStateOf(transactionState.currentSourceId)
+    }
+    val icon = if (categoryExpanded) {
         Icons.Filled.KeyboardArrowUp
     } else {
         Icons.Filled.KeyboardArrowDown
@@ -65,7 +70,7 @@ fun AddNewTransactionScreen(
         currentCategory = transactionState.transactionCategory
     }
     LaunchedEffect(Unit) {
-        expanded = false
+        categoryExpanded = false
     }
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -76,7 +81,51 @@ fun AddNewTransactionScreen(
             text = "Add New Transaction",
             style = Typography.h1,
         )
-
+        //update for income source
+        ExposedDropdownMenuBox(
+            expanded = sourceExpanded,
+            onExpandedChange = { sourceExpanded = !sourceExpanded }
+        ) {
+            OutlinedTextField(
+                value = sourceState.sourceList.find { source -> source.sourceId == sourceId }?.sourceTitle
+                    ?: "",
+                onValueChange = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 15.dp, end = 10.dp)
+                    .onGloballyPositioned { coordinates ->
+                        textFieldSize = coordinates.size.toSize() // Запоминаем размер TextField
+                    },
+                label = { Text("Select Source") },
+                trailingIcon = {
+                    Icon(icon, "contentDescription", Modifier.clickable { sourceExpanded = !sourceExpanded })
+                },
+                readOnly = true // Поле только для чтения
+            )
+            DropdownMenu(
+                expanded = sourceExpanded,
+                onDismissRequest = { sourceExpanded = false },
+                modifier = Modifier.width(with(LocalDensity.current) { textFieldSize.width.toDp() })
+            ) {
+                sourceState.sourceList.filter { source -> source.sourceType.equals(SourceCategories.INCOME.getSrcCategory())}.forEach { sourceItem ->
+                    DropdownMenuItem(
+                        onClick = {
+                            Log.d("DropdownMenu", "Source selected: ${sourceItem}")
+                            sourceId = sourceItem.sourceId
+                            onEvent(
+                                UserEvent.TransactionEventWrapper(
+                                    TransactionEvent.SetSourceId(
+                                        sourceId
+                                    )
+                                )
+                            )
+                            sourceExpanded = false
+                        },
+                        content = { Text(sourceItem.sourceTitle) }
+                    )
+                }
+            }
+        }
         TextField(
             value = transactionState.description,
             onValueChange = {
@@ -90,8 +139,8 @@ fun AddNewTransactionScreen(
             })
 
         ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
+            expanded = categoryExpanded,
+            onExpandedChange = { categoryExpanded = !categoryExpanded }
         ) {
             OutlinedTextField(
                 value = currentCategory.getTransactionCategory(),
@@ -104,13 +153,13 @@ fun AddNewTransactionScreen(
                     },
                 label = { Text("Select Category") },
                 trailingIcon = {
-                    Icon(icon, "contentDescription", Modifier.clickable { expanded = !expanded })
+                    Icon(icon, "contentDescription", Modifier.clickable { categoryExpanded = !categoryExpanded })
                 },
                 readOnly = true // Поле только для чтения
             )
             DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
+                expanded = categoryExpanded,
+                onDismissRequest = { categoryExpanded = false },
                 modifier = Modifier.width(with(LocalDensity.current) { textFieldSize.width.toDp() })
             ) {
                 transactionState.categoriesList.forEach { categoryItem ->
@@ -127,7 +176,7 @@ fun AddNewTransactionScreen(
                                     )
                                 )
                             )
-                            expanded = false
+                            categoryExpanded = false
                         },
                         content = { Text(categoryItem) }
                     )
@@ -159,7 +208,10 @@ fun AddNewTransactionScreen(
         ) {
             Button(
                 onClick = {
-                    Log.d("Add category screen", "Category before save ${currentCategory.getTransactionCategory()}")
+                    Log.d(
+                        "Add category screen",
+                        "Category before save ${currentCategory.getTransactionCategory()}"
+                    )
                     if (transactionState.amount > 0 && currentCategory != TransactionCategories.ALL) {
                         onEvent(UserEvent.TransactionEventWrapper(TransactionEvent.SaveTransaction))
                         onSaved()

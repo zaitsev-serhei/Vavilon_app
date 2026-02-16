@@ -20,9 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
+import com.vavilon.model.ItemStatus
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.states.TransactionState
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.TransactionEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 import java.util.Date
@@ -46,12 +47,13 @@ fun BarChartTransaction(transactionState: TransactionState) {
     val spacing = 10.dp
     val canvasHeight = 200.dp
     val canvasWidth = (transactionCounts.size * (barWidth + spacing))
-    Row (Modifier
-        .fillMaxWidth()
-        .padding(start = 5.dp, end = 10.dp, top = 5.dp),
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(start = 5.dp, end = 10.dp, top = 5.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween
-    ){
+    ) {
         Canvas(
             modifier = Modifier
                 .height(canvasHeight)
@@ -66,7 +68,10 @@ fun BarChartTransaction(transactionState: TransactionState) {
                 val color = transactionColors[category] ?: Color.LightGray
                 drawRect(
                     color = color,
-                    topLeft = androidx.compose.ui.geometry.Offset(currentX, size.height - barHeight),
+                    topLeft = androidx.compose.ui.geometry.Offset(
+                        currentX,
+                        size.height - barHeight
+                    ),
                     size = androidx.compose.ui.geometry.Size(barWidth.toPx(), barHeight)
                 )
                 currentX += barWidth.toPx() + spacing.toPx()
@@ -118,10 +123,10 @@ private fun ChartPreview() {
         BarChartTransaction(
             transactionState = TransactionState(
                 listOf(
-                    Transaction(1005.0, "Income", Date().toString()),
-                    Transaction(1805.0, "Food", Date().toString()),
-                    Transaction(1005.0, "Rent", Date().toString()),
-                    Transaction(1005.0, "Income", Date().toString())
+                    TransactionEntity(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1805.0, "Food", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1005.0, "Rent", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString())
                 )
             )
         )

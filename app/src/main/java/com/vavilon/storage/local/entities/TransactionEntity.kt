@@ -3,27 +3,50 @@ package com.vavilon.storage.local.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.vavilon.model.ItemStatus
 
 @Entity(tableName = "transactions")
-class Transaction {
+class TransactionEntity {
     constructor()
 
-    constructor(amount: Double, category: String, creationDate: String) {
+    constructor(
+        amount: Double,
+        category: String,
+        creationDate: String,
+        status: ItemStatus
+    ) {
         this.amount = amount
         this.category = category
         this.transactionDate = creationDate
+        this.status = status
     }
 
-    constructor(amount: Double, category: String, status:String, description: String, creationDate: String) {
+    constructor(
+        amount: Double,
+        category: String,
+        status: ItemStatus,
+        description: String,
+        sourceId: Long,
+        creationDate: String,
+    ) {
         this.amount = amount
         this.category = category
         this.description = description
+        this.sourceId = sourceId
         this.status = status
         this.transactionDate = creationDate
     }
-    constructor(amount: Double, category: String, description: String, date: String) {
+
+    constructor(
+        amount: Double,
+        category: String,
+        description: String,
+        status: ItemStatus,
+        date: String,
+    ) {
         this.amount = amount
         this.category = category
+        this.status = status
         this.transactionDate = date
         this.description = description
     }
@@ -38,11 +61,14 @@ class Transaction {
     @ColumnInfo(name = "description", defaultValue = "")
     var description: String = ""
 
-    @ColumnInfo(name = "status", defaultValue = "")
-    var status: String = ""
+    @ColumnInfo(name = "status")
+    var status: ItemStatus = ItemStatus.PLANNED
 
     @ColumnInfo(name = "creation_date")
     var transactionDate: String = ""
+
+    @ColumnInfo(name = "source_id")
+    var sourceId: Long = 0
 
     @ColumnInfo(name = "isRepeatable")
     var isRepeatable: Boolean = false
@@ -50,12 +76,10 @@ class Transaction {
     @ColumnInfo(name = "currency_id")
     var currencyId: Long = 0
 
-    @ColumnInfo(name = "source_id")
-    var sourceId: Long = 0
-
     @ColumnInfo(name = "schedule_id")
     var schedule_id: Long = 0
 
     @ColumnInfo(name = "category_name")
     var category: String = ""
+
 }

@@ -21,9 +21,10 @@ import androidx.navigation.compose.rememberNavController
 import com.vavilon.compose.chart.BarChartTransaction
 import com.vavilon.compose.menu.BottomNavigation
 import com.vavilon.compose.transaction.VerticalTransactionListView
+import com.vavilon.model.ItemStatus
 import com.vavilon.model.events.UserEvent
 import com.vavilon.model.states.TransactionState
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.TransactionEntity
 import com.vavilon.ui.theme.DarkBlue
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
@@ -65,7 +66,7 @@ fun TransactionScreenView(
             }
             Spacer(modifier = Modifier.height(10.dp))
             VerticalTransactionListView(
-                transactionState = transactionState,
+                transactionList = transactionState.transactionList,
                 userEvent = onEvent
             )
         }
@@ -77,14 +78,15 @@ fun TransactionScreenView(
 private fun TransactionTransactionScreenPreview() {
     VavilonTheme {
         val navController = rememberNavController()
-        TransactionScreenView(navController = navController, transactionState = TransactionState(
-            listOf(
-                Transaction(1005.0, "Income", Date().toString()),
-                Transaction(1805.0, "Food", Date().toString()),
-                Transaction(1005.0, "Rent", Date().toString()),
-                Transaction(1005.0, "Income", Date().toString())
-            )
-        ), onEvent = {}, modifier = Modifier
+        TransactionScreenView(
+            navController = navController, transactionState = TransactionState(
+                listOf(
+                    TransactionEntity(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1805.0, "Food", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1005.0, "Rent", "", ItemStatus.COMPLETE, Date().toString()),
+                    TransactionEntity(1005.0, "Income", "", ItemStatus.COMPLETE, Date().toString())
+                )
+            ), onEvent = {}, modifier = Modifier
         )
     }
 

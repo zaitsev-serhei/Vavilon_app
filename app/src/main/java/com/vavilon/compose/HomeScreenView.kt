@@ -37,9 +37,10 @@ import com.vavilon.compose.menu.HomeCurrencyRates
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.events.TransactionEvent
 import com.vavilon.model.events.UserEvent
+import com.vavilon.model.states.ExchangeRatesState
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.SourceEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 
@@ -47,6 +48,7 @@ import com.vavilon.ui.theme.VavilonTheme
 fun HomeScreenView(
     sourceState: SourceState,
     transactionState: TransactionState,
+    ratesState: ExchangeRatesState,
     navController: NavController,
     onEvent: (UserEvent) -> Unit,
     onAddSource: () -> Unit,
@@ -87,7 +89,7 @@ fun HomeScreenView(
         )
         {
             Spacer(modifier = Modifier.height(10.dp))
-            HomeCurrencyRates()
+            HomeCurrencyRates(ratesState = ratesState)
             Spacer(modifier = Modifier.height(10.dp))
             ActionButtonsRow (onAddSource = onAddSource,
                 onAddTransaction = onAddTransaction)
@@ -274,16 +276,17 @@ fun CurrentStatisticView(state: SourceState) {
 )
 fun HomeScreenPreview() {
     VavilonTheme {
-        val source1 = Source("work", "work", "", 1000.0)
-        val source2 = Source("work", "work", "", 1000.0)
-        val source3 = Source("work", "work", "", 1000.0)
-        val source4 = Source("work", "work", "", 1000.0)
+        val source1 = SourceEntity("work", "work", "", 1000.0)
+        val source2 = SourceEntity("work", "work", "", 1000.0)
+        val source3 = SourceEntity("work", "work", "", 1000.0)
+        val source4 = SourceEntity("work", "work", "", 1000.0)
         val tempList = listOf(source1, source2, source3, source4)
         val state = SourceState(tempList)
         val navController = rememberNavController()
         HomeScreenView(
-            state,
+            sourceState = state,
             transactionState = TransactionState(),
+            ratesState = ExchangeRatesState(),
             navController = navController,
             onAddSource = {},
             onAddTransaction = {},

@@ -8,12 +8,11 @@ import com.vavilon.model.SourceCategories
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.repositories.SourceRepository
 import com.vavilon.model.states.SourceState
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.SourceEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -104,7 +103,7 @@ class SourceViewModel @Inject constructor(private val sourceRepository: SourceRe
                         Log.d("Source to save", "After Edit Source: ${source.toString()}")
                         sourceRepository.updateSource(source)
                     } else {
-                        val source = Source(sourceType.getSrcCategory(), name, description, balance)
+                        val source = SourceEntity(sourceType.getSrcCategory(), name, description, balance)
                         Log.d("Source to save", "New Source: ${source.toString()}")
                         sourceRepository.createSource(source)
                         _state.update { it.copy(isSourceAdded = true) }

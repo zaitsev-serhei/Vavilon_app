@@ -9,32 +9,35 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.vavilon.model.CategoryTypes
 import com.vavilon.model.TransactionCategories
 import com.vavilon.storage.local.dao.CurrencyDao
+import com.vavilon.storage.local.dao.PlanDao
 import com.vavilon.storage.local.dao.SourceDao
 import com.vavilon.storage.local.dao.TotalDao
 import com.vavilon.storage.local.dao.TransactionCategoryDao
 import com.vavilon.storage.local.dao.TransactionDao
 import com.vavilon.storage.local.dao.UserDao
-import com.vavilon.storage.local.entities.Currency
-import com.vavilon.storage.local.entities.Source
+import com.vavilon.storage.local.entities.ExchangeRatesEntity
+import com.vavilon.storage.local.entities.PlanEntity
+import com.vavilon.storage.local.entities.SourceEntity
+import com.vavilon.storage.local.entities.SourceForPlan
 import com.vavilon.storage.local.entities.TotalBalance
-import com.vavilon.storage.local.entities.Transaction
-import com.vavilon.storage.local.entities.TransactionCategory
-import com.vavilon.storage.local.entities.User
-import com.vavilon.storage.local.migration.MIGRATION_1_2
-import com.vavilon.storage.local.migration.MIGRATION_2_3
-import com.vavilon.storage.local.migration.MIGRATION_3_4
-import com.vavilon.storage.local.migration.MIGRATION_4_5
+import com.vavilon.storage.local.entities.TransactionEntity
+import com.vavilon.storage.local.entities.TransactionCategoryEntity
+import com.vavilon.storage.local.entities.TransactionForPlan
+import com.vavilon.storage.local.entities.TransactionForSource
+import com.vavilon.storage.local.entities.UserEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(
     entities = [
-        Source::class, Currency::class,
-        TotalBalance::class, Transaction::class,
-        TransactionCategory::class, User::class],
+        SourceEntity::class, ExchangeRatesEntity::class,
+        TotalBalance::class, TransactionEntity::class,
+        TransactionCategoryEntity::class, UserEntity::class,
+        PlanEntity::class, TransactionForPlan::class,
+        TransactionForSource::class, SourceForPlan::class],
     exportSchema = true,
-    version = 5
+    version = 1
 )
 @TypeConverters(value = [Converter::class])
 abstract class AppDataBase : RoomDatabase() {
@@ -48,14 +51,23 @@ abstract class AppDataBase : RoomDatabase() {
         }
 
         private fun buildDB(context: Context): AppDataBase {
+            //deleteDatabaseFile(context, "vavilon_app_db")
             return Room.databaseBuilder(
                 context,
                 AppDataBase::class.java, "vavilon_app_db"
             )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                //.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+
                 .fallbackToDestructiveMigration()
                 .addCallback(AppDBCallBack())
                 .build()
+        }
+        private fun deleteDatabaseFile(context: Context, databaseName: String) {
+            context.getDatabasePath(databaseName)?.let { dbFile ->
+                if (dbFile.exists()) {
+                    dbFile.delete()
+                }
+            }
         }
 
         private class AppDBCallBack : RoomDatabase.Callback() {
@@ -72,7 +84,7 @@ abstract class AppDataBase : RoomDatabase() {
 
         suspend fun setDefaultTransactionCategory(transactionCategoryDAO: TransactionCategoryDao) {
             val defaultCategories = TransactionCategories.entries.map { category ->
-                TransactionCategory(
+                TransactionCategoryEntity(
                     category.getTransactionCategory(),
                     CategoryTypes.DEFAULT.getCategoryType()
                 )
@@ -82,11 +94,9 @@ abstract class AppDataBase : RoomDatabase() {
 
         suspend fun setDefaultSources(sourceDAO: SourceDao) {
             val demoSources = listOf(
-                Source("Income", "Primary Account", "Main banking account", 500.0),
-                Source("Income", "Salary", "Salary paid every month", 2000.0),
-                Source("Expense", "Cash", "Cash in wallet", 100.0),
-                Source("Expense", "Food", "Shopping", 400.0),
-                Source("Saving", "Stocks", "Stock market investments", 5000.0)
+                SourceEntity("Income", "Primary Account", "Main banking account", 500.0),
+                SourceEntity("Income", "Salary", "Salary paid every month", 2000.0),
+                SourceEntity("Saving", "Stocks", "Stock market investments", 5000.0)
             )
             demoSources.forEach { sourceDAO.insert(it) }
         }
@@ -98,4 +108,5 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun UserDao(): UserDao
     abstract fun CurrencyDao(): CurrencyDao
     abstract fun TransactionCategoryDao(): TransactionCategoryDao
+    abstract fun PlanDao(): PlanDao
 }

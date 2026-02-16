@@ -11,21 +11,21 @@ import androidx.compose.ui.unit.dp
 import com.vavilon.compose.source.EntityItemRowView
 import com.vavilon.model.dataHandlers.TransactionItemWrapper
 import com.vavilon.model.events.UserEvent
-import com.vavilon.model.states.TransactionState
+import com.vavilon.storage.local.entities.TransactionEntity
 import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun VerticalTransactionListView(
-    transactionState: TransactionState,
+    transactionList: List<TransactionEntity>?,
     userEvent: (UserEvent) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .background(VavilonTheme.colors.backgroundUI)
-            .padding(top = 10.dp, start = 15.dp, end = 15.dp)
+            .padding(top = 5.dp, start = 10.dp, end = 10.dp)
     ) {
-        items(transactionState.transactionList) { transaction ->
+        items(transactionList!!) { transaction ->
             EntityItemRowView(
                 item = TransactionItemWrapper(transaction),
                 modifier = Modifier.background(VavilonTheme.colors.primaryElement),

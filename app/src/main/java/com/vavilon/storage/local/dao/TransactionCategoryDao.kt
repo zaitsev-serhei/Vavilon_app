@@ -5,16 +5,16 @@ import androidx.room.Insert
 import androidx.room.MapColumn
 import androidx.room.Query
 import androidx.room.Update
-import com.vavilon.storage.local.entities.TransactionCategory
+import com.vavilon.storage.local.entities.TransactionCategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionCategoryDao {
     @Insert
-    suspend fun insert(category: TransactionCategory)
+    suspend fun insert(category: TransactionCategoryEntity)
 
     @Update
-    suspend fun update(category: TransactionCategory)
+    suspend fun update(category: TransactionCategoryEntity)
 
     @Query("SELECT  title, category_id FROM tr_categories")
     fun getTransactionCategoriesMap(): Flow<Map<@MapColumn(columnName = "title") String, @MapColumn(columnName = "category_id") Long>>

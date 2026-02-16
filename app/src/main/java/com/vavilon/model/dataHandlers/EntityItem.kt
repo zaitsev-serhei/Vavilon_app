@@ -1,7 +1,5 @@
 package com.vavilon.model.dataHandlers
 
-import java.util.Date
-
 interface EntityItem {
     val title: String
     val description: String

@@ -1,5 +1,6 @@
 package com.vavilon.compose.menu
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.vavilon.R
 import com.vavilon.model.SourceCategories
 import com.vavilon.model.TransactionCategories
+import com.vavilon.model.states.ExchangeRatesState
 import com.vavilon.model.states.SourceState
 import com.vavilon.model.states.TransactionState
 import com.vavilon.ui.theme.Typography
@@ -32,7 +34,7 @@ import com.vavilon.ui.theme.VavilonTheme
 
 @Composable
 fun HomeCurrencyRates(
-
+    ratesState: ExchangeRatesState
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -54,6 +56,7 @@ fun HomeCurrencyRates(
                 CurrencyExchangeAdaptiveCard(
                     cardWidth = cardWidth,
                     cardHeight = cardHeight,
+                    state = ratesState,
                     modifier = Modifier.weight(1f)
                 )
                 CryptoAdaptiveCard(
@@ -225,11 +228,11 @@ fun TransactionAdaptiveCard(
 fun CurrencyExchangeAdaptiveCard(
     cardWidth: Dp,
     cardHeight: Dp,
+    state: ExchangeRatesState,
     modifier: Modifier = Modifier
 ) {
-    val exchange1 = "41,2 / 41,8"
-    val exchange2 = "42,2 / 42,8"
-    val exchange3 = "7.2 / 8.1"
+    val icons =
+        intArrayOf( R.drawable.ic_euro_sign, R.drawable.ic_pound_sign, R.drawable.ic_hryvnia_sign)
     Card(
         modifier = modifier
             .padding(5.dp)
@@ -244,51 +247,27 @@ fun CurrencyExchangeAdaptiveCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Currency Rates",
+                text = "Currency Rates (USD)",
                 maxLines = 1,
                 style = Typography.body1
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_dollar_sign),
-                    contentDescription = null,
-                    modifier = Modifier.size(cardHeight * 0.25f)
-                )
-                Text(
-                    text = exchange1,
-                    style = Typography.body1
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_euro_sign),
-                    contentDescription = null,
-                    modifier = Modifier.size(cardHeight * 0.25f)
-                )
-                Text(
-                    text = exchange2,
-                    style = Typography.body1
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_pound_sign),
-                    contentDescription = null,
-                    modifier = Modifier.size(cardHeight * 0.25f)
-                )
-                Text(
-                    text = exchange3,
-                    style = Typography.body1
-                )
+            state.exchangeRatesList.forEachIndexed { index, exchangeRate ->
+
+                Log.d("Home Screen", "View Create for rates ${state.exchangeRatesList}")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Icon(
+                        painter = painterResource(id = icons[index]),
+                        contentDescription = null,
+                        modifier = Modifier.size(cardHeight * 0.15f)
+                    )
+                    Text(
+                        text = exchangeRate.rate.toString(),
+                        style = Typography.body1
+                    )
+                }
             }
         }
     }
@@ -373,6 +352,7 @@ fun CryptoAdaptiveCard(
 private fun PreviewManu() {
     VavilonTheme {
         HomeCurrencyRates(
+            ExchangeRatesState()
         )//, transactionState = TransactionState() )
     }
 

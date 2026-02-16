@@ -19,14 +19,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vavilon.R
+import com.vavilon.model.ItemStatus
 import com.vavilon.model.TransactionCategories
 import com.vavilon.model.dataHandlers.EntityItem
 import com.vavilon.model.dataHandlers.SourceItemWrapper
 import com.vavilon.model.dataHandlers.TransactionItemWrapper
 import com.vavilon.model.events.SourceEvent
 import com.vavilon.model.events.UserEvent
-import com.vavilon.storage.local.entities.Source
-import com.vavilon.storage.local.entities.Transaction
+import com.vavilon.storage.local.entities.SourceEntity
+import com.vavilon.storage.local.entities.TransactionEntity
 import com.vavilon.ui.theme.Typography
 import com.vavilon.ui.theme.VavilonTheme
 import java.util.Date
@@ -133,7 +134,7 @@ private fun PreviewListItem() {
     VavilonTheme {
         EntityItemRowView(
             item = SourceItemWrapper(
-                source = Source(
+                source = SourceEntity(
                     sourceType = "Income",
                     sourceTitle = "Job",
                     sourceDescription = "Job I love very much",
@@ -151,7 +152,7 @@ private fun PreviewListItem1() {
     VavilonTheme {
         EntityItemRowView(
             item = SourceItemWrapper(
-                Source(
+                SourceEntity(
                     sourceType = "Income",
                     sourceTitle = "Job",
                     sourceDescription = "test",
@@ -169,9 +170,10 @@ private fun PreviewListItem2() {
     VavilonTheme {
         EntityItemRowView(
             item = TransactionItemWrapper(
-                Transaction(
+                TransactionEntity(
                     amount = 1250.0,
                     category = "Income",
+                    status = ItemStatus.COMPLETE,
                     description = "Salary",
                     date = Date().toString(),
                 )
